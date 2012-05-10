@@ -1,4 +1,6 @@
 #!/bin/sh
 
-./src/manage.py runserver
+# Set IGG Environment Variable
+export IGG_ENV='dev'
 
+./src/manage.py runserver
