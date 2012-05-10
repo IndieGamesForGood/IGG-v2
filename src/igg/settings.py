@@ -1,24 +1,46 @@
 # Django settings for igg project.
 
-DEBUG = True
+import os
+
+IGG_ENV = os.environ.get('IGG_ENV', 'prod')
+IGG_ROOT = os.environ.get('IGG_ROOT', os.path.abspath(os.path.join(os.path.abspath(__file__), '..')))
+
+if IGG_ENV == 'dev':
+  DEBUG = True
+else:
+  DEBUG = False
+  
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Brandon Carl', 'brandon@brandoncarl.me'),
+    ('Matt Rasmussen', 'matt@iggmarathon.com'),
 )
 
 MANAGERS = ADMINS
 
-DATABASES = {
+if DEBUG:
+  DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+      'ENGINE': 'django.db.backends.sqlite3',      # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+      'NAME': os.path.join(IGG_ROOT, 'db.sqlite'), # Or path to database file if using sqlite3.
+      'USER': '',                                  # Not used with sqlite3.
+      'PASSWORD': '',                              # Not used with sqlite3.
+      'HOST': '',                                  # Set to empty string for localhost. Not used with sqlite3.
+      'PORT': '',                                  # Set to empty string for default. Not used with sqlite3.
     }
-}
+  }
+else:
+  DATABASES = {
+    'default': {
+      'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+      'NAME': 'iggapp',                     # Or path to database file if using sqlite3.
+      'USER': 'igg_12dev',                  # Not used with sqlite3.
+      'PASSWORD': 'DZt*pR4a82nY',           # Not used with sqlite3.
+      'HOST': 'mysql.iggmarathon.com',      # Set to empty string for localhost. Not used with sqlite3.
+      'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
+    }
+  }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -27,7 +49,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Los_Angeles'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
