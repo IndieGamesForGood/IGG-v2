@@ -4,4 +4,5 @@
 IGG_ENV='dev'
 export IGG_ENV
 
-./src/manage.py runserver
+./src/manage.py $@
+
