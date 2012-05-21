@@ -8,9 +8,9 @@
 {% block content %}
 <h2>{% trans "Games" %}</h2>
 <ul>
-    {% for game in games %}
-        <li><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></li>
-    {% endfor %}
+  {% for game in games %}
+    <li><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></li>
+  {% endfor %}
 </ul>
 <div class="modal hide fade in" id="gameDetailModal">
   <div class="modal-header">

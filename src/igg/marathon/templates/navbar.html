@@ -6,7 +6,6 @@
 {% url raffle_list as raffle_list_url %}
 {% url schedule_list as schedule_list_url %}
 {% url donor_list as donor_list_url %}
-{% url donate_now as donate_now_url %}
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
@@ -32,6 +31,9 @@
         <a class="btn" href="#"><i class="icon-user"></i> {% trans "Login" %}</a>
       </div>
       {% endif %}
+      <div class="btn-group pull-right">
+        <a href="{{ donate_now_url }}" class="btn btn-success">{% trans "Donate Now" %}&nbsp;<i class="icon-shopping-cart"></i></a>
+      </div>
       <div class="nav-collapse">
         <ul class="nav">
           <li{% active request home_url           %}><a href="{{ home_url }}">{% trans "Home" %}</a></li>
@@ -40,7 +42,6 @@
           <li{% active request raffle_list_url    %}><a href="{{ raffle_list_url }}">{% trans "Raffles" %}</a></li>
           <li{% active request schedule_list_url  %}><a href="{{ schedule_list_url }}">{% trans "Schedule" %}</a></li>
           <li{% active request donor_list_url     %}><a href="{{ donor_list_url }}">{% trans "Donors" %}</a></li>
-          <li{% active request donate_now_url     %}><a href="{{ donate_now_url }}">{% trans "Donate Now" %}</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
