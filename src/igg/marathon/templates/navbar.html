@@ -1,0 +1,31 @@
+{% load active %}
+{% url home as home_url %}
+{% url game_list as game_list_url %}
+{% url challenge_list as challenge_list_url %}
+{% url raffle_list as raffle_list_url %}
+{% url schedule_list as schedule_list_url %}
+{% url donor_list as donor_list_url %}
+{% url donate_now as donate_now_url %}
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="/">Indie Games for Good</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li{% active request home_url           %}><a href="{{ home_url }}">Home</a></li>
+          <li{% active request game_list_url      %}><a href="{{ game_list_url }}">Games</a></li>
+          <li{% active request challenge_list_url %}><a href="{{ challenge_list_url }}">Challenges</a></li>
+          <li{% active request raffle_list_url    %}><a href="{{ raffle_list_url }}">Raffles</a></li>
+          <li{% active request schedule_list_url  %}><a href="{{ schedule_list_url }}">Schedule</a></li>
+          <li{% active request donor_list_url     %}><a href="{{ donor_list_url }}">Donors</a></li>
+          <li{% active request donate_now_url     %}><a href="{{ donate_now_url }}">Donate Now</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
