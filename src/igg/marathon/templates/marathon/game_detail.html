@@ -8,6 +8,6 @@
 {% block content %}
 <h2>{{ game.name }}</h2>
 <p>Developer: {{ game.developer }}</p>
-<p>Site: {{ game.site }}</p>
+<p>Site: <a href="{{ game.site }}" title="{{ game.name }}">{{ game.site }}</a></p>
 <p>Description: {{ game.description }}</p>
 {% endblock %}
