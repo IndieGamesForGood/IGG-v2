@@ -19,7 +19,7 @@ class Challenge(models.Model):
   description = models.TextField()
   accepted = models.BooleanField(default=False)
   private = models.BooleanField(default=False)
-  bounty = models.DecimalField(max_digits=14, decimal_places=2)
+  bounty = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
   user = models.ForeignKey(User)
 
 
