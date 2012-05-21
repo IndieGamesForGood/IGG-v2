@@ -13,6 +13,9 @@ urlpatterns = patterns('',
   # Admin
   url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
   url(r'^admin/', include(admin.site.urls)),
+  
+  # django-registration
+  url(r'', include('registration.backends.default.urls')),
 
   url(r'^$', TemplateView.as_view(template_name='marathon/index.html'), name='home'),
   url(r'^donate-now/$', TemplateView.as_view(template_name='marathon/donate.html'), name='donate_now'),

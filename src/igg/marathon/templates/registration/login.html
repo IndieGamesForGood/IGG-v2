@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Login" %}</h2>
+<div class="row">
+  <div class="offset3 span6">
+    <form method="post" action="." class="form-horizontal">
+      {% if form.non_field_errors %}
+      <div class="alert alert-error">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        {% for error in form.non_field_errors %}
+        <p><i class="icon-exclamation-sign"></i> {{ error }}</p>
+        {% endfor %}
+      </div>{% endif %}
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+      <fieldset>
+        <div class="control-group{% if form.username.errors %} error{% endif %}">
+          <label class="control-label" for="id_{{ form.username.html_name }}">{{ form.username.label }}</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="id_{{ form.username.html_name }}" {% if form.username.value %}value="{{ form.username.value }}" {% endif %}name="{{ form.username.html_name }}">
+            {% if form.username.errors %}<span class="help-inline">{% for error in form.username.errors %}{{ error }} {% endfor %}</span>{% endif %}
+            {% if form.username.help_text %}<p class="help-block">{{ form.username.help_text }}</p>{% endif %}
+          </div>
+        </div>
+        <div class="control-group{% if form.password.errors %} error{% endif %}">
+          <label class="control-label" for="id_{{ form.password.html_name }}">{{ form.password.label }}</label>
+          <div class="controls">
+            <input type="password" class="input-xlarge" id="id_{{ form.password.html_name }}" {% if form.password.value %}value="{{ form.password.value }}" {% endif %}name="{{ form.password.html_name }}">
+            {% if form.password.errors %}<span class="help-inline">{% for error in form.password.errors %}{{ error }} {% endfor %}</span>{% endif %}
+            {% if form.password.help_text %}<p class="help-block">{{ form.password.help_text }}</p>{% endif %}
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button>
+        </div>
+      </fieldset>
+    </form>
+    <p class="tc">
+      <a href="{% url auth_password_reset %}">{% trans "Reset Your Password" %}</a> &middot;
+      <a href="{% url registration_register %}">{% trans "Register an Account" %}</a>
+    </p>
+    
+  </div>
+</div>
+{% endblock %}

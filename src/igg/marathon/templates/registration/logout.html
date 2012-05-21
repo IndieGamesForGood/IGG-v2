@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Logout" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "You have logged out." %}</h2>
+{% url auth_login as login_url %}{% url home as home_url %}
+<p>{% blocktrans %}You can go to the <a href="{{ home_url }}" title="Home">homepage</a> or <a href="{{ login_url }}" title="Login">login</a> again.{% endblocktrans %}</p>
+{% endblock %}

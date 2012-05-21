@@ -2,3 +2,7 @@ body {
   padding-top: 60px;
   padding-bottom: 40px;
 }
+.tl { text-align: left }
+.tr { text-align: right }
+.tc { text-align: center }
+.tb { text-align: block }

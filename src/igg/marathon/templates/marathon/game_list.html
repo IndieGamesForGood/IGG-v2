@@ -7,11 +7,30 @@
 
 {% block content %}
 <h2>{% trans "Games" %}</h2>
-<ul>
-  {% for game in games %}
-    <li><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></li>
-  {% endfor %}
-</ul>
+<div class="row">
+  <div class="span6 offset3">
+    <table class="table table-condensed table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Foo</th>
+          <th>Bar</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for game in games %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></td>
+          <td>foo</td>
+          <td>bar</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 <div class="modal hide fade in" id="gameDetailModal">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>

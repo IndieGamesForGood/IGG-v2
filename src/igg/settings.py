@@ -1,17 +1,19 @@
-# Django settings for igg project.
-
 import os
 import sys
 
+from django.core.urlresolvers import reverse_lazy
+
 # Insert apps into python path
-APPS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../apps'))
+APPS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                        '../../apps'))
 for path in os.listdir(APPS_DIR):
   path = os.path.join(APPS_DIR, path)
   if os.path.isdir(path):
     sys.path.insert(0, path)
 
 IGG_ENV = os.environ.get('IGG_ENV', 'prod')
-IGG_ROOT = os.environ.get('IGG_ROOT', os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+IGG_ROOT = os.environ.get('IGG_ROOT',
+            os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 if IGG_ENV == 'dev':
   DEBUG = True
@@ -25,28 +27,30 @@ ADMINS = (
     ('Matt Rasmussen', 'matt@iggmarathon.com'),
 )
 
+# A tuple in the same format as ADMINS that specifies who should get
+# broken-link notifications when SEND_BROKEN_LINK_EMAILS=True.
 MANAGERS = ADMINS
 
 if DEBUG:
   DATABASES = {
     'default': {
-      'ENGINE': 'django.db.backends.sqlite3',      # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-      'NAME': os.path.join(IGG_ROOT, 'db.sqlite'), # Or path to database file if using sqlite3.
-      'USER': '',                                  # Not used with sqlite3.
-      'PASSWORD': '',                              # Not used with sqlite3.
-      'HOST': '',                                  # Set to empty string for localhost. Not used with sqlite3.
-      'PORT': '',                                  # Set to empty string for default. Not used with sqlite3.
+      'ENGINE': 'django.db.backends.sqlite3',
+      'NAME': os.path.join(IGG_ROOT, 'db.sqlite'),
+      'USER': '',
+      'PASSWORD': '',
+      'HOST': '',
+      'PORT': '',
     }
   }
 else:
   DATABASES = {
     'default': {
-      'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-      'NAME': 'iggapp',                     # Or path to database file if using sqlite3.
-      'USER': 'igg_12dev',                  # Not used with sqlite3.
-      'PASSWORD': 'DZt*pR4a82nY',           # Not used with sqlite3.
-      'HOST': 'mysql.iggmarathon.com',      # Set to empty string for localhost. Not used with sqlite3.
-      'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': 'iggapp',
+      'USER': 'igg_12dev',
+      'PASSWORD': 'DZt*pR4a82nY',
+      'HOST': 'mysql.iggmarathon.com',
+      'PORT': '',
     }
   }
 
@@ -81,7 +85,8 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../public/media'))
+MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                             '../../public/media'))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -92,7 +97,8 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../public/static'))
+STATIC_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                              '../../public/static'))
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -162,12 +168,44 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    'django.contrib.admindocs',
+    # django-registration
+    'registration', # registration must be above admin for correct template priority.
     'igg.marathon',
+    # Admin
+    'django.contrib.admin',
+    # Admin documentation
+    'django.contrib.admindocs',
 )
+
+# django-registration: https://bitbucket.org/ubernostrum/django-registration
+# One-week activation window; you may, of course, use a different value.
+ACCOUNT_ACTIVATION_DAYS = 7
+
+# The URL where requests are redirected after login when the contrib.auth.login
+# view gets no next parameter.
+LOGIN_REDIRECT_URL = '/'
+
+# The URL where requests are redirected for login, especially when using the
+# login_required() decorator.
+LOGIN_URL = reverse_lazy('auth_login')
+LOGOUT_URL = reverse_lazy('auth_logout')
+
+# Email settings
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = ''
+EMAIL_SUBJECT_PREFIX = ''
+EMAIL_USE_TLS = False
+
+# The email address that error messages come from, such as those sent to
+# ADMINS and MANAGERS.
+SERVER_EMAIL = 'root@localhost'
+
+# Whether to send an email to the MANAGERS each time somebody visits a
+# Django-powered page that is 404ed with a non-empty referer (i.e., a broken
+# link). This is only used if CommonMiddleware is installed (see Middleware).
+SEND_BROKEN_LINK_EMAILS = True
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
