@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Donors" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Donors" %}</h2>
+<ul>
+    {% for donation in donations %}
+        <li>{{ donation.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

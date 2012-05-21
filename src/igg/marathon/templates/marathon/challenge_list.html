@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Challenges" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Challenges" %}</h2>
+<ul>
+    {% for challenge in challenges %}
+        <li>{{ challenge.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Raffles" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Raffles" %}</h2>
+<ul>
+    {% for raffle in raffles %}
+        <li>{{ raffle.name }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
