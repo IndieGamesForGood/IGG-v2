@@ -1,9 +1,17 @@
 # Django settings for igg project.
 
 import os
+import sys
+
+# Insert apps into python path
+APPS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../apps'))
+for path in os.listdir(APPS_DIR):
+  path = os.path.join(APPS_DIR, path)
+  if os.path.isdir(path):
+    sys.path.insert(0, path)
 
 IGG_ENV = os.environ.get('IGG_ENV', 'prod')
-IGG_ROOT = os.environ.get('IGG_ROOT', os.path.abspath(os.path.join(os.path.abspath(__file__), '..')))
+IGG_ROOT = os.environ.get('IGG_ROOT', os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 if IGG_ENV == 'dev':
   DEBUG = True
