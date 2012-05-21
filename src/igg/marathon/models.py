@@ -21,6 +21,9 @@ class Game(models.Model):
     return _(u'Game: %(name)s') %\
            {'name': self.name}
 
+  class Meta:
+    ordering = ['name']
+
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
   description = models.TextField()
