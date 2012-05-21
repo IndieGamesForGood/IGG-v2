@@ -1,14 +1,61 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 <head>
-	<meta charset=utf-8>
-	<title>Indie Games for Good Marathon{% block title %}{% endblock %}</title>
-	<meta name=robots content=index>
-	<link rel="shortcut icon" href=/favicon.ico>
+  <meta charset="utf-8">
+  <title>Indie Games for Good Marathon{% block title %}{% endblock %}</title>
+  <meta name="robots" content="index">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+  </style>
+  <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 <body>
-	{% block content %}{% endblock %}
-	<!--[if lt IE 9]><script src=//html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]-->
-	<script src=//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js></script>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">Project name</a>
+        <div class="nav-collapse">
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
+  <div class="container">
+  {% block content %}{% endblock %}
+  <hr>
+  <footer>
+    <p>&copy; Company 2012</p>
+  </footer>
+  </div> <!-- /container -->
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-transition.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-scrollspy.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-button.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-carousel.js"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
 </body>
 </html>
