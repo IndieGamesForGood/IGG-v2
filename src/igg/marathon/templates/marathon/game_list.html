@@ -1,12 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}{{ block.super }} - Games{% endblock %}
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Games" %} :: {{ block.super }}{% endblock %}
 
 {% block content %}
-<h2>Games</h2>
+<h2>{% trans "Games" %}</h2>
 <ul>
     {% for game in games %}
-        <li>{{ game.name }}</li>
+        <li><a href="{% url game_detail game.slug %}">{{ game.name }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

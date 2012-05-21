@@ -1,32 +1,33 @@
-<!DOCTYPE html>
+{% load i18n %}<!DOCTYPE html>
+{% spaceless %}
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Indie Games for Good Marathon{% block title %}{% endblock %}</title>
-  <meta name="robots" content="index">
+  <title>{% block title %}{% trans "Indie Games for Good Marathon" %}{% endblock %}</title>
+  <meta name="robots" content="index"><meta name="description" content="{% block meta_description %}{% endblock %}"><meta name="keywords" content="igg,indie games for good,{% block meta_keywords %}{% endblock %}">
   <link rel="shortcut icon" href="/favicon.ico">
-
   <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
-  <style type="text/css">
-    body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-    }
-  </style>
   <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="{{ STATIC_URL }}css/site.css" rel="stylesheet">
 </head>
 <body>
   {% include "navbar.html" %}
   <div class="container">
-  {% block content %}{% endblock %}
-  <hr>
-  <footer>
-    <p>&copy; Indie Games for Good {% now "Y" %}</p>
-  </footer>
+    {% block content %}{% endblock %}
+    <hr>
+    <footer>
+      <p>&copy; {% trans "Indie Games for Good" %} {% now "Y" %}</p>
+    </footer>
   </div> <!-- /container -->
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js"></script>
+  {% comment %}
+  We probably don't need all of these Twitter Bootstrap plugins, but I'm just adding them all for now.
+  If we do need one or more of them, we should obviously consolidate them into one JS file.
+
+  http://twitter.github.com/bootstrap/javascript.html
+  {% endcomment %}
   <script src="{{ STATIC_URL }}js/bootstrap-transition.js"></script>
   <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
   <script src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
@@ -39,5 +40,8 @@
   <script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
   <script src="{{ STATIC_URL }}js/bootstrap-carousel.js"></script>
   <script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
+  <script src="{{ STATIC_URL }}js/site.js"></script>
+  <script>var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);_gaq.push(['_trackPageview']);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga, s);})();</script>
 </body>
 </html>
+{% endspaceless %}
