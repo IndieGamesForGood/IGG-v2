@@ -15,6 +15,12 @@ class Game(models.Model):
   approved = models.BooleanField(default=False)
   slug = models.SlugField()
 
+  def __unicode__(self):
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+    return _(u'Game: %(name)s') %\
+           {'name': self.name}
+
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
   description = models.TextField()
