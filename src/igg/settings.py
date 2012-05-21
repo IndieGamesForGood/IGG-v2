@@ -11,7 +11,7 @@ for path in os.listdir(APPS_DIR):
     sys.path.insert(0, path)
 
 IGG_ENV = os.environ.get('IGG_ENV', 'prod')
-IGG_ROOT = os.environ.get('IGG_ROOT', os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+IGG_ROOT = os.environ.get('IGG_ROOT', os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 if IGG_ENV == 'dev':
   DEBUG = True
