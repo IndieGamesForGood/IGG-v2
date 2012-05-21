@@ -13,6 +13,7 @@ class Game(models.Model):
   site = models.CharField(max_length=200)
   description = models.TextField()
   approved = models.BooleanField(default=False)
+  slug = models.SlugField()
 
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
@@ -21,7 +22,7 @@ class Challenge(models.Model):
   private = models.BooleanField(default=False)
   bounty = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
   user = models.ForeignKey(User)
-
+  slug = models.SlugField()
 
 class Raffle(models.Model):
   name = models.CharField(max_length=200)
@@ -30,6 +31,7 @@ class Raffle(models.Model):
   public = models.BooleanField(default=False)
   start = models.DateTimeField()
   end = models.DateTimeField()
+  slug = models.SlugField()
 
 class Donation(models.Model):
   user = models.ForeignKey(User)
