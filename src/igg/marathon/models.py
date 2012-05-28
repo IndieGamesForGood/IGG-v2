@@ -72,6 +72,10 @@ class RaffleEntry(models.Model):
   tickets = models.IntegerField()
   timestamp = models.DateTimeField(auto_now_add=True)
 
+class Schedule(models.Model):
+  start = models.DateTimeField();
+  end = models.DateTimeField();
+  game = models.ForeignKey(Game);
 
 class UserProfile(models.Model):
   user = models.OneToOneField(User)

@@ -28,9 +28,8 @@ class RaffleDetailView(DetailView):
   context_object_name = 'raffle'
 
 class ScheduleListView(ListView):
-  pass
-  # model = Schedule
-  # context_object_name = 'schedules'
+  model = Schedule
+  context_object_name = 'schedules'
 
 class DonorListView(ListView):
   model = Donation

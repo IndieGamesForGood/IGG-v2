@@ -29,7 +29,7 @@ urlpatterns = patterns('',
   url(r'^raffles/$', RaffleListView.as_view(), name='raffle_list'),
   url(r'^raffles/(?P<slug>[a-zA-Z0-9_.-]+)/$', RaffleDetailView.as_view(), name='raffle_detail'),
 
-  url(r'^schedule/$', ScheduleListView.as_view(), name='schedule_list'),
+  url(r'^schedule/$', ScheduleListView.as_view(template_name='marathon/schedule.html'), name='schedule_list'),
   url(r'^donors/$', DonorListView.as_view(), name='donor_list'),
 )
 

@@ -1,7 +1,15 @@
+function displayGameModal(e,title,url)
+{
+    $("#gameDetailModalHeading").text(title);
+    $("#gameDetailModalBody").load(url);
+    $('#gameDetailModal').modal('show');
+    e.preventDefault();
+    e.stopPropagation();
+}
+function pad2(x)
+{
+    return (x < 10 ? '0' : '') + x;
+}
 $("a[data-toggle=modal]").click(function (e) {
-  $("#gameDetailModalHeading").text($(this).attr('title'));
-  $("#gameDetailModalBody").load($(this).attr('href'));
-  $('#gameDetailModal').modal('show');
-  e.preventDefault();
-  e.stopPropagation();
+    displayGameModal(e,$(this).attr('title'),$(this).attr('href'));
 })
