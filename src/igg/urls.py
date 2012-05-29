@@ -5,6 +5,9 @@ from django.views.generic import TemplateView
 
 from igg.marathon.views import *
 
+from registration.views import activate
+from registration.views import register
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -15,7 +18,28 @@ urlpatterns = patterns('',
   url(r'^admin/', include(admin.site.urls)),
   
   # django-registration
-  url(r'', include('registration.backends.default.urls')),
+  url(r'^activate/complete/$',
+    TemplateView.as_view(template_name='registration/activation_complete.html'),
+    name='registration_activation_complete'),
+  # Activation keys get matched by \w+ instead of the more specific
+  # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
+  # that way it can return a sensible "invalid key" message instead of a
+  # confusing 404.
+  url(r'^activate/(?P<activation_key>\w+)/$',
+    activate,
+    {'backend': 'igg.marathon.backends.IggRegistrationBackend'},
+    name='registration_activate'),
+  url(r'^register/$',
+    register,
+    {'backend': 'igg.marathon.backends.IggRegistrationBackend'},
+    name='registration_register'),
+  url(r'^register/complete/$',
+    TemplateView.as_view(template_name='registration/registration_complete.html'),
+    name='registration_complete'),
+  url(r'^register/closed/$',
+    TemplateView.as_view(template_name='registration/registration_closed.html'),
+    name='registration_disallowed'),
+  url(r'', include('registration.auth_urls')),
 
   url(r'^$', TemplateView.as_view(template_name='marathon/index.html'), name='home'),
   url(r'^donate-now/$', TemplateView.as_view(template_name='marathon/donate.html'), name='donate_now'),

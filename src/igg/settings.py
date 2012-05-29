@@ -197,16 +197,16 @@ LOGIN_URL = reverse_lazy('auth_login')
 LOGOUT_URL = reverse_lazy('auth_logout')
 
 # Email settings
-EMAIL_HOST = ''
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = ''
-EMAIL_SUBJECT_PREFIX = ''
-EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'igg.development@gmail.com'
+EMAIL_HOST_PASSWORD = 'jCFdpqKn3UnB4bzZujsqb4jTUMYHRa'
+EMAIL_PORT = '587'
+EMAIL_SUBJECT_PREFIX = '[IGG] '
+EMAIL_USE_TLS = True
 
 # The email address that error messages come from, such as those sent to
 # ADMINS and MANAGERS.
-SERVER_EMAIL = 'root@localhost'
+SERVER_EMAIL = 'igg.development@gmail.com'
 
 # Whether to send an email to the MANAGERS each time somebody visits a
 # Django-powered page that is 404ed with a non-empty referer (i.e., a broken
