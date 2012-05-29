@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
 import locale
-
-locale.setlocale(locale.LC_ALL, '')
+locale.setlocale( locale.LC_ALL, 'en_CA.UTF-8' )
 
 # https://docs.djangoproject.com/en/dev/ref/models/fields/
 # https://docs.djangoproject.com/en/dev/topics/i18n/translation/
@@ -19,6 +18,7 @@ class Game(models.Model):
   description = models.TextField()
   visible = models.BooleanField(default=False)
   slug = models.SlugField()
+  points = models.IntegerField(default=0)
 
   def __unicode__(self):
     return _(u'Game: %(name)s%(status)s') %\
@@ -75,21 +75,21 @@ class Donation(models.Model):
 
 class PointTransaction(models.Model):
   user = models.ForeignKey(User, related_name='transactions')
-  game = models.ForeignKey(Game)
-  amount = models.IntegerField()
-  spent = models.IntegerField()
+  game = models.ForeignKey(Game, related_name='transactions')
+  points = models.IntegerField()
+  spent = models.IntegerField(default=0)
   timestamp = models.DateTimeField(auto_now_add=True)
 
   def __unicode__(self):
     return _(u'PointTransaction:  %(name)s %(type)s %(count)sP%(game)s') %\
-         {'type': 'GEN' if self.game.id==1 else ( 'PUT' if self.amount > 0 else 'GET'),
-          'count': self.amount,
+         {'type': 'GEN' if self.game.id==1 else ( 'PUT' if self.points > 0 else 'GET'),
+          'count': self.points,
           'name': self.user.__unicode__(),
           'game': '' if self.game.id==1 else ' | ' + self.game.name}
 
 class RaffleEntry(models.Model):
   user = models.ForeignKey(User, related_name='entries')
-  raffle = models.ForeignKey(Raffle)
+  raffle = models.ForeignKey(Raffle, related_name='entries')
   tickets = models.IntegerField()
   timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -124,29 +124,34 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 def donationSaving(sender, instance, **kwargs):
   try:
     if instance.approved and not Donation.objects.get(pk=instance.pk).approved:
-      instance.user.profile.points += 500 #TODO: Remove these manual manipulations and put into Transactions
-      instance.user.profile.tickets += 5  #TODO: Remove (see above)
-      npt = PointTransaction(user=instance.user, game=Game.objects.get(id='1'), amount=-500, spent=0)
-      npt.save()
-      nre = RaffleEntry(user=instance.user, raffle=Raffle.objects.get(id='1'), tickets=-5)
-      nre.save()
+      cpt = PointTransaction(user=instance.user, game=Game.objects.get(id='1'), points=-500, spent=0)
+      cpt.save()
+      cre = RaffleEntry(user=instance.user, raffle=Raffle.objects.get(id='1'), tickets=-5)
+      cre.save()
       if instance.game is not None:
-        instance.user.profile.points -= 500  #TODO: Remove (see above)
-        pt = PointTransaction(user=instance.user, game=instance.game, amount=500, spent=0)
-        pt.save()
+        npt = PointTransaction(user=instance.user, game=instance.game, points=500, spent=0)
+        npt.save()
       if instance.raffle is not None:
-        instance.user.profile.tickets += 5    #TODO: Remove (see above)
-        re = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=5)
-        re.save()
+        nre = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=5)
+        nre.save()
+      if instance.challenge is not None:
+        instance.challenge.total = \
+                sum(foo.points for foo in instance.challenge.donations.filter(approved=True)) + instance.points
+        instance.challenge.save()
       instance.user.profile.save()
   except Donation.DoesNotExist:
     pass
 
-@receiver(models.signals.post_save,sender=Donation)
-def donationSaved(sender, instance, **kwargs):
-  try:
-    if instance.challenge is not None:
-      instance.challenge.total = sum(foo.amount for foo in instance.challenge.donations.filter(approved=True))
-      instance.challenge.save()
-  except Challenge.DoesNotExist:
-    pass
+@receiver(models.signals.post_save,sender=RaffleEntry)
+def raffleEntrySaved(sender, instance, **kwargs):
+  instance.user.tickets = -sum(foo.tickets for foo in instance.user.entries)
+  instance.user.save()
+  instance.raffle.tickets = sum(foo.tickets for foo in instance.raffle.entries)
+  instance.raffle.save()
+
+@receiver(models.signals.post_save,sender=PointTransaction)
+def pointTransactionSaved(sender, instance, **kwargs):
+  instance.user.profile.points = -sum(foo.points for foo in instance.user.transactions)
+  instance.user.save()
+  instance.game.points = sum(foo.points for foo in instance.game.transactions)
+  instance.game.save()
