@@ -3,6 +3,10 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
+
 # https://docs.djangoproject.com/en/dev/ref/models/fields/
 # https://docs.djangoproject.com/en/dev/topics/i18n/translation/
 
@@ -17,8 +21,6 @@ class Game(models.Model):
   slug = models.SlugField()
 
   def __unicode__(self):
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
     return _(u'Game: %(name)s%(status)s') %\
            {'name': self.name,
             'status': (' (NOT VISIBLE)' if not self.visible else '')}
@@ -37,8 +39,6 @@ class Challenge(models.Model):
   slug = models.SlugField()
 
   def __unicode__(self):
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
     return _(u'Challenge: %(name)s (%(status)s%(privacy)s)') %\
          {'name': self.name,
           'status': ('NOT ' if not self.accepted else '') + 'Accepted',
@@ -54,8 +54,6 @@ class Raffle(models.Model):
   slug = models.SlugField()
 
   def __unicode__(self):
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
     return _(u'Raffle: %(name)s%(status)s') %\
          {'name': self.name,
           'status': (' (HIDDEN)' if not self.visible else '')}
@@ -71,8 +69,6 @@ class Donation(models.Model):
   approved = models.BooleanField(default=False)
 
   def __unicode__(self):
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
     return _(u'%(amount)s donation by %(user)s') % \
       {'amount': locale.currency(self.amount, grouping=True),
        'user': self.user.__unicode__()}
@@ -85,8 +81,6 @@ class PointTransaction(models.Model):
   timestamp = models.DateTimeField(auto_now_add=True)
 
   def __unicode__(self):
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
     return _(u'PointTransaction:  %(name)s %(type)s %(count)sT%(game)s') %\
          {'type': 'GEN' if self.game.id==1 else ( 'PUT' if self.amount > 0 else 'GET'),
           'count': self.amount,
@@ -123,26 +117,27 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 @receiver(models.signals.pre_save,sender=Donation)
 def donationSaving(sender, instance, **kwargs):
   try:
-    if not Donation.objects.get(pk=instance.pk).approved and instance.approved:
+    if instance.approved and not Donation.objects.get(pk=instance.pk).approved:
       instance.user.profile.points += 500 #TODO: Remove these manual manipulations and put into Transactions
       instance.user.profile.tickets += 5  #TODO: Remove (see above)
       npt = PointTransaction(user=instance.user, game=Game.objects.get(id='1'), amount=-500, spent=0)
       npt.save()
       nre = RaffleEntry(user=instance.user, raffle=Raffle.objects.get(id='1'), tickets=-5)
       nre.save()
-      if (instance.game):
+      if instance.game:
         instance.user.profile.points -= 500  #TODO: Remove (see above)
         pt = PointTransaction(user=instance.user, game=instance.game, amount=500, spent=0)
         pt.save()
-      if (instance.raffle):
+      if instance.raffle:
         instance.user.profile.tickets += 5    #TODO: Remove (see above)
         re = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=5)
         re.save()
+      instance.user.profile.save()
   except Donation.DoesNotExist:
     pass
 
 @receiver(models.signals.post_save,sender=Donation)
 def donationSaved(sender, instance, **kwargs):
-  if (instance.challenge):
+  if instance.challenge:
     instance.challenge.total = sum(foo.amount for foo in instance.challenge.donations.filter(approved=True))
     instance.challenge.save()
