@@ -97,7 +97,7 @@ class RaffleEntry(models.Model):
     return _(u'RaffleEntry:  %(name)s %(count)s into %(raffle)s') %\
            {'count': self.tickets,
             'name': self.user.__unicode__(),
-            'raffle': self.raffle.__unicode__()}
+            'raffle': self.raffle.name}
 
 class Schedule(models.Model):
   start = models.DateTimeField()
