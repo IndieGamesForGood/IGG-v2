@@ -12,7 +12,7 @@ class Game(models.Model):
   developer = models.CharField(max_length=200)
   site = models.CharField(max_length=200)
   description = models.TextField()
-  approved = models.BooleanField(default=False)
+  visible = models.BooleanField(default=False)
   slug = models.SlugField()
 
   def __unicode__(self):
@@ -37,7 +37,7 @@ class Raffle(models.Model):
   name = models.CharField(max_length=200)
   description = models.TextField(max_length=500)
   quantity = models.IntegerField(default=1)
-  public = models.BooleanField(default=False)
+  visible = models.BooleanField(default=False)
   start = models.DateTimeField()
   end = models.DateTimeField()
   slug = models.SlugField()
@@ -76,6 +76,7 @@ class Schedule(models.Model):
   start = models.DateTimeField();
   end = models.DateTimeField();
   game = models.ForeignKey(Game);
+  visible = models.BooleanField(default=False)
 
 class UserProfile(models.Model):
   user = models.OneToOneField(User)

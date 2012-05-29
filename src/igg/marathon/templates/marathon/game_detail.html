@@ -12,4 +12,5 @@
 <p>Developer: {{ game.developer }}</p>
 <p>Site: <a href="{{ game.site }}" title="{{ game.name }}">{{ game.site }}</a></p>
 <p>Description: {{ game.description }}</p>
+{% if game.approved %}{% else %}<p>This game is not currently approved. Approve Now | Edit Info | Delete{% endif %}
 {% endblock %}

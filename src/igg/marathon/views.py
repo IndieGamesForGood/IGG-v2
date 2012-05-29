@@ -4,8 +4,12 @@ from igg.marathon.models import *
 # Generic/Class-based Views: https://docs.djangoproject.com/en/dev/topics/class-based-views/
 
 class GameListView(ListView):
-  model = Game
   context_object_name = 'games'
+  def get_queryset(self):
+    if self.request.user.is_staff:
+      return Game.objects.all()
+    else:
+      return Game.objects.filter(visible=True)
 
 class GameDetailView(DetailView):
   model = Game
@@ -28,8 +32,14 @@ class RaffleDetailView(DetailView):
   context_object_name = 'raffle'
 
 class ScheduleListView(ListView):
-  model = Schedule
+
   context_object_name = 'schedules'
+  def get_queryset(self):
+    if self.request.user.is_staff:
+      return Schedule.objects.all()
+    else:
+      return Schedule.objects.filter(visible=True)
+
 
 class DonorListView(ListView):
   model = Donation
