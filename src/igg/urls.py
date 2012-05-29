@@ -2,7 +2,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-from django.views.generic.simple import direct_to_template
 
 from igg.marathon.views import *
 
@@ -35,8 +34,7 @@ urlpatterns = patterns('',
     {'backend': 'igg.marathon.backends.IggRegistrationBackend'},
     name='registration_register'),
   url(r'^register/complete/$',
-    direct_to_template,
-    {'template': 'registration/registration_complete.html'},
+    TemplateView.as_view(template_name='registration/registration_complete.html'),
     name='registration_complete'),
   url(r'^register/closed/$',
     TemplateView.as_view(template_name='registration/registration_closed.html'),
