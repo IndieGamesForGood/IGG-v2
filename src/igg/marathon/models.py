@@ -81,7 +81,7 @@ class PointTransaction(models.Model):
   timestamp = models.DateTimeField(auto_now_add=True)
 
   def __unicode__(self):
-    return _(u'PointTransaction:  %(name)s %(type)s %(count)sT%(game)s') %\
+    return _(u'PointTransaction:  %(name)s %(type)s %(count)sP%(game)s') %\
          {'type': 'GEN' if self.game.id==1 else ( 'PUT' if self.amount > 0 else 'GET'),
           'count': self.amount,
           'name': self.user.__unicode__(),
@@ -92,6 +92,12 @@ class RaffleEntry(models.Model):
   raffle = models.ForeignKey(Raffle)
   tickets = models.IntegerField()
   timestamp = models.DateTimeField(auto_now_add=True)
+
+  def __unicode__(self):
+    return _(u'RaffleEntry:  %(name)s %(count)s into %(raffle)s') %\
+           {'count': self.tickets,
+            'name': self.user.__unicode__(),
+            'raffle': self.raffle.__unicode__()}
 
 class Schedule(models.Model):
   start = models.DateTimeField()
@@ -124,11 +130,11 @@ def donationSaving(sender, instance, **kwargs):
       npt.save()
       nre = RaffleEntry(user=instance.user, raffle=Raffle.objects.get(id='1'), tickets=-5)
       nre.save()
-      if instance.game:
+      if instance.game is not None:
         instance.user.profile.points -= 500  #TODO: Remove (see above)
         pt = PointTransaction(user=instance.user, game=instance.game, amount=500, spent=0)
         pt.save()
-      if instance.raffle:
+      if instance.raffle is not None:
         instance.user.profile.tickets += 5    #TODO: Remove (see above)
         re = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=5)
         re.save()
@@ -138,6 +144,9 @@ def donationSaving(sender, instance, **kwargs):
 
 @receiver(models.signals.post_save,sender=Donation)
 def donationSaved(sender, instance, **kwargs):
-  if instance.challenge:
-    instance.challenge.total = sum(foo.amount for foo in instance.challenge.donations.filter(approved=True))
-    instance.challenge.save()
+  try:
+    if instance.challenge is not None:
+      instance.challenge.total = sum(foo.amount for foo in instance.challenge.donations.filter(approved=True))
+      instance.challenge.save()
+  except Challenge.DoesNotExist:
+    pass
