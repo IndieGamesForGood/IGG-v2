@@ -54,6 +54,12 @@ else:
     }
   }
 
+# https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
+AUTHENTICATION_BACKENDS = (
+  'igg.marathon.backends.LoginUsingEmailAsUsernameBackend',
+  'django.contrib.auth.backends.ModelBackend',
+)
+
 # https://docs.djangoproject.com/en/dev/topics/auth/#auth-profiles
 AUTH_PROFILE_MODULE = 'marathon.UserProfile'
 
