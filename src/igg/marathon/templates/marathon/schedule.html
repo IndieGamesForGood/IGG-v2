@@ -20,7 +20,7 @@
                 center: 'title',
                 right: 'today prev,next'
             },
-            editable: true,
+            editable: {% if request.user.is_staff %}true{% else %}false{% endif %},
             allDaySlot: false,
             slotMinutes: 15,
             defaultView: 'agendaDay',
@@ -36,12 +36,17 @@
                     start: new Date({{event.start.year}}, {{event.start.month|add:"-1"}}, {{event.start.day}}, {{event.start.hour}}, {{event.start.minute}}),
                     end: new Date({{event.end.year}}, {{event.end.month|add:"-1"}}, {{event.end.day}}, {{event.end.hour}}, {{event.end.minute}}),
                     allDay: false{% if event.game != None%},
-                    url: '{% url game_detail event.game.slug %}'{% endif %}
+                    isGame: true,
+                    url: '{% url game_detail event.game.slug %}'{% else %},
+                    isGame: false{% endif %}
                 }{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             ],
             eventClick: function(calEvent, jsEvent, view) {
-                displayGameModal(jsEvent,calEvent.title + " (Scheduled for " + calEvent.start.getHours() + ":" + pad2(calEvent.start.getMinutes()) + " to " + calEvent.end.getHours() + ":" + pad2(calEvent.end.getMinutes()) + ")",calEvent.url);
+                if(calEvent.isGame)
+                {
+                    displayGameModal(jsEvent,calEvent.title + " (Scheduled for " + calEvent.start.getHours() + ":" + pad2(calEvent.start.getMinutes()) + " to " + calEvent.end.getHours() + ":" + pad2(calEvent.end.getMinutes()) + ")",calEvent.url);
+                }
                 return false;
             }
         });

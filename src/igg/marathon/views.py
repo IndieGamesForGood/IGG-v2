@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView
 from igg.marathon.models import *
+import json
 
 # Generic/Class-based Views: https://docs.djangoproject.com/en/dev/topics/class-based-views/
 

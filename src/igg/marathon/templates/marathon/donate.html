@@ -7,4 +7,54 @@
 
 {% block content %}
 <h2>{% trans "Donate Now" %}</h2>
+    <form>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                    Required Information
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    <h4>Amount: $<input type="number" id="amount" /></h4>
+                    <h4>E-Mail: <input type="email" id="email" /></h4>
+                    <i>We promise to not do bad things with your e-mail address; we need this mainly so that we can contact you in case something goes awry with your donation. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you.</i>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
+                    Donation Log Information
+                </a>
+            </div>
+            <div id="collapseTwo" class="accordion-body collapse in">
+                <p>Preview:</p><p id="donationpreview"></p>
+                <div class="accordion-inner">
+                    <h4>Name on donation: <input type="text" id="name" /></h4>
+                    <i>We promise to not do bad things with your e-mail address; we need this mainly so that we can contact you in case something goes awry with your donation. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you.</i>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        function updatePreview() {
+            var name=document.getElementById('name')
+                    , amount=document.getElementById('amount')
+                    , preview=document.getElementById('donationpreview')
+                    , timeout=null;
+            var newText = "$" + amount.value + " donated ";
+            if(name.value == '')
+            {
+                newText += 'anonymously.';
+            }
+            else
+            {
+                newText += 'by ' + name.value + ".";
+            }
+            preview.innerHTML = newText;
+        }
+        $("form").on("click keyup keydown", "input", updatePreview);
+
+    </script>
 {% endblock %}
