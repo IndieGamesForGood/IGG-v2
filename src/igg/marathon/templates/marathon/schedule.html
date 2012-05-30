@@ -35,9 +35,9 @@
                     title: '{{ forloop.counter }}: {{ event.game.name }}',
                     start: new Date({{event.start.year}}, {{event.start.month|add:"-1"}}, {{event.start.day}}, {{event.start.hour}}, {{event.start.minute}}),
                     end: new Date({{event.end.year}}, {{event.end.month|add:"-1"}}, {{event.end.day}}, {{event.end.hour}}, {{event.end.minute}}),
-                    allDay: false,
-                    url: '{% url game_detail event.game.slug %}'
-                }{% if not forloop.first %}, {% endif %}
+                    allDay: false{% if event.game != None%},
+                    url: '{% url game_detail event.game.slug %}'{% endif %}
+                }{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             ],
             eventClick: function(calEvent, jsEvent, view) {

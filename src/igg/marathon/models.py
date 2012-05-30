@@ -2,14 +2,14 @@ from django.db import models
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
+from datetime import datetime, timedelta
+from math import log, floor
 
 import locale
 locale.setlocale( locale.LC_ALL, 'en_CA.UTF-8' )
 
 # https://docs.djangoproject.com/en/dev/ref/models/fields/
 # https://docs.djangoproject.com/en/dev/topics/i18n/translation/
-
-
 
 class Game(models.Model):
   name = models.CharField(max_length=200)
@@ -67,6 +67,7 @@ class Donation(models.Model):
   challenge = models.ForeignKey(Challenge, null=True, blank=True, related_name='donations')
   raffle = models.ForeignKey(Raffle, null=True, blank=True)
   approved = models.BooleanField(default=False)
+  points = models.IntegerField(default=0)
 
   def __unicode__(self):
     return _(u'%(amount)s donation by %(user)s') % \
@@ -119,39 +120,101 @@ class UserProfile(models.Model):
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 
+class MarathonInfo(models.Model):
+  total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
+
+  start = models.DateTimeField()
+  end = models.DateTimeField()
+
+  event = models.ForeignKey(Schedule)
+
+  point_source = models.ForeignKey(Game)
+  ticket_source = models.ForeignKey(Raffle)
+
+  dollarsPerTicket = models.IntegerField(default=5)
+  pointsPerMinute = models.IntegerField(default=100)
+
+  initHourCost = models.DecimalField(max_digits=14, decimal_places=2, default=4.00)
+  rate = models.DecimalField(max_digits=14, decimal_places=2, default=.06)
+
+
+  def dollarsToPoints(self,dollars):
+    return int((self.dollarsToTime(dollars).total_seconds() / 60.0) / self.pointsPerMinute)
+
+  def dollarsToTickets(self,dollars):
+    return int(dollars/self.dollarsPerTicket)
+
+  def pointsToMinutes(self,points):
+    return points * self.pointsPerMinute
+
+  def dollarsToTime(self, dollars, oldTotal=None):
+    if oldTotal is None:
+      oldTotal = self.total
+    f_dollars = float(dollars)
+    f_rate = float(self.rate)
+    f_ihcost = float(self.initHourCost)
+    f_oldTotal = float(oldTotal)
+    return timedelta(hours=((log(((f_oldTotal+f_dollars)/f_ihcost * f_rate)+1) / log(1.0 + f_rate)) -
+                            (log((f_oldTotal/f_ihcost * f_rate)+1)/log(1.0 + f_rate))))
+
+  def save(self, *args, **kwargs):
+    self.total = sum(foo.amount for foo in Donation.objects.filter(approved=True))
+    self.end = self.start + (self.dollarsToTime(self.total,0.00).__floordiv__(3600) * 3600) #Marathon changes in hour increments
+    self.event.end = self.end
+    self.event.save()
+    super(MarathonInfo, self).save(*args, **kwargs)
+
+
 # Signal handlers: https://docs.djangoproject.com/en/dev/topics/signals/#connecting-receiver-functions
 @receiver(models.signals.pre_save,sender=Donation)
 def donationSaving(sender, instance, **kwargs):
   try:
     if instance.approved and not Donation.objects.get(pk=instance.pk).approved:
-      cpt = PointTransaction(user=instance.user, game=Game.objects.get(id='1'), points=-500, spent=0)
+      # Newly approved donation, make transactions appropriately
+      thisMarathon = MarathonInfo.objects.get(id='1')
+      points = thisMarathon.dollarsToPoints(instance.amount)
+      tickets = thisMarathon.dollarsToTickets(instance.amount)
+
+      cpt = PointTransaction(user=instance.user, game=thisMarathon.point_source, points=-points, spent=0)
       cpt.save()
-      cre = RaffleEntry(user=instance.user, raffle=Raffle.objects.get(id='1'), tickets=-5)
+      cre = RaffleEntry(user=instance.user, raffle=thisMarathon.ticket_source, tickets=-tickets)
       cre.save()
+
       if instance.game is not None:
-        npt = PointTransaction(user=instance.user, game=instance.game, points=500, spent=0)
+        npt = PointTransaction(user=instance.user, game=instance.game, points=points, spent=0)
         npt.save()
+
       if instance.raffle is not None:
-        nre = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=5)
+        nre = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=tickets)
         nre.save()
-      if instance.challenge is not None:
-        instance.challenge.total = \
-                sum(foo.points for foo in instance.challenge.donations.filter(approved=True)) + instance.points
-        instance.challenge.save()
+
       instance.user.profile.save()
+
   except Donation.DoesNotExist:
     pass
 
+@receiver(models.signals.post_save,sender=Donation)
+def donationSaved(sender, instance, **kwargs):
+  #Update affected models upon saved donation.
+  if instance.challenge is not None:
+    instance.challenge.save()
+  MarathonInfo.objects.get(id='1').save()
+
+
+@receiver(models.signals.pre_save,sender=Challenge)
+def challengeSaving(sender, instance, **kwargs):
+  instance.total = sum(foo.amount for foo in instance.donations.filter(approved=True))
+
 @receiver(models.signals.post_save,sender=RaffleEntry)
 def raffleEntrySaved(sender, instance, **kwargs):
-  instance.user.tickets = -sum(foo.tickets for foo in instance.user.entries)
+  instance.user.tickets = -sum(foo.tickets for foo in instance.user.entries.all())
   instance.user.save()
-  instance.raffle.tickets = sum(foo.tickets for foo in instance.raffle.entries)
+  instance.raffle.tickets = sum(foo.tickets for foo in instance.raffle.entries.all())
   instance.raffle.save()
 
 @receiver(models.signals.post_save,sender=PointTransaction)
 def pointTransactionSaved(sender, instance, **kwargs):
-  instance.user.profile.points = -sum(foo.points for foo in instance.user.transactions)
+  instance.user.profile.points = -sum(foo.points for foo in instance.user.transactions.all())
   instance.user.save()
-  instance.game.points = sum(foo.points for foo in instance.game.transactions)
+  instance.game.points = sum(foo.points for foo in instance.game.transactions.all())
   instance.game.save()
