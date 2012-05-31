@@ -81,3 +81,32 @@ jQuery(document).ajaxSend(function(event, xhr, settings) {
     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
   }
 });
+
+/* local storage fun stuff! */
+function lsSave(key, value) {
+  if (typeof(localStorage) == 'undefined' ) {
+    return false;
+  } else {
+    try {
+      localStorage.setItem(key, value)
+    } catch (e) {}
+  }
+}
+function lsGet(key) {
+  if (typeof(localStorage) == 'undefined' ) {
+    return false;
+  } else {
+    try {
+      localStorage.getItem(key)
+    } catch (e) {}
+  }
+}
+function lsDelete(key) {
+  if (typeof(localStorage) == 'undefined' ) {
+    return false;
+  } else {
+    try {
+      localStorage.removeItem(key)
+    } catch (e) {}
+  }
+}
