@@ -84,10 +84,10 @@ class PointTransaction(models.Model):
 
   def __unicode__(self):
     return _(u'PointTransaction:  %(name)s %(type)s %(count)sP%(game)s') %\
-         {'type': 'GEN' if self.game.id==1 else ( 'PUT' if self.points > 0 else 'GET'),
+         {'type': 'GEN' if self.game.pk==settings.IGG_PARAM_POINT_SRC_PK else ( 'PUT' if self.points > 0 else 'GET'),
           'count': self.points,
           'name': self.user.__unicode__(),
-          'game': '' if self.game.id==1 else ' | ' + self.game.name}
+          'game': '' if self.game.pk==settings.IGG_PARAM_POINT_SRC_PK else ' | ' + self.game.name}
 
 class RaffleEntry(models.Model):
   user = models.ForeignKey(User, related_name='entries')
@@ -159,7 +159,7 @@ def donationSaving(sender, instance, **kwargs):
   try:
     if instance.approved and not Donation.objects.get(pk=instance.pk).approved:
       # Newly approved donation, make transactions appropriately
-      this_marathon = MarathonInfo.objects.get(id='1')
+      this_marathon = MarathonInfo.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK)
       instance.points = this_marathon.dollarsToPoints(instance.amount)
       tickets = this_marathon.dollarsToTickets(instance.amount)
 
@@ -186,7 +186,7 @@ def donationSaved(sender, instance, **kwargs):
   #Update affected models upon saved donation.
   if instance.challenge is not None:
     instance.challenge.save()
-  MarathonInfo.objects.get(id='1').save()
+  MarathonInfo.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK).save()
 
 
 @receiver(models.signals.pre_save,sender=Challenge)
