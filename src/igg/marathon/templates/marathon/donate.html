@@ -136,18 +136,21 @@
 {% block before_body_end %}
 <script>
   $("#game").typeahead({
+    items: 20,
     ajax: {
       url: '{% url ajax_lookahead 'game' %}',
       triggerLength: 1
     }
   })
   $("#raffle").typeahead({
+    items: 20,
     ajax: {
       url: '{% url ajax_lookahead 'raffle' %}',
       triggerLength: 1
     }
   })
   $("#challenge").typeahead({
+    items: 20,
     ajax: {
       url: '{% url ajax_lookahead 'challenge' %}',
       triggerLength: 1
