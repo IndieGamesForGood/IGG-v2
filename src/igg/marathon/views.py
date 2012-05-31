@@ -1,7 +1,9 @@
-from django.views.generic import ListView, DetailView, FormView
+from django.http import Http404, HttpResponse
+from django.views.generic import ListView, DetailView, FormView, View
+
+from igg.marathon.mixins import JSONResponseMixin
 from igg.marathon.models import *
 from igg.marathon.forms import DonateForm
-import json
 
 # Generic/Class-based Views: https://docs.djangoproject.com/en/dev/topics/class-based-views/
 
@@ -65,6 +67,27 @@ class DonateFormView(FormView):
   def get_success_url(self):
     return "http://www.google.com"
 
+class AjaxLookaheadView(JSONResponseMixin, ListView):
+  # https://docs.djangoproject.com/en/dev/topics/class-based-views/#dynamic-filtering
+  def get_queryset(self):
+    model = self.kwargs.get('model')
+    if model == 'game':
+      return Game.objects.filter(visible=True)
+    elif model == 'raffle':
+      return Raffle.objects.filter(visible=True)
+    elif model == 'challenge':
+      return Challenge.objects.filter(accepted=True)
+    raise Http404
+
+  def get(self, request, *args, **kwargs):
+    return self.http_method_not_allowed(request, *args, **kwargs)
+    # return self.post(request, post=request.GET, *args, **kwargs)
+
+  def post(self, request, *args, **kwargs):
+    query = request.POST.get('query')
+    if query is None:
+      raise Http404
+    return self.render_to_response([a.name for a in self.get_queryset().filter(name__contains=query.strip())])
 
 
 

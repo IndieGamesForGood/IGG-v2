@@ -1,3 +1,6 @@
 [submodule "apps/django-paypal"]
 	path = apps/django-paypal
 	url = git://github.com/dcramer/django-paypal.git
+[submodule "apps/ajax-typeahead"]
+	path = apps/ajax-typeahead
+	url = git://github.com/pwarelis/Ajax-Typeahead.git

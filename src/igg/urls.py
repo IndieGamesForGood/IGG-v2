@@ -1,6 +1,7 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls import patterns, include, url
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import TemplateView
 
 from igg.marathon.views import *
@@ -16,7 +17,9 @@ urlpatterns = patterns('',
   # Admin
   url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
   url(r'^admin/', include(admin.site.urls)),
-  
+
+  url(r'^ajax/(?P<model>\w+)/', ensure_csrf_cookie(AjaxLookaheadView.as_view()), name='ajax_lookahead'),
+
   # django-registration
   url(r'^activate/complete/$',
     TemplateView.as_view(template_name='registration/activation_complete.html'),
