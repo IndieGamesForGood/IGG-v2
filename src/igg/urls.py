@@ -42,7 +42,7 @@ urlpatterns = patterns('',
   url(r'', include('registration.auth_urls')),
 
   url(r'^$', TemplateView.as_view(template_name='marathon/index.html'), name='home'),
-  url(r'^donate-now/$', TemplateView.as_view(template_name='marathon/donate.html'), name='donate_now'),
+  url(r'^donate-now/$', DonateFormView.as_view(), name='donate_now'),
 
   url(r'^games/$', GameListView.as_view(), name='game_list'),
   url(r'^games/(?P<slug>[a-zA-Z0-9_.-]+)/$', GameDetailView.as_view(), name='game_detail'),

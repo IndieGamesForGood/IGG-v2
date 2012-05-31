@@ -7,54 +7,109 @@
 
 {% block content %}
 <h2>{% trans "Donate Now" %}</h2>
-    <form>
+  <form class="form-horizontal" action="" method="POST">{% csrf_token %}
+    <fieldset>
+      {% if form.non_field_errors %}
+      <div class="alert alert-error">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        {% for error in form.non_field_errors %}
+        <p><i class="icon-exclamation-sign"></i> {{ error }}</p>
+        {% endfor %}
+      </div>{% endif %}
+      <div class="accordian" id="donateAccordian">
         <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
-                    Required Information
-                </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                    <h4>Amount: $<input type="number" id="amount" /></h4>
-                    <h4>E-Mail: <input type="email" id="email" /></h4>
-                    <i>We promise to not do bad things with your e-mail address; we need this mainly so that we can contact you in case something goes awry with your donation. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you.</i>
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="donateAccordian" href="#collapseOne">
+              {% trans "Required Information" %}
+            </a>
+          </div>
+          <div id="collapseOne" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <div class="control-group{% if form.amount.errors %} error{% endif %}">
+                <label class="control-label" for="amount">{% trans "Amount" %}</label>
+                <div class="controls">
+                  <div class="input-prepend">
+                    <span class="add-on">$</span><input class="span3" id="amount" name="amount" size="16" type="text" placeholder="{% trans "10.00" %}" tabindex="1"{% if form.amount.value %} value="{{ form.amount.value }}"{% endif %}>
+                    {% if form.amount.errors %}<span class="help-inline">{% for error in form.amount.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                  </div>
                 </div>
+              </div>
+              <div class="control-group{% if form.email.errors %} error{% endif %}">
+                <label class="control-label" for="email">{% trans "E-mail" %}</label>
+                <div class="controls">
+                  <div class="input-prepend">
+                    <span class="add-on"><i class="icon-envelope"></i></span><input class="span3" id="email" name="email" size="16" type="text" placeholder="{% trans "jsmith@example.com" %}" tabindex="2"{% if form.email.value %} value="{{ form.email.value }}"{% endif %}>
+                    {% if form.email.errors %}<span class="help-inline">{% for error in form.email.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <p class="help-block">{% blocktrans %}We promise to not do bad things with your e-mail address; we need this mainly so that we can contact you in case something goes awry with your donation. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you.{% endblocktrans %}</p>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
         <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" href="#collapseTwo">
-                    Donation Log Information
-                </a>
-            </div>
-            <div id="collapseTwo" class="accordion-body collapse in">
-                <p>Preview:</p><p id="donationpreview"></p>
-                <div class="accordion-inner">
-                    <h4>Name on donation: <input type="text" id="name" /></h4>
-                    <i>We promise to not do bad things with your e-mail address; we need this mainly so that we can contact you in case something goes awry with your donation. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you.</i>
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="donateAccordian" href="#collapseTwo">
+              {% trans "Donation Log Information" %}
+            </a>
+          </div>
+          <div id="collapseTwo" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <div class="control-group">
+                <label class="control-label" for="name">{% trans "Name on donation" %}</label>
+                <div class="controls">
+                  <div class="input-prepend">
+                    <span class="add-on"><i class="icon-pencil"></i></span><input class="span3" id="name" name="name" size="16" type="text" placeholder="{% trans "John Smith" %}" tabindex="3"{% if form.email.value %} value="{{ form.email.value }}"{% endif %}>
+                  </div>
+                  <p class="help-block" id="donationPreview"></p>
                 </div>
             </div>
+          </div>
         </div>
-    </form>
-    <script type="text/javascript">
-        function updatePreview() {
-            var name=document.getElementById('name')
-                    , amount=document.getElementById('amount')
-                    , preview=document.getElementById('donationpreview')
-                    , timeout=null;
-            var newText = "$" + amount.value + " donated ";
-            if(name.value == '')
-            {
-                newText += 'anonymously.';
-            }
-            else
-            {
-                newText += 'by ' + name.value + ".";
-            }
-            preview.innerHTML = newText;
-        }
-        $("form").on("click keyup keydown", "input", updatePreview);
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Donate Now</button>
+        <!-- <button class="btn">Cancel</button> -->
+      </div>
+  </fieldset>
+</form>
+{% endblock %}
 
-    </script>
+{% block before_body_end %}
+<script>
+function onlyNumbersAndDot() {
+  var amountNode = $("#amount"),
+      amount = removeAllButLast(amountNode.val().trim(), '.')
+  amountNode.val(removeAllButLast(amount.replace(/[^0-9\.]/g, ''), '.'))
+  updatePreview()
+}
+
+$("#amount").on("focus blur click", onlyNumbersAndDot)
+
+function prettifyAmount(amount) {
+  var parts = amount.split('.')
+  return "$" + addCommas(parts.slice(0,-1).join('')) + "." + parts.slice(-1).join('')
+}
+
+function updatePreview() {
+  var amount = $("#amount").val(),
+      name = $("#name").val(),
+      preview = $("#donationPreview")
+  if (amount != '') {
+    preview.html(prettifyAmount(amount.trim()) + " donated " + ((name == '') ? "anonymously" : "by " + name.trim()) + ".")
+  } else {
+    preview.html('')
+  }
+}
+$("#name").on("focus blur click keyup keydown", updatePreview)
+
+$(document).ready(function(){
+  $("#amount").focus().select()
+  updatePreview()
+})
+</script>
 {% endblock %}

@@ -1,7 +1,5 @@
 from django import forms
-# from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-
 
 from registration.forms import RegistrationFormUniqueEmail
 
@@ -25,3 +23,14 @@ class NoUsernameRegistrationForm(RegistrationFormUniqueEmail):
 
   def clean_last_name(self):
     return self.cleaned_data['last_name'].title()
+
+
+class DonateForm(forms.Form):
+  amount = forms.DecimalField(min_value=0.01, decimal_places=2, max_digits=14)
+  email = forms.EmailField(required=False)
+  name = forms.CharField(required=False)
+
+  def clean_name(self):
+    return "Anonymous" \
+      if self.cleaned_data.get('name', '') == '' \
+      else self.cleaned_data['name']

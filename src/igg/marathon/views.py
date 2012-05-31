@@ -1,5 +1,6 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from igg.marathon.models import *
+from igg.marathon.forms import DonateForm
 import json
 
 # Generic/Class-based Views: https://docs.djangoproject.com/en/dev/topics/class-based-views/
@@ -52,4 +53,19 @@ class ScheduleListView(ListView):
 class DonorListView(ListView):
   model = Donation
   context_object_name = 'donations'
+
+
+class DonateFormView(FormView):
+  template_name = 'marathon/donate.html'
+  form_class = DonateForm
+
+  def form_valid(self, form):
+    return super(DonateFormView, self).form_valid(form)
+
+  def get_success_url(self):
+    return "http://www.google.com"
+
+
+
+
 
