@@ -81,7 +81,6 @@ class AjaxLookaheadView(JSONResponseMixin, ListView):
 
   def get(self, request, *args, **kwargs):
     return self.http_method_not_allowed(request, *args, **kwargs)
-    # return self.post(request, post=request.GET, *args, **kwargs)
 
   def post(self, request, *args, **kwargs):
     query = request.POST.get('query')
