@@ -1,2 +1,52 @@
 The Master TODO List for IGG Marathon
 
+Base
+    Genericize modal
+    Marathon Status Box (AJAX to update, store in variable for other calculations)
+
+Donate Page
+    Game selection via autocomplete form, with underlying data id #'s - http://jqueryui.com/demos/autocomplete/#maxheight
+        Game details in a side div?
+    Raffle selection via dropdown, with details populating a side div
+    Challenge selection via dropdown, with details populating a side div
+    Auto-fill Game/Raffle/Challenge data?
+    Auto-fill other fields from User's account
+    Add Twitter and generic web address fields
+    Donation should show how much the marathon will be extended by + how many points user will receive, based on AJAX Marathon Status info)
+
+Game ListView & DetailView
+    Show current point count for each game in a column
+    Show progress towards threshold value in a JQueryUI Progressbar (needs to be added to MarathonInfo object, default=30*settings.IGG_PARAM_PTS_PER_MIN or 300 for now)
+    Link to Donate Page with Autofill?
+    Remove list numbering/foo/bar fields
+    Suggest a game form (in a modal)
+
+Game DetailView
+    Only show admin controls to admins
+    Make admin controls link to appropriate forms/actionables
+
+Challenges Page
+    Submit a challenge (in a modal)
+    View existing challenges
+
+Raffles Page
+    View existing raffles
+
+Donation model
+    Store ALL information from form
+    If user not logged in
+        If email has an account
+            Credit donation to account
+        If email has no account
+            Make new account
+            Credit donation to account
+            Copy inputted information to UserProfile
+
+Donors Page
+    View Donation Information
+        Name
+        Amount
+        Twitter
+        URL
+        Game
+        Challenge
