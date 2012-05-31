@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -44,6 +45,11 @@ class Challenge(models.Model):
          {'name': self.name,
           'status': ('NOT ' if not self.accepted else '') + 'Accepted',
           'privacy':(', PRIVATE: ' + self.user.__unicode__() if self.private else '')}
+
+User.challenges = property(lambda u:
+                           Challenge.objects.filter(Q(accepted=True, user=u, private=True) |
+                                                    Q(accepted=True, private=False)))
+
 
 class Raffle(models.Model):
   name = models.CharField(max_length=200)
