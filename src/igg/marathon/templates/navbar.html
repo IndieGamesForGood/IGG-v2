@@ -17,6 +17,10 @@
       </a>
       <a class="brand" href="{{ home_url }}">{% trans "IGG" %}</a>
       {% if request.user.is_authenticated %}
+      <p class="navbar-text pull-right">
+        {% trans "Tickets" %}: {{ request.user.profile.tickets }},
+        {% trans "Points" %}: {{ request.user.profile.points }}
+      </p>
       <div class="btn-group pull-right">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
           <i class="icon-user"></i> {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="caret"></span>
@@ -29,7 +33,7 @@
       </div>
       {% else %}
       <div class="btn-group pull-right">
-        <a class="btn" href="{% url auth_login %}"><i class="icon-user"></i> {% trans "Login" %}</a>
+        <a class="btn" href="{% url auth_login %}{% if request.get_full_path != '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}"><i class="icon-user"></i> {% trans "Login" %}</a>
       </div>
       {% endif %}
       {% if request.user.is_staff %}
