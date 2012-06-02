@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ "`hostname`" == "bunda" ]
+then
+	echo "You can't use runserver on Dreamhost. Dreahost uses passenger_wsgi.py to launch Django."
+	exit 1
+fi
+
 # Set IGG Environment Variable
 IGG_ENV='dev'
 export IGG_ENV
