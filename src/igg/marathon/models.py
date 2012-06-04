@@ -67,9 +67,12 @@ class Raffle(models.Model):
 
 class Donation(models.Model):
   user = models.ForeignKey(User, related_name='donations')
+  name = models.CharField(max_length=100,null=True,blank=True)
+  url = models.URLField(null=True, blank=True, max_length=200)
+  twitter = models.CharField(max_length=16, null=True, blank=True)
   amount = models.DecimalField(max_digits=14, decimal_places=2, help_text=_(u'Maximum $999,999,999,999.99'))
   comment = models.TextField(null=True, blank=True)
-  timestamp = models.DateTimeField(auto_now_add=True)
+  time = models.DateTimeField(auto_now_add=True)
   game = models.ForeignKey(Game, null=True, blank=True)
   challenge = models.ForeignKey(Challenge, null=True, blank=True, related_name='donations')
   raffle = models.ForeignKey(Raffle, null=True, blank=True)
@@ -119,8 +122,8 @@ class UserProfile(models.Model):
   user = models.OneToOneField(User)
   tickets = models.IntegerField(default=0)
   points = models.IntegerField(default=0)
-  url = models.URLField(null=True, blank=True)
-  twitter = models.CharField(max_length=15, null=True, blank=True)
+  url = models.URLField(null=True, blank=True, max_length=200)
+  twitter = models.CharField(max_length=16, null=True, blank=True)
 
   def __unicode__(self):
     return self.user.__unicode__()

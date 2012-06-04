@@ -40,7 +40,7 @@
                                                 {% for event in schedules %}
                                                     {
                                                         id: '{{ event.id }}',
-                                                        title: '{{ forloop.counter }}: {{ event.game.name }}',
+                                                        title: '{% if event.id != 1 %}{{ event.game.name }}{% else %}Indie Games for Good Marathon Duration (Donate to extend!){% endif %}',
                                                         start: new Date({{event.start.year}}, {{event.start.month|add:"-1"}}, {{event.start.day}}, {{event.start.hour}}, {{event.start.minute}}),
                                                         end: new Date({{event.end.year}}, {{event.end.month|add:"-1"}}, {{event.end.day}}, {{event.end.hour}}, {{event.end.minute}}),
                                                         allDay: false{% if event.game != None%},

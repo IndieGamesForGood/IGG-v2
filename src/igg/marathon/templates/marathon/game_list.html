@@ -8,23 +8,21 @@
 {% block content %}
 <h2>{% trans "Games" %}</h2>
 <div class="row">
-  <div class="span6 offset3">
+  <div class="span10 offset1">
     <table class="table table-condensed table-striped">
       <thead>
         <tr>
-          <th>#</th>
           <th>Name</th>
-          <th>Foo</th>
-          <th>Bar</th>
+          <th>Developer</th>
+          <th>Points</th>
         </tr>
       </thead>
       <tbody>
       {% for game in games %}
-        <tr{% if game.visible %}{% else %} bgcolor="lightblue"{% endif %} {{game.visible}}>
-          <td>{{ forloop.counter }}</td>
-          <td><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></td>
-          <td>foo</td>
-          <td>bar</td>
+        <tr>
+          <td{% if game.visible %}{% else %} style="font-style:italic; background-color: #e9967a;"{% endif %}><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></td>
+          <td>{% if game.site %}<a href="{{ game.site }}" title="{{ game.developer }}'s Site">{{ game.developer }}</a>{% else %}{{ game.developer }}{% endif %}</td>
+          <td>{{ game.points }} / {{ marathon.points_threshold }}</td>
         </tr>
       {% endfor %}
       </tbody>
