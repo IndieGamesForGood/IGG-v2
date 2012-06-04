@@ -1,8 +1,8 @@
-function displayGameModal(e,title,url)
+function displayModal(e,title,url)
 {
-    $("#gameDetailModalHeading").text(title);
-    $("#gameDetailModalBody").load(url);
-    $('#gameDetailModal').modal('show');
+    $("#modalHeading").text(title);
+    $("#modalBody").load(url);
+    $('#modal').modal('show');
     e.preventDefault();
     e.stopPropagation();
 }
@@ -11,7 +11,7 @@ function pad2(x)
     return (x < 10 ? '0' : '') + x;
 }
 $("a[data-toggle=modal]").click(function (e) {
-    displayGameModal(e,$(this).attr('title'),$(this).attr('href'));
+    displayModal(e, $(this).attr('title'), $(this).attr('href'));
 })
 
 /* http://www.mredkj.com/javascript/nfbasic.html */

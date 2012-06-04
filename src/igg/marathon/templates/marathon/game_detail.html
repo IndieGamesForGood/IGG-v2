@@ -1,16 +1,14 @@
-{% comment %}
-{% extends "base.html" %}
 {% load i18n %}
 
-{% block meta_description %}{% endblock %}
-{% block meta_keywords %}{% endblock %}
-{% block title %}{{ game.name }} :: {% trans "Games" %} :: {{ block.super }}{% endblock %}
-{% endcomment %}
-
-{% block content %}
-<!-- <h4>{{ game.name }}</h4> -->
 <p>Developer: {{ game.developer }}</p>
 <p>Site: <a href="{{ game.site }}" title="{{ game.name }}">{{ game.site }}</a></p>
 <p>Description: {{ game.description }}</p>
-{% if game.approved %}{% else %}<p>This game is not currently approved. Approve Now | Edit Info | Delete{% endif %}
-{% endblock %}
+{% if request.user.is_staff %}
+<p>
+{% if game.visible %}
+
+{% else %}
+  {% blocktrans %}This game is not currently approved. <a href="#">Approve Now</a> | <a href="#">Edit Info</a> | <a href="#">Delete</a>{% endblocktrans %}
+{% endif %}
+</p>
+{% endif %}

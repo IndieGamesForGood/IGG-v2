@@ -22,7 +22,7 @@
       {% for game in games %}
         <tr{% if game.visible %}{% else %} bgcolor="lightblue"{% endif %} {{game.visible}}>
           <td>{{ forloop.counter }}</td>
-          <td><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></td>
+          <td><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#modal" title="{{ game.name }}">{{ game.name }}</a></td>
           <td>foo</td>
           <td>bar</td>
         </tr>
