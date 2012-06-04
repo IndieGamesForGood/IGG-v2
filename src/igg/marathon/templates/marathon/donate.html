@@ -6,185 +6,297 @@
 {% block title %}{% trans "Donate Now" %} :: {{ block.super }}{% endblock %}
 
 {% block content %}
-<h2>{% trans "Donate Now" %}</h2>
-  <form class="form-horizontal" action="" method="POST">{% csrf_token %}
-    <fieldset>
-      {% if form.non_field_errors %}
-      <div class="alert alert-error">
-        <a class="close" data-dismiss="alert" href="#">×</a>
-        {% for error in form.non_field_errors %}
-        <p><i class="icon-exclamation-sign"></i> {{ error }}</p>
-        {% endfor %}
-      </div>{% endif %}
-      <div class="row">
-        <div class="span8">
-          <div class="accordian" id="donateAccordian">
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="donateAccordian" href="#collapse1">
-                  {% trans "Required Information" %}
-                </a>
-              </div>
-              <div id="collapse1" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                  <div class="control-group{% if form.amount.errors %} error{% endif %}">
-                    <label class="control-label" for="amount">{% trans "Amount" %}</label>
-                    <div class="controls">
-                      <div class="input-prepend">
-                        <span class="add-on">$</span><input class="span3" id="amount" name="amount" size="16" type="text" placeholder="{% trans "10.00" %}" tabindex="1"{% if form.amount.value %} value="{{ form.amount.value }}"{% endif %}>
-                        {% if form.amount.errors %}<span class="help-inline">{% for error in form.amount.errors %}{{ error }} {% endfor %}</span>{% endif %}
-                      </div>
+    <h2>{% trans "Donate Now" %}</h2>
+    <form class="form-horizontal" action="" method="POST">{% csrf_token %}
+        <fieldset>
+            {% if form.non_field_errors %}
+                <div class="alert alert-error">
+                    <a class="close" data-dismiss="alert" href="#">×</a>
+                    {% for error in form.non_field_errors %}
+                        <p><i class="icon-exclamation-sign"></i> {{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="span12">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="donateAccordian" href="#collapse1">
+                                {% trans "Required Information" %}
+                            </a>
+                        </div>
+                        <div id="collapse1" class="accordion-body collapse in">
+                            <div class="accordion-inner">
+                                <div class="control-group{% if form.amount.errors %} error{% endif %}">
+                                    <label class="control-label" for="amount">{% trans "Amount" %}</label>
+
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on">$</span><input class="span3" id="amount" name="amount" size="16" type="text" placeholder="{% trans "10.00" %}" tabindex="1"
+                                                {% if form.amount.value %} value="{{ form.amount.value }}"{% endif %}>
+                                            {% if form.amount.errors %}<span class="help-inline">
+                                                {% for error in form.amount.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group{% if form.email.errors %} error{% endif %}">
+                                    <label class="control-label" for="email">{% trans "E-mail" %}</label>
+
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on"><i class="icon-envelope"></i></span><input class="span3" id="email" name="email" size="16" type="text" placeholder="{% trans "jsmith@example.com" %}" tabindex="2" value="{% if form.email.value %}{{ form.email.value }}{% else %}{% if request.user.email %}{{ request.user.email }}{% endif %}{% endif %}">
+                                            {% if form.email.errors %}<span class="help-inline">
+                                                {% for error in form.email.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="control-group{% if form.email.errors %} error{% endif %}">
-                    <label class="control-label" for="email">{% trans "E-mail" %}</label>
-                    <div class="controls">
-                      <div class="input-prepend">
-                        <span class="add-on"><i class="icon-envelope"></i></span><input class="span3" id="email" name="email" size="16" type="text" placeholder="{% trans "jsmith@example.com" %}" tabindex="2" value="{% if form.email.value %}{{ form.email.value }}{% else %}{% if request.user.email %}{{ request.user.email }}{% endif %}{% endif %}">
-                        {% if form.email.errors %}<span class="help-inline">{% for error in form.email.errors %}{{ error }} {% endfor %}</span>{% endif %}
-                      </div>
+                    <!-- /.accordian-group -->
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="donateAccordian" href="#collapse2">
+                                {% trans "Donation Log Information" %}
+                            </a>
+                        </div>
+                        <div id="collapse2" class="accordion-body collapse in">
+                            <div class="accordion-inner">
+                                <div class="control-group">
+                                    <label class="control-label" for="name">{% trans "Name on donation" %}</label>
+
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on"><i class="icon-pencil"></i></span><input class="span3" id="name" name="name" size="16" type="text" placeholder="{% trans "John Smith" %}" tabindex="3" value="{% if form.name.value %}{{ form.name.value }}{% else %}{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% endif %}{% endif %}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group{% if form.url.errors %} error{% endif %}">
+                                    <label class="control-label" for="url">{% trans "Homepage" %}</label>
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on"><i class="icon-home"></i></span><input class="span3" id="url" name="url" size="16" type="text" placeholder="{% trans "http://iggmarathon.com/" %}" tabindex="3" value="{% if form.url.value %}{{ form.url.value }}{% else %}{% if request.user.profile.url %}{{ request.user.profile.url }}{% endif %}{% endif %}">
+                                            {% if form.url.errors %}<span class="help-inline">
+                                                {% for error in form.url.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group{% if form.twitter.errors %} error{% endif %}">
+                                    <label class="control-label" for="twitter">{% trans "Twitter handle" %}</label>
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on">@</span><input class="span3" id="twitter" name="twitter" size="16" type="text" placeholder="{% trans "iggmarathon" %}" tabindex="3" value="{% if form.twitter.value %}{{ form.twitter.value }}{% else %}{% if request.user.profile.twitter %}{{ request.user.profile.twitter }}{% endif %}{% endif %}">
+                                            {% if form.twitter.errors %}<span class="help-inline">
+                                                {% for error in form.twitter.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="help-block" id="donationPreview"></p>
+                            </div>
+                        </div>
+                    </div><!-- /.accordian-group -->
+                    <div class="accordian" id="sidebarAccordian">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="sidebarAccordian" href="#sidebarCollapse1">
+                                    {% trans "Request a Game" %}
+                                </a>
+                            </div>
+                            <div id="sidebarCollapse1" class="accordion-body collapse in">
+                                <div class="accordion-inner">
+                                    <div class="row">
+
+                                            <div class="input-prepend span4">
+                                                <span class="add-on"><i class="icon-headphones"></i></span>
+                                                {{ form.game }}
+                                            </div>
+
+                                        <div id="donateGameInfo" class="span7">Select a game to see details and status.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.accordian-group -->
                     </div>
-                  </div>
-                  <div class="control-group">
-                    <div class="controls">
-                      <p class="help-block">{% blocktrans %}We promise to not do bad things with your e-mail address; we need this mainly so that we can contact you in case something goes awry with your donation. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you.{% endblocktrans %}</p>
+                    <!-- /.accordian#sidebarAccordian -->
+                    <div class="accordian" id="sidebarAccordian">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="sidebarAccordian" href="#sidebarCollapse2">
+                                    {% trans "Enter a Raffle" %}
+                                </a>
+                            </div>
+                            <div id="sidebarCollapse2" class="accordion-body collapse in">
+                                <div class="accordion-inner">
+                                    <div class="row">
+                                        <div class="input-prepend span4">
+                                            <span class="add-on"><i class="icon-gift"></i></span>
+                                            {{ form.raffle }}
+                                        </div>
+                                        <div id="donateRaffleInfo" class="span7">Select a Raffle to see it's details.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.accordian-group -->
                     </div>
-                  </div>
+                    <!-- /.accordian#sidebarAccordian -->
+                    <div class="accordian" id="sidebarAccordian">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="sidebarAccordian" href="#sidebarCollapse3">
+                                    {% trans "Support a Challenge" %}
+                                </a>
+                            </div>
+                            <div id="sidebarCollapse3" class="accordion-body collapse in">
+                                <div class="accordion-inner">
+                                    <div class="row">
+                                        <div class="input-prepend span4">
+                                            <span class="add-on"><i class="icon-random"></i></span>
+                                            {{ form.challenge }}
+                                        </div>
+                                        <div id="donateChallengeInfo" class="span7">Select a Challenge.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.accordian-group -->
+                    </div><!-- /.accordian #sidebarAccordian -->
+                </div><!-- /.span12 -->
+            </div><!-- /.row -->
+            <div class="row">
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Donate Now</button><!-- <button class="btn">Cancel</button> -->
                 </div>
-              </div>
-            </div><!-- /.accordian-group -->
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="donateAccordian" href="#collapse2">
-                  {% trans "Donation Log Information" %}
-                </a>
-              </div>
-              <div id="collapse2" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                  <div class="control-group">
-                    <label class="control-label" for="name">{% trans "Name on donation" %}</label>
-                    <div class="controls">
-                      <div class="input-prepend">
-                        <span class="add-on"><i class="icon-pencil"></i></span><input class="span3" id="name" name="name" size="16" type="text" placeholder="{% trans "John Smith" %}" tabindex="3" value="{% if form.email.value %}{{ form.email.value }}{% else %}{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% endif %}{% endif %}">
-                      </div>
-                      <p class="help-block" id="donationPreview"></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- /.accordian-group -->
-          </div><!-- /.accordian #donateAccordian -->
-        </div><!-- /.span8 -->
-        <div class="span4">
-          <div class="accordian" id="sidebarAccordian">
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="sidebarAccordian" href="#sidebarCollapse1">
-                  {% trans "Request a Game" %}
-                </a>
-              </div>
-              <div id="sidebarCollapse1" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                  <div class="input-prepend">
-                    <span class="add-on"><i class="icon-headphones"></i></span><input class="span3" id="game" name="game" size="16" type="text" tabindex="4" data-items="20" value="{% if form.game.value %}{{ form.game.value }}{% endif %}">
-                    <p class="help-block">{% blocktrans %}If you would like to suggest a new game, go to...{% endblocktrans %}</p>
-                  </div>
-                </div>
-              </div>
-            </div><!-- /.accordian-group -->
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="sidebarAccordian" href="#sidebarCollapse2">
-                  {% trans "Enter a Raffle" %}
-                </a>
-              </div>
-              <div id="sidebarCollapse2" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                  <div class="input-prepend">
-                    <span class="add-on"><i class="icon-gift"></i></span><input class="span3" id="raffle" name="raffle" size="16" type="text" tabindex="5" data-items="20" value="{% if form.raffle.value %}{{ form.raffle.value }}{% endif %}">
-                    <p class="help-block">{% blocktrans %}Raffles are...{% endblocktrans %}</p>
-                  </div>
-                </div>
-              </div>
-            </div><!-- /.accordian-group -->
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="sidebarAccordian" href="#sidebarCollapse3">
-                  {% trans "Support a Challenge" %}
-                </a>
-              </div>
-              <div id="sidebarCollapse3" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                  <div class="input-prepend">
-                    <span class="add-on"><i class="icon-random"></i></span><input class="span3" id="challenge" name="challenge" size="16" type="text" tabindex="6" data-items="20" value="{% if form.challenge.value %}{{ form.challenge.value }}{% endif %}">
-                    <p class="help-block">{% blocktrans %}Challenges are...{% endblocktrans %}</p>
-                  </div>
-                </div>
-              </div>
-            </div><!-- /.accordian-group -->
-          </div><!-- /.accordian #sidebarAccordian -->
-        </div><!-- /.span4 -->
-      </div><!-- /.row -->
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Donate Now</button>
-        <!-- <button class="btn">Cancel</button> -->
-      </div>
-  </fieldset>
-</form>
+            </div><!-- /.row -->
+        </fieldset>
+    </form>
 {% endblock %}
 
 {% block before_body_end %}
-<script>
-  $("#game").typeahead({
-    items: 20,
-    ajax: {
-      url: '{% url ajax_lookahead 'game' %}',
-      triggerLength: 1
-    }
-  })
-  $("#raffle").typeahead({
-    items: 20,
-    ajax: {
-      url: '{% url ajax_lookahead 'raffle' %}',
-      triggerLength: 1
-    }
-  })
-  $("#challenge").typeahead({
-    items: 20,
-    ajax: {
-      url: '{% url ajax_lookahead 'challenge' %}',
-      triggerLength: 1
-    }
-  })
-  function onlyNumbersAndDot() {
-    var amountNode = $("#amount"),
-        amount = removeAllButLast(amountNode.val().trim(), '.')
-    amountNode.val(removeAllButLast(amount.replace(/[^0-9\.]/g, ''), '.'))
-    updatePreview()
-  }
+    <script>
+        $("#game").typeahead({
+                                 items:20,
+                                 ajax:{
+                                     url:'{% url ajax_lookahead 'game' %}',
+                                     triggerLength:1
+                                 }
+                             })
+        $("#raffle").typeahead({
+                                   items:20,
+                                   ajax:{
+                                       url:'{% url ajax_lookahead 'raffle' %}',
+                                       triggerLength:1
+                                   }
+                               })
+        $("#challenge").typeahead({
+                                      items:20,
+                                      ajax:{
+                                          url:'{% url ajax_lookahead 'challenge' %}',
+                                          triggerLength:1
+                                      }
+                                  })
+        function onlyNumbersAndDot() {
+            var amountNode = $("#amount"),
+                    amount = removeAllButLast(amountNode.val().trim(), '.')
+            amountNode.val(removeAllButLast(amount.replace(/[^0-9\.]/g, ''), '.'))
+            updatePreview()
+        }
 
-  $("#amount").on("blur", onlyNumbersAndDot)
+        $("#amount").on("blur", onlyNumbersAndDot)
 
-  function prettifyAmount(amount) {
-    var parts = amount.split('.')
-    return "$" + addCommas(parts.slice(0,-1).join('')) + "." + parts.slice(-1).join('')
-  }
+        function prettifyAmount(amount) {
+            var parts = amount.split('.')
+            if (parts.length < 2) { parts[1] = "00" }
+            return "$" + addCommas(parts.slice(0, -1).join('')) + "." + parts.slice(-1).join('')
+        }
 
-  function updatePreview() {
-    var amount = $("#amount").val(),
-        name = $("#name").val(),
-        preview = $("#donationPreview")
-    if (amount != '') {
-      preview.html(prettifyAmount(amount.trim()) + " donated " + ((name == '') ? "anonymously" : "by " + name.trim()) + ".")
-    } else {
-      preview.html('')
-    }
-  }
-  $("#name").on("focus blur click keyup keydown", updatePreview)
+    </script>
+    <script type="text/javascript">
+        function updatePreview() {
+            var amount = $("#amount").val(),
+                    name = $("#name").val(),
+                    preview = $("#donationPreview"),
+                    url = $("#url").val(),
+                    twitter = $("#twitter").val()
+            name = name.trim()
+            if (url != '')
+            {
+                name = '<a href="' + url + '" target="_blank">' + name + "</a>"
+            }
+            if (twitter != '')
+            {
+                name = name + ' (<a href="http://twitter.com/' + twitter + '" target="_blank">@' + twitter + '</a>)'
+            }
+            if (amount != '') {
+                preview.html(prettifyAmount(amount.trim()) + " donated " + ((name == '') ? "anonymously" : "by " + name) + ".")
+            } else {
+                preview.html('')
+            }
+        }
+        $("#name").on("focus blur click keyup keydown", updatePreview)
+        $("#twitter").on("focus blur click keyup keydown", updatePreview)
+        $("#url").on("focus blur click keyup keydown", updatePreview)
 
-  $(document).ready(function(){
-    $("#amount").focus().select()
-    updatePreview()
-  })
-</script>
+        $(document).ready(function () {
+            $("#amount").focus().select()
+            updatePreview()
+
+
+        })
+    </script>
+    <script type="text/javascript">
+        var currentGameID = '', currentChallengeID = '', currentRaffleID = ''
+
+        $('#email').popover({trigger:'focus',title:'Why do you need my e-mail?',content:"We promise to not do bad things with it; we hate spam just as much as you do. We ask for this mainly so that we can contact you in case something goes awry. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you."})
+
+        function updateGame()
+        {
+            if (currentGameID != $('#id_game').attr('value'))
+            {
+                currentGameID = $('#id_game').attr('value')
+                if (currentGameID == "")
+                {
+                    $('#donateGameInfo').text('Select a game to see details and status.')
+                } else {
+                    $('#donateGameInfo').text('Loading...')
+                    $('#donateGameInfo').load('/games/pk/' + currentGameID)
+                }
+            }
+        }
+
+        function updateChallenge()
+        {
+            if (currentChallengeID != $('#id_challenge').attr('value'))
+            {
+                currentChallengeID = $('#id_challenge').attr('value')
+                if (currentChallengeID == "")
+                {
+                    $('#donateChallengeInfo').text("Select a Challenge.")
+                } else {
+                    $('#donateChallengeInfo').text('Loading challenge info...')
+                    $('#donateChallengeInfo').load('/challenges/pk/' + currentChallengeID)
+                }
+            }
+        }
+
+        function updateRaffle()
+        {
+            if (currentRaffleID != $('#id_raffle').attr('value'))
+            {
+                currentRaffleID = $('#id_raffle').attr('value')
+                if (currentRaffleID == "")
+                {
+                    $('#donateRaffleInfo').text("Select a Raffle to see it's details.")
+                } else {
+                    $('#donateRaffleInfo').text('Loading raffle info...')
+                    $('#donateRaffleInfo').load('/raffles/pk/' + currentRaffleID)
+                }
+            }
+        }
+
+        $('#id_game').on('change',updateGame)
+        $('#id_challenge').on('change',updateChallenge)
+        $('#id_raffle').on('change',updateRaffle)
+    </script>
 {% endblock %}

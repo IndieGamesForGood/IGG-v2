@@ -23,7 +23,7 @@ class Game(models.Model):
   points = models.IntegerField(default=0)
 
   def __unicode__(self):
-    return _(u'Game: %(name)s%(status)s') %\
+    return _(u'%(name)s%(status)s') %\
            {'name': self.name,
             'status': (' (NOT VISIBLE)' if not self.visible else '')}
 
@@ -119,6 +119,8 @@ class UserProfile(models.Model):
   user = models.OneToOneField(User)
   tickets = models.IntegerField(default=0)
   points = models.IntegerField(default=0)
+  url = models.URLField(null=True, blank=True)
+  twitter = models.CharField(max_length=15, null=True, blank=True)
 
   def __unicode__(self):
     return self.user.__unicode__()
@@ -129,6 +131,7 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 class MarathonInfo(models.Model):
   total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
+  points_threshold = models.IntegerField(default=3000)
 
   def dollarsToPoints(self,dollars):
     return int((self.dollarsToTime(dollars).total_seconds() / 60.0) * settings.IGG_PARAM_PTS_PER_MIN)
@@ -150,6 +153,10 @@ class MarathonInfo(models.Model):
     f_oldTotal = float(oldTotal)
     return timedelta(hours=((log(((f_oldTotal+f_dollars)/ihcost * rate)+1) / log(1.0 + rate)) -
                             (log((f_oldTotal/ihcost * rate)+1)/log(1.0 + rate))))
+
+  @classmethod
+  def info(cls):
+    return cls.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK)
 
   def save(self, *args, **kwargs):
     self.total = sum(foo.amount for foo in Donation.objects.filter(approved=True))

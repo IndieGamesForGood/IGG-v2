@@ -1,7 +1,9 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.core import validators as valids
 
 from registration.forms import RegistrationFormUniqueEmail
+from igg.marathon.models import *
 
 class NoUsernameRegistrationForm(RegistrationFormUniqueEmail):
   username = forms.CharField(required=False, widget=forms.HiddenInput())
@@ -26,9 +28,14 @@ class NoUsernameRegistrationForm(RegistrationFormUniqueEmail):
 
 
 class DonateForm(forms.Form):
-  amount = forms.DecimalField(min_value=0.01, decimal_places=2, max_digits=14)
-  email = forms.EmailField(required=False)
+  amount = forms.DecimalField(min_value=1.00, decimal_places=2, max_digits=14)
+  email = forms.EmailField(required=True)
   name = forms.CharField(required=False)
+  twitter = forms.CharField(required=False,validators=[valids.RegexValidator(regex='^\w{0,15}$')], error_messages={'invalid': _(u'Enter a valid Twitter handle (no need for the @ sign).')})
+  url = forms.URLField(required=False)
+  game = forms.ModelChoiceField(required=False,queryset=Game.objects.filter(visible=True))
+  raffle = forms.ModelChoiceField(required=False,queryset=Raffle.objects.filter(visible=True))
+  challenge = forms.ModelChoiceField(required=False,queryset=Challenge.objects.filter(accepted=True))
 
   def clean_name(self):
     return "Anonymous" \
