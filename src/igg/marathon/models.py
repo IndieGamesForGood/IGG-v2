@@ -147,7 +147,14 @@ class MarathonInfo(models.Model):
   def pointsToMinutes(points):
     return points * settings.IGG_PARAM_PTS_PER_MIN
 
-  def dollarsToTime(self, dollars, oldTotal=None):
+  def getCurrentHours(self):
+    time = self.dollarsToTime()
+    return (time //3600000000 * 1000000).seconds
+
+  def dollarsToTime(self, dollars=None, oldTotal=None):
+    if dollars is None:
+      dollars = self.total
+      oldTotal = 0.00
     if oldTotal is None:
       oldTotal = self.total
     f_dollars = float(dollars)
