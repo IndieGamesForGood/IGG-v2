@@ -7,5 +7,5 @@ body {
 .tc { text-align: center }
 .tb { text-align: block }
 .popover-inner {
-  width: 400px;
+  width: 280px !important;
 }
