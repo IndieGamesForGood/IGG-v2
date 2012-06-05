@@ -89,6 +89,10 @@ class DonateFormView(FormView):
   template_name = 'marathon/donate.html'
   form_class = DonateForm
 
+  def post(self, request, *args, **kwargs):
+      self.request = request
+      return super(DonateFormView, self).post(request, *args, **kwargs)
+
   def form_valid(self, form):
     site = Site.objects.get_current()
     amount = form.cleaned_data.get('amount')
@@ -129,7 +133,7 @@ class DonateFormView(FormView):
       user.save()
       # must call authenticate
       user = authenticate(username=username, password=password)
-      login(request, user)
+      login(self.request, user)
       # Send e-mail with username/password
       context = {'user': user, 'name': template_name,
                  'email': email, 'password': password,
