@@ -20,6 +20,9 @@ urlpatterns = patterns('',
 
   url(r'^ajax/(?P<model>\w+)/', ensure_csrf_cookie(AjaxLookaheadView.as_view()), name='ajax_lookahead'),
 
+  # django-paypal
+  (r'^paypal/ipn/', include('paypal.standard.ipn.urls')),
+
   # django-registration
   url(r'^activate/complete/$',
     TemplateView.as_view(template_name='registration/activation_complete.html'),
@@ -45,7 +48,11 @@ urlpatterns = patterns('',
   url(r'', include('registration.auth_urls')),
 
   url(r'^$', TemplateView.as_view(template_name='marathon/index.html'), name='home'),
-  url(r'^donate-now/$', DonateFormView.as_view(), name='donate_now'),
+  url(r'^donate/now/$', DonateFormView.as_view(), name='donate_now'),
+  url(r'^donate/thank-you/$',
+      TemplateView.as_view(template_name='marathon/donation_thankyou.html'), name='donation_complete'),
+  url(r'^donate/cancelled/$',
+      TemplateView.as_view(template_name='marathon/donation_cancelled.html'), name='donation_cancelled'),
 
   url(r'^games/$', GameListView.as_view(), name='game_list'),
   url(r'^games/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game_detail'),

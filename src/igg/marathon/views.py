@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
+from django.utils.http import urlquote_plus
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, DetailView, FormView, View
 
@@ -12,6 +13,7 @@ from igg.marathon.mixins import JSONResponseMixin
 from igg.marathon.models import *
 from igg.marathon.forms import DonateForm
 
+import hashlib
 import time
 
 # Generic/Class-based Views: https://docs.djangoproject.com/en/dev/topics/class-based-views/
@@ -87,6 +89,7 @@ class DonateFormView(FormView):
   form_class = DonateForm
 
   def form_valid(self, form):
+    site = Site.objects.get_current()
     amount = form.cleaned_data.get('amount')
     email  = form.cleaned_data.get('email').strip()
     name   = form.cleaned_data.get('name')
@@ -124,10 +127,6 @@ class DonateFormView(FormView):
         template_name = email
 
       # Send e-mail with username/password
-      if Site._meta.installed:
-          site = Site.objects.get_current()
-      else:
-          site = RequestSite(request)
       context = {'user': user, 'name': template_name,
                  'email': email, 'password': password,
                  'amount': amount, 'site': site}
@@ -138,19 +137,51 @@ class DonateFormView(FormView):
     user.profile.twitter = form.cleaned_data.get('twitter', None)
     user.save()
     user.profile.save()
-    
+    ipn_hash = hashlib.sha1(str(time.time()) + str(amount) +
+                            str(email) + str(name) + str(twitter) +
+                            str(comment) + str(game) + str(challenge) +
+                            str(raffle) + str(user)).hexdigest()
     donation = Donation(user=user, name=name,
                         url=url, twitter=twitter,
                         amount=amount, comment=comment,
                         game=game, challenge=challenge,
                         raffle=raffle, approved=False,
-                        points=0)
+                        points=0, ipn_hash=ipn_hash)
     donation.save()
-    return HttpResponseRedirect(self.get_success_url())
+    url = (settings.PAYPAL_WEBSCR_URL +
+          '?amount=' + str(amount) +
+          '&notify_url=' + urlquote_plus('http://' + site.domain + reverse('paypal-ipn')) +
+          '&bn=' + urlquote_plus(_('Indie Games for Good')) +
+          '&return=' + urlquote_plus('http://' + site.domain + reverse('donation_complete')) +
+          '&cancel_return=' + urlquote_plus('http://' + site.domain + reverse('donation_cancelled')) +
+          # '&rm=1' +
+          '&cmd=_donations' +
+          '&cbt=Return+to+' + urlquote_plus(_('Indie Games for Good')) +
+          '&tax=0.00' +
+          '&shipping=0.00' +
+          '&business=' + urlquote_plus(settings.PAYPAL_RECEIVER_EMAIL) +
+          '&item_name=' + urlquote_plus(_('Donation to Child\'s Play Charity '
+                                      'via Indie Games for Good - %(target)s') \
+                                      % {'target': settings.PAYPAL_RECEIVER_EMAIL}) +
+          '&custom=' + ipn_hash
+          )
 
-  def get_success_url(self):
-    return "http://www.google.com"
-
+    # $location = $redir
+    #           . "?amount=" . sprintf("%d.%02d", intval($amount/100),
+    #                                         intval($amount%100))
+    #           . "&notify_url=" . urlencode($notify_url)
+    #           . "&bn=" . urlencode($charity) . "_Donate_WPS_US"
+    #           . "&return=" . urlencode($landing_page) . "?" . urlencode($hashed_key)
+    #           . "&rm=1"
+    #           . "&cmd=_donations"
+    #           . "&cbt=Return+to+" . urlencode($charity)
+    #           . "&tax=0.00"
+    #           . "&shipping=0.00"
+    #           . "&business=" . urlencode($target)
+    #           . "&item_name=Donation+to+Child%27s+Play+Charity+via+" . urlencode($charity) . "+-+" . urlencode($target)
+    #           . "&custom=" . $hashed_key
+    #           ;
+    return HttpResponseRedirect(url)
 
 class AjaxLookaheadView(JSONResponseMixin, ListView):
   # https://docs.djangoproject.com/en/dev/topics/class-based-views/#dynamic-filtering
