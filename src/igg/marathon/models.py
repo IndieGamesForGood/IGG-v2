@@ -43,6 +43,16 @@ class Game(models.Model):
     else:
       return 0
 
+  def quick_show(self):
+    self.visible = True
+    self.save()
+    return "Game '" + self.__unicode__() + "' is now visible."
+
+  def quick_hide(self):
+    self.visible = False
+    self.save()
+    return "Game '" + self.__unicode__() + "' is now hidden."
+
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
   description = models.TextField()
@@ -58,6 +68,16 @@ class Challenge(models.Model):
     else:
       percent = int(self.total / self.bounty * 100)
       return percent if percent < 100 else 100
+
+  def quick_accept(self):
+    self.accepted = True
+    self.save()
+    return "Challenge '" + self.__unicode__() + "' accepted."
+
+  def quick_unaccept(self):
+    self.accepted = False
+    self.save()
+    return "Challenge '" + self.__unicode__() + "' unaccepted."
 
   def __unicode__(self):
     return _(u'%(name)s %(status)s%(privacy)s') %\
@@ -90,6 +110,16 @@ class Raffle(models.Model):
     else:
       return 0
 
+  def quick_show(self):
+    self.visible = True
+    self.save()
+    return "Raffle '" + self.__unicode__() + "' is now visible."
+
+  def quick_hide(self):
+    self.visible = False
+    self.save()
+    return "Raffle '" + self.__unicode__() + "' is now hidden."
+
 class Donation(models.Model):
   user = models.ForeignKey(User, related_name='donations')
   name = models.CharField(max_length=100,null=True,blank=True)
@@ -109,6 +139,11 @@ class Donation(models.Model):
     return _(u'%(amount)s donation by %(user)s') % \
       {'amount': locale.currency(self.amount, grouping=True),
        'user': self.user.__unicode__()}
+
+  def quick_approve(self):
+    self.approve = True
+    self.save()
+    return "Donation '" + self.__unicode__() + "' has been approved."
 
 class PointTransaction(models.Model):
   user = models.ForeignKey(User, related_name='transactions')

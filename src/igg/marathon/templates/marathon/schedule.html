@@ -54,7 +54,7 @@
                                             eventClick: function(calEvent, jsEvent, view) {
                                                 if(calEvent.isGame)
                                                 {
-                                                    displayGameModal(jsEvent,calEvent.title + " (Scheduled for " + calEvent.start.getHours() + ":" + pad2(calEvent.start.getMinutes()) + " to " + calEvent.end.getHours() + ":" + pad2(calEvent.end.getMinutes()) + ")",calEvent.url);
+                                                    displayModal(jsEvent,calEvent.title + " (Scheduled for " + calEvent.start.getHours() + ":" + pad2(calEvent.start.getMinutes()) + " to " + calEvent.end.getHours() + ":" + pad2(calEvent.end.getMinutes()) + ")",calEvent.url);
                                                 }
                                                 return false;
                                             }
