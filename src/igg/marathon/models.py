@@ -247,5 +247,6 @@ def paypal_payment_was_successful(sender, **kwargs):
   donation = get_object_or_404(Donation, ipn_hash=ipn_hash)
   donation.approved = True
   donation.save()
+  logger.error(donation)
 
 payment_was_successful.connect(paypal_payment_was_successful)
