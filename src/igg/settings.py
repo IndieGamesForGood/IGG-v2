@@ -193,7 +193,13 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Admin documentation
     'django.contrib.admindocs',
+    # django-paypal
+    'paypal.standard.ipn',
 )
+
+# Paypal Sandbox for now.
+PAYPAL_RECEIVER_EMAIL = 'bcarl_1338885461_biz@me.com'
+PAYPAL_WEBSCR_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 
 # django-registration: https://bitbucket.org/ubernostrum/django-registration
 # One-week activation window; you may, of course, use a different value.

@@ -1,14 +1,18 @@
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
 from django.dispatch import receiver
-from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
-from django.conf import settings
+
 from datetime import datetime, timedelta
 from math import log, floor
 
+from paypal.standard.ipn.signals import payment_was_successful
+
 import locale
-locale.setlocale( locale.LC_ALL, 'en_CA.UTF-8' )
+locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
 
 # https://docs.djangoproject.com/en/dev/ref/models/fields/
 # https://docs.djangoproject.com/en/dev/topics/i18n/translation/
@@ -79,6 +83,7 @@ class Donation(models.Model):
   raffle = models.ForeignKey(Raffle, null=True, blank=True)
   approved = models.BooleanField(default=False)
   points = models.IntegerField(default=0)
+  ipn_hash = models.CharField(max_length=40, null=False, blank=True)
 
   def __unicode__(self):
     return _(u'%(amount)s donation by %(user)s') % \
@@ -230,3 +235,13 @@ def pointTransactionSaved(sender, instance, **kwargs):
   instance.user.save()
   instance.game.points = sum(foo.points for foo in instance.game.transactions.all())
   instance.game.save()
+
+
+def paypal_payment_was_successful(sender, **kwargs):
+  ipn_obj = sender
+  ipn_hash = ipn_obj.custom.strip()
+  donation = get_object_or_404(Donation, ipn_hash=ipn_hash)
+  donation.approved = True
+  donation.save()
+
+payment_was_successful.connect(paypal_payment_was_successful)
