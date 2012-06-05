@@ -1,6 +1,5 @@
 {% load active %}
 {% load i18n %}
-{% url home as home_url %}
 {% url game_list as game_list_url %}
 {% url challenge_list as challenge_list_url %}
 {% url raffle_list as raffle_list_url %}
@@ -15,10 +14,10 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <a class="brand" href="{{ home_url }}">{% trans "IGG" %}</a>
+      <a class="brand" href="{% url home %}">{% trans "IGG" %}</a>
       {% if request.user.is_authenticated %}
       <div class="btn-group pull-right">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <a class="btn dropdown-toggle" data-toggle="dropdown">
           <i class="icon-user"></i> {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -45,12 +44,11 @@
       </div>
       <div class="nav-collapse">
         <ul class="nav">
-          <li{% active request home_url           %}><a href="{{ home_url }}">{% trans "Home" %}</a></li>
-          <li{% active request game_list_url      %}><a href="{{ game_list_url }}">{% trans "Games" %}</a></li>
-          <li{% active request challenge_list_url %}><a href="{{ challenge_list_url }}">{% trans "Challenges" %}</a></li>
-          <li{% active request raffle_list_url    %}><a href="{{ raffle_list_url }}">{% trans "Raffles" %}</a></li>
-          <li{% active request schedule_list_url  %}><a href="{{ schedule_list_url }}">{% trans "Schedule" %}</a></li>
-          <li{% active request donor_list_url     %}><a href="{{ donor_list_url }}">{% trans "Log" %}</a></li>
+          <li{% active request game_list_url      %}><a href="{{ game_list_url }}"><i class="icon-headphones icon-white"></i> {% trans "Games" %}</a></li>
+          <li{% active request challenge_list_url %}><a href="{{ challenge_list_url }}"><i class="icon-random icon-white"></i> {% trans "Challenges" %}</a></li>
+          <li{% active request raffle_list_url    %}><a href="{{ raffle_list_url }}"><i class="icon-gift icon-white"></i> {% trans "Raffles" %}</a></li>
+          <li{% active request schedule_list_url  %}><a href="{{ schedule_list_url }}"><i class="icon-time icon-white"></i> {% trans "Schedule" %}</a></li>
+          <li{% active request donor_list_url     %}><a href="{{ donor_list_url }}"><i class="icon-thumbs-up icon-white"></i> {% trans "Log" %}</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
