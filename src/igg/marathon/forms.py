@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core import validators as valids
 
@@ -31,11 +32,19 @@ class DonateForm(forms.Form):
   amount = forms.DecimalField(min_value=1.00, decimal_places=2, max_digits=14)
   email = forms.EmailField(required=True)
   name = forms.CharField(required=False,max_length=100)
-  twitter = forms.CharField(required=False,max_length=16,validators=[valids.RegexValidator(regex='^\w{0,15}$')], error_messages={'invalid': _(u'Enter a valid Twitter handle (no need for the @ sign).')})
+  twitter = forms.CharField(required=False, max_length=16,
+                            validators=[valids.RegexValidator(regex='^\w{0,15}$')],
+                            error_messages={'invalid': _(u'Enter a valid Twitter handle (no need for the @ sign).')})
   url = forms.URLField(required=False,max_length=200)
-  game = forms.ModelChoiceField(required=False,queryset=Game.objects.filter(visible=True),empty_label="Select a game...")
-  raffle = forms.ModelChoiceField(required=False,queryset=Raffle.objects.filter(visible=True),empty_label="Select a raffle...")
-  challenge = forms.ModelChoiceField(required=False,queryset=Challenge.objects.filter(accepted=True),empty_label="Select a challenge...")
+  game = forms.ModelChoiceField(required=False,
+                                queryset=Game.objects.filter(visible=True),
+                                empty_label="Select a game...")
+  raffle = forms.ModelChoiceField(required=False,
+                                  queryset=Raffle.objects.filter(visible=True),
+                                  empty_label="Select a raffle...")
+  challenge = forms.ModelChoiceField(required=False,
+                                     queryset=Challenge.objects.filter(accepted=True),
+                                     empty_label="Select a challenge...")
 
   def clean_name(self):
     return "Anonymous" \

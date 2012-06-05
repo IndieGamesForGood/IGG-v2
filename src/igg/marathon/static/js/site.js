@@ -29,19 +29,22 @@ function addCommas(nStr) {
 
 /* http://stackoverflow.com/a/9695058 */
 function removeAllButLast(string, token) {
-    var parts = string.split(token),
-        front = parts.slice(0,-1).join(''),
-        back  = parts.slice(-1).join('')
-    if (front.length == 0) {
-      front = "0"
-    }
-    if (back.length > 2) {
-      back = back.slice(0,2)
-    }
-    while (back.length < 2) {
-      back += "0"
-    }
-    return front + token + back
+  if (string.indexOf(token) === -1) {
+    return string + token + '00'
+  }
+  var parts = string.split(token),
+      front = parts.slice(0,-1).join(''),
+      back  = parts.slice(-1).join('')
+  if (front.length == 0) {
+    front = "0"
+  }
+  if (back.length > 2) {
+    back = back.slice(0,2)
+  }
+  while (back.length < 2) {
+    back += "0"
+  }
+  return front + token + back
 }
 
 /* https://docs.djangoproject.com/en/1.4/ref/contrib/csrf/#ajax */

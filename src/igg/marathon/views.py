@@ -1,9 +1,12 @@
-from django.http import Http404, HttpResponse
+from django.contrib.auth.models import User
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, FormView, View
 
 from igg.marathon.mixins import JSONResponseMixin
 from igg.marathon.models import *
 from igg.marathon.forms import DonateForm
+
+import time
 
 # Generic/Class-based Views: https://docs.djangoproject.com/en/dev/topics/class-based-views/
 
@@ -78,7 +81,27 @@ class DonateFormView(FormView):
   form_class = DonateForm
 
   def form_valid(self, form):
-    return super(DonateFormView, self).form_valid(form)
+    email = form.cleaned_data.get('email').strip()
+    name = form.cleaned_data.get('name', '').strip()
+    try:
+      user = User.objects.get(email=email)
+    except User.DoesNotExist:
+      # Username is the current time plus part of the user's email, all truncated to 30 chars.
+      username = (email.replace('@', '').replace('.', '').replace('_', '') + '_' + str(time.time()))[:30]
+      password = User.objects.make_random_password()
+      user = User.objects.create_user(username, email=email, password=password)
+      user.is_staff = False
+      user.is_active = True
+      user.is_superuser = False
+    if name:
+      names = name.split()
+      user.first_name = names[:-1]
+      user.last_name = names[-1]
+    user.profile.url = form.cleaned_data.get('url', None)
+    user.profile.twitter = form.cleaned_data.get('twitter', None)
+    user.save()
+    user.profile.save()
+    return HttpResponseRedirect(self.get_success_url())
 
   def get_success_url(self):
     return "http://www.google.com"

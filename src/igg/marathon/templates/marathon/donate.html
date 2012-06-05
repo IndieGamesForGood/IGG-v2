@@ -175,7 +175,7 @@
 
 {% block before_body_end %}
     <script>
-        $("#game").typeahead({
+/*        $("#game").typeahead({
                                  items:20,
                                  ajax:{
                                      url:'{% url ajax_lookahead 'game' %}',
@@ -195,7 +195,7 @@
                                           url:'{% url ajax_lookahead 'challenge' %}',
                                           triggerLength:1
                                       }
-                                  })
+                                  })*/
         function onlyNumbersAndDot() {
             var amountNode = $("#amount"),
                     amount = removeAllButLast(amountNode.val().trim(), '.')
@@ -210,9 +210,6 @@
             if (parts.length < 2) { parts[1] = "00" }
             return "$" + addCommas(parts.slice(0, -1).join('')) + "." + parts.slice(-1).join('')
         }
-
-    </script>
-    <script type="text/javascript">
         function updatePreview() {
             var amount = $("#amount").val(),
                     name = $("#name").val(),
@@ -244,8 +241,6 @@
 
 
         })
-    </script>
-    <script type="text/javascript">
         var currentGameID = '', currentChallengeID = '', currentRaffleID = ''
 
         $('#email').popover({trigger:'focus',title:'Why do you need my e-mail?',content:"We promise to not do bad things with it; we hate spam just as much as you do. We ask for this mainly so that we can contact you in case something goes awry. Note that this doesn't have to be your PayPal address; just provide whatever email is best for getting in touch with you."})

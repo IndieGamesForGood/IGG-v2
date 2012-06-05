@@ -51,7 +51,7 @@ class IggRegistrationBackend(DefaultBackend):
                             kwargs['first_name'], kwargs['last_name']
 
     # Username is the current time plus part of the user's email, all truncated to 30 chars.
-    username = (str(time.time()) + '_' + email.replace('@', '').replace('.', '').replace('_', ''))[:30]
+    username = (email.replace('@', '').replace('.', '').replace('_', '') + '_' + str(time.time()))[:30]
 
     if Site._meta.installed:
       site = Site.objects.get_current()
