@@ -120,9 +120,9 @@ class DonateFormView(FormView):
       user.is_superuser = False
       if name:
         names = name.split()
-        user.first_name = ' '.join(names[:-1])
-        user.last_name = names[-1]
-        template_name = ' '.join(names[:-1])
+        user.first_name = names[0]
+        user.last_name = ' '.join(names[1:])
+        template_name = names[0]
       else:
         template_name = email
 
