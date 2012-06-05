@@ -7,6 +7,7 @@
 
 {% block content %}
 <h2>{% trans "Raffles" %}</h2>
+    {% if request.user.is_staff %}<a href="/admin/marathon/raffle/">Manage Raffles</a>{% endif %}
 <ul>
     {% for raffle in raffles %}
         <li{% if not raffle.visible %} style="background-color:#f08080;"{% endif %}>

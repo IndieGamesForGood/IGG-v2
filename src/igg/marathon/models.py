@@ -244,15 +244,21 @@ def challengeSaving(sender, instance, **kwargs):
 
 @receiver(models.signals.post_save,sender=RaffleEntry)
 def raffleEntrySaved(sender, instance, **kwargs):
-  instance.user.tickets = -sum(foo.tickets for foo in instance.user.entries.all())
-  instance.user.save()
+  instance.user.profile.tickets = -sum(foo.tickets for foo in instance.user.entries.all())
+  instance.user.profile.save()
   instance.raffle.tickets = sum(foo.tickets for foo in instance.raffle.entries.all())
   instance.raffle.save()
+
+@receiver(models.signals.pre_save,sender=UserProfile)
+def userProfileSaving(sender, instance, **kwargs):
+  instance.tickets = -sum(foo.tickets for foo in instance.user.entries.all())
+  instance.points = -sum(foo.points for foo in instance.user.transactions.all())
+
 
 @receiver(models.signals.post_save,sender=PointTransaction)
 def pointTransactionSaved(sender, instance, **kwargs):
   instance.user.profile.points = -sum(foo.points for foo in instance.user.transactions.all())
-  instance.user.save()
+  instance.user.profile.save()
   instance.game.points = sum(foo.points for foo in instance.game.transactions.all())
   instance.game.save()
 

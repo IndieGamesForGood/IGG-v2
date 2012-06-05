@@ -48,8 +48,10 @@ class ChallengeListView(ListView):
   def get_queryset(self):
     if self.request.user.is_staff:
       return Challenge.objects.all()
-    else:
+    elif self.request.user.is_authenticated():
       return self.request.user.challenges
+    else:
+      return Challenge.objects.filter(accepted=True,private=False)
 
 class ChallengeDetailView(DetailView):
   model = Challenge

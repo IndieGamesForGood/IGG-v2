@@ -7,6 +7,7 @@
 
 {% block content %}
 <h2>{% trans "Games" %}</h2>
+    {% if request.user.is_staff %}<a href="/admin/marathon/game/">Manage Games</a>{% endif %}
 <div class="row">
   <div class="span10 offset1">
     <table class="table table-condensed table-striped">

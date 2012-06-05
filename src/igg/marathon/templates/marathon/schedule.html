@@ -11,6 +11,7 @@
 
 {% block content %}
 <h2>{% trans "Schedule" %}</h2>
+    {% if request.user.is_staff %}<a href="/admin/marathon/schedule/">Manage Scheduling</a>{% endif %}
 <div id='calendar' style='width: 900px;'></div>
 
 {% endblock %}
