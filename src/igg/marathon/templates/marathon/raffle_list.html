@@ -9,7 +9,7 @@
 <h2>{% trans "Raffles" %}</h2>
 <ul>
     {% for raffle in raffles %}
-        <li>{{ raffle.name }}</li>
+        <li><a href="{% url raffle_detail raffle.pk %}" data-toggle="modal" title="{{ raffle.name }}">{{ raffle.name }}</a>{% if request.user.is_staff %} - {{ raffle.count_tickets }}{% endif %}</li>
     {% endfor %}
 </ul>
 {% endblock %}
