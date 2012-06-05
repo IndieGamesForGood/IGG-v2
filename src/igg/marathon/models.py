@@ -37,8 +37,11 @@ class Game(models.Model):
     ordering = ['visible','name']
 
   def threshold_percentage(self):
-    percent = int(self.points / MarathonInfo.info().points_threshold * 100)
-    return percent if percent < 100 else 100
+    if MarathonInfo.info().points_threshold > 0:
+      percent = int(self.points / MarathonInfo.info().points_threshold * 100)
+      return percent if percent < 100 else 100
+    else:
+      return 0
 
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
@@ -48,6 +51,13 @@ class Challenge(models.Model):
   bounty = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
   total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00, null=True, blank=True)
   user = models.ForeignKey(User)
+
+  def bounty_percentage(self):
+    if not self.bounty:
+      return 100
+    else:
+      percent = int(self.total / self.bounty * 100)
+      return percent if percent < 100 else 100
 
   def __unicode__(self):
     return _(u'%(name)s %(status)s%(privacy)s') %\

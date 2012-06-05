@@ -1,1 +1,53 @@
 {% load i18n %}
+<div style="width:531px; height:auto; float:right">
+    <div style="width:370px; float: left">
+        <p>{{ challenge.description }}</p>
+        {% if challenge.private and challenge.user == request.user %}<h4>This challenge is private; only you can donate towards it's completion!</h4>{% endif %}
+        {% if request.user.is_staff %}
+            {% if challenge.accepted %}
+                <p>This challenge is accepted! <a href="#">Unaccept it, this is a mistake!</a></p>
+            {% else %}
+                <p>This challenge isn't accepted yet! <a href="#">Accept it, we can pull this off!</a></p>
+            {% endif %}
+            <p>Requested by user: {{ challenge.user }}</p>
+        {% endif %}
+    </div>
+    <div style="width:150px; float: right">
+        <div class="progress" style="width:100%">
+            <div class="bar" id="challengeProgressBar" style="width:{{ challenge.bounty_percentage }}%;"></div>
+        </div>
+        <h7 id="challengeInfo">${{ challenge.total }}{% if challenge.bounty > 0 %} / ${{ challenge.bounty }}{% else %} (Ongoing){% endif %}</h7>
+    </div>
+</div>
+{% block before_body_end %}
+    <script type="text/javascript">
+        {% comment %}
+      var timePercentage = 0
+      var raffleStart = new Date('{{ raffle.start.isoformat }}')
+      var raffleEnd = new Date('{{ raffle.end.isoformat }}')
+      var now = new Date()
+      var timeText = "Starts: " + raffleStart.toDateString() + " at " + raffleStart.toTimeString() + "<br>"
+      timeText += "Ends: " + raffleEnd.toDateString() + " at " + raffleEnd.toTimeString()
+      var infoText = ""
+      if (now < raffleStart)
+      {
+          infoText += "This raffle hasn't started yet; if you donate now, you'll get tickets that can be entered in it later!"
+          timePercentage = 0
+      }
+      else if (now > raffleEnd)
+      {
+          infoText += "This raffle is over; check your e-mails if you entered it to see if you've won!"
+          timePercentage = 100
+      }
+      else
+      {
+          infoText += "This raffle is LIVE! "
+          timePercentage = 100 * (now - raffleStart) / (raffleEnd - raffleStart)
+      }
+      $("#raffleProgressBar").css('width',timePercentage + "%")
+      $("#raffleProgressInfo").html("<i>" + infoText + "</i>")
+      $("#raffleTimeInfo").html("<i>" + timeText + "</i>")
+
+      {% endcomment %}
+    </script>
+{% endblock %}

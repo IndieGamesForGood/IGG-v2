@@ -9,7 +9,9 @@
 <h2>{% trans "Challenges" %}</h2>
 <ul>
     {% for challenge in challenges %}
-        <li>{{ challenge.name }}</li>
+        <li{% if not challenge.accepted %} style="background-color:#f08080;"{% elif challenge.user == request.user %} style="background-color:#e0ffff;"{% endif %}>
+            <a href="{% url challenge_detail challenge.pk %}" data-toggle="modal" title="{{ challenge.name }}">{{ challenge.name }}</a> - ${{ challenge.total }}{% if challenge.bounty > 0 %} / ${{ challenge.bounty }}{% else %} (Ongoing){% endif %}
+        </li>
     {% endfor %}
 </ul>
 {% endblock %}

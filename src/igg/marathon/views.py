@@ -44,7 +44,12 @@ class GameDetailView(DetailView):
 
 class ChallengeListView(ListView):
   context_object_name = 'challenges'
-  model = Challenge
+
+  def get_queryset(self):
+    if self.request.user.is_staff:
+      return Challenge.objects.all()
+    else:
+      return self.request.user.challenges
 
 class ChallengeDetailView(DetailView):
   model = Challenge

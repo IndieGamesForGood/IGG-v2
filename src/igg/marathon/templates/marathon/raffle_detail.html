@@ -49,15 +49,7 @@
         $("#raffleProgressInfo").html("<i>" + infoText + "</i>")
         $("#raffleTimeInfo").html("<i>" + timeText + "</i>")
         {% comment %}
-        var gamePointsPercentage = gamePoints / (thresholdPoints / 100)
-        if (gamePointsPercentage > 100) { gamePointsPercentage = 100}
-        var infoText = "{{ game.name }} currently has a balance of " + gamePoints + " points; "
-        if (gamePoints < thresholdPoints)
-        {
-            infoText += "it needs " + (thresholdPoints - gamePoints) + " more to be scheduled. Help it out!"
-        } else {
-            infoText += "this means it can be scheduled. Donating more can still get it more time, though, so go right ahead!"
-        }
+
         {% endcomment %}
     </script>
 {% endblock %}
