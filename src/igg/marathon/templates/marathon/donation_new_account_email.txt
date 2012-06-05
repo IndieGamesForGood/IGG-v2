@@ -4,7 +4,7 @@ Thank you for your donation of ${{ amount|floatformat:2 }}!
 
 Since we couldn't find an account for your e-mail address in our system, we went ahead and made you one so you can log in.
 
-You login at http://{{ site.domain }}{% url auth_login %} with the following credentials:
+You can login at http://{{ site.domain }}{% url auth_login %} with the following credentials:
 
 Email: {{ user.email }}
 Password: {{ password }}
