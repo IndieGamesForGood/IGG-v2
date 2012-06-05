@@ -17,36 +17,29 @@
       </a>
       <a class="brand" href="{{ home_url }}">{% trans "IGG" %}</a>
       {% if request.user.is_authenticated %}
-          <div class="pull-right">
-              {% trans "Raised" %}: $<span id="infobox_total">{{ marathon.total }}</span>,
-              {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours<br />
-              {% trans "Tickets" %}: {{ request.user.profile.tickets }},
-              {% trans "Points" %}: {{ request.user.profile.points }}
-          </div>
       <div class="btn-group pull-right">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
           <i class="icon-user"></i> {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
+          <li><a href="#">{% trans "Tickets" %} <span class="pull-right badge {% if request.user.profile.tickets == 0 %}badge-important{% else %}badge-info{% endif %}">{{ request.user.profile.tickets }}</span></a></li>
+          <li><a href="#">{% trans "Points" %} <span class="pull-right badge {% if request.user.profile.points == 0 %}badge-important{% else %}badge-info{% endif %}">{{ request.user.profile.points }}</span></a></li>
           <li><a href="#">{% trans "Profile" %}</a></li>
           <li class="divider"></li>
           <li><a href="{% url auth_logout %}">{% trans "Logout" %}</a></li>
         </ul>
       </div>
       {% else %}
-          <div class="pull-right">
-          {% trans "Raised" %}: $<span id="infobox_total">{{ marathon.total }}</span>,
-          {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours<br />
-      </div>
       <div class="btn-group pull-right">
         <a class="btn" href="{% url auth_login %}{% if request.get_full_path != '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}"><i class="icon-user"></i> {% trans "Login" %}</a>
       </div>
       {% endif %}
-      {% if request.user.is_staff %}
       <div class="btn-group pull-right">
-        <a href="{% url admin:index %}" class="btn btn-warning"><i class="icon-wrench"></i> {% trans "Admin" %}</a>
+        <div class="btn">
+        {% trans "Raised" %} <span id="infobox_total" class="badge badge-info">${{ marathon.total }}</span> &middot;
+        {% trans "Length" %} <span id="infobox_hours" class="badge badge-info">{{ marathon.getCurrentHours }} hrs</span>
+        </div>
       </div>
-      {% endif %}
       <div class="btn-group pull-right">
         <a href="{{ donate_now_url }}" class="btn btn-success"><i class="icon-shopping-cart icon-white"></i> {% trans "Donate!" %}</a>
       </div>
