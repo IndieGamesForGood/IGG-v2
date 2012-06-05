@@ -31,6 +31,7 @@ class NoUsernameRegistrationForm(RegistrationFormUniqueEmail):
 class DonateForm(forms.Form):
   amount = forms.DecimalField(min_value=1.00, decimal_places=2, max_digits=14)
   email = forms.EmailField(required=True)
+  comment = forms.CharField(required=False, widget=forms.Textarea)
   name = forms.CharField(required=False,max_length=100)
   twitter = forms.CharField(required=False, max_length=16,
                             validators=[valids.RegexValidator(regex='^\w{0,15}$')],
