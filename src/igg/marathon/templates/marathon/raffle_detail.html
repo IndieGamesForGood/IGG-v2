@@ -4,7 +4,7 @@
         <i>We have: {{ raffle.quantity }}</i>
         <p>{{ raffle.description }}</p>
         {% if request.user.is_staff %}
-            {% if game.visible %}
+            {% if raffle.visible %}
                 <p>This raffle is visible! <a href="#">Hide it, quick!</a></p>
             {% else %}
                 <p>This raffle isn't visible yet! <a href="#">Make it show.</a></p>
