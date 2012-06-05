@@ -88,7 +88,22 @@ class DonateFormView(FormView):
 
   def form_valid(self, form):
     amount = form.cleaned_data.get('amount')
-    email = form.cleaned_data.get('email').strip()
+    email  = form.cleaned_data.get('email').strip()
+    name   = form.cleaned_data.get('name')
+    if name:
+      name = name.strip()
+    url = form.cleaned_data.get('url')
+    if url:
+      url = url.strip()
+    twitter = form.cleaned_data.get('twitter')
+    if twitter:
+      twitter = twitter.strip()
+    comment = form.cleaned_data.get('comment')
+    if comment:
+      comment = comment.strip()
+    game = form.cleaned_data.get('game')
+    challenge = form.cleaned_data.get('challenge')
+    raffle = form.cleaned_data.get('raffle')
 
     try:
       user = User.objects.get(email=email)
@@ -100,21 +115,20 @@ class DonateFormView(FormView):
       user.is_staff = False
       user.is_active = True
       user.is_superuser = False
-      name = form.cleaned_data.get('name', '').strip()
       if name:
         names = name.split()
         user.first_name = ' '.join(names[:-1])
         user.last_name = names[-1]
-        name = ' '.join(names[:-1])
+        template_name = ' '.join(names[:-1])
       else:
-        name = email
+        template_name = email
 
       # Send e-mail with username/password
       if Site._meta.installed:
           site = Site.objects.get_current()
       else:
           site = RequestSite(request)
-      context = {'user': user, 'name': name,
+      context = {'user': user, 'name': template_name,
                  'email': email, 'password': password,
                  'amount': amount, 'site': site}
       subject = ''.join(render_to_string('marathon/donation_new_account_email_subject.txt', context).splitlines())
@@ -124,10 +138,19 @@ class DonateFormView(FormView):
     user.profile.twitter = form.cleaned_data.get('twitter', None)
     user.save()
     user.profile.save()
+    
+    donation = Donation(user=user, name=name,
+                        url=url, twitter=twitter,
+                        amount=amount, comment=comment,
+                        game=game, challenge=challenge,
+                        raffle=raffle, approved=False,
+                        points=0)
+    donation.save()
     return HttpResponseRedirect(self.get_success_url())
 
   def get_success_url(self):
     return "http://www.google.com"
+
 
 class AjaxLookaheadView(JSONResponseMixin, ListView):
   # https://docs.djangoproject.com/en/dev/topics/class-based-views/#dynamic-filtering
