@@ -20,8 +20,8 @@
           <div class="pull-right">
               {% trans "Tickets" %}: {{ request.user.profile.tickets }},
               {% trans "Points" %}: {{ request.user.profile.points }}<br />
-              {% trans "Raised" %}: ${{ marathon.total }},
-              {% trans "Length" %}: {{ marathon.getCurrentHours }} hours
+              {% trans "Raised" %}: $<span id="infobox_total">{{ marathon.total }}</span>,
+              {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours
           </div>
       <div class="btn-group pull-right">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">

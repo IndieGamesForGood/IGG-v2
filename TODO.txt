@@ -41,12 +41,3 @@ Donation model
             Make new account
             Credit donation to account
             Copy inputted information to UserProfile
-
-Donors Page
-    View Donation Information
-        Name
-        Amount
-        Twitter
-        URL
-        Game
-        Challenge

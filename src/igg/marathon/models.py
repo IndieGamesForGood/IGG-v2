@@ -30,6 +30,10 @@ class Game(models.Model):
   class Meta:
     ordering = ['visible','name']
 
+  def threshold_percentage(self):
+    percent = int(self.points / MarathonInfo.info().points_threshold * 100)
+    return percent if percent < 100 else 100
+
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
   description = models.TextField()
