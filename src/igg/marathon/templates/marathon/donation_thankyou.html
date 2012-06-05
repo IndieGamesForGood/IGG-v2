@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Donation Completed" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Completed" %}</h2>
+<p>{% blocktrans %}Your donation has been completed and is pending confirmation by Paypal.{% endblocktrans %}</p>
+<p>{% blocktrans %}Thank you for your donation!{% endblocktrans %}</p>
+{% endblock %}

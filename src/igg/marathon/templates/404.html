@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Error 404" %}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Error 404" %}</h2>
+<p>{% blocktrans %}The page you requested could not be found.{% endblocktrans %}</p>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Donation Cancelled" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Cancelled" %}</h2>
+<p>{% blocktrans %}Your donation has been cancelled.{% endblocktrans %}</p>
+{% endblock %}

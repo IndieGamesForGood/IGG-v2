@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
@@ -125,7 +126,10 @@ class DonateFormView(FormView):
         template_name = names[0]
       else:
         template_name = email
-
+      user.save()
+      # must call authenticate
+      user = authenticate(username=username, password=password)
+      login(request, user)
       # Send e-mail with username/password
       context = {'user': user, 'name': template_name,
                  'email': email, 'password': password,
@@ -163,22 +167,6 @@ class DonateFormView(FormView):
           '&item_name=' + urlquote_plus(_('Donation to Child\'s Play Charity via ') + _('Indie Games for Good')) +
           '&custom=' + ipn_hash
           )
-
-    # $location = $redir
-    #           . "?amount=" . sprintf("%d.%02d", intval($amount/100),
-    #                                         intval($amount%100))
-    #           . "&notify_url=" . urlencode($notify_url)
-    #           . "&bn=" . urlencode($charity) . "_Donate_WPS_US"
-    #           . "&return=" . urlencode($landing_page) . "?" . urlencode($hashed_key)
-    #           . "&rm=1"
-    #           . "&cmd=_donations"
-    #           . "&cbt=Return+to+" . urlencode($charity)
-    #           . "&tax=0.00"
-    #           . "&shipping=0.00"
-    #           . "&business=" . urlencode($target)
-    #           . "&item_name=Donation+to+Child%27s+Play+Charity+via+" . urlencode($charity) . "+-+" . urlencode($target)
-    #           . "&custom=" . $hashed_key
-    #           ;
     return HttpResponseRedirect(url)
 
 class AjaxLookaheadView(JSONResponseMixin, ListView):
