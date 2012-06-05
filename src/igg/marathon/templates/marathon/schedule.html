@@ -7,57 +7,59 @@
 {% block head %}
 <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/fullcalendar.css' />
 <link rel='stylesheet' type='text/css' href='{{ STATIC_URL }}css/fullcalendar.print.css' media='print' />
-<script type='text/javascript' src='{{ STATIC_URL }}js/fullcalendar.min.js'></script>
-
-<script type='text/javascript'>
-
-    $(document).ready(function() {
-
-        rightnow = new Date();
-        $('#calendar').fullCalendar({
-            header: {
-                left: '',
-                center: 'title',
-                right: 'today prev,next'
-            },
-            editable: {% if request.user.is_staff %}true{% else %}false{% endif %},
-            allDaySlot: false,
-            slotMinutes: 15,
-            defaultView: 'agendaDay',
-            firstHour: rightnow.getHours(),
-            year: 2012,
-            month: 8,
-            date: 21,
-            events: [
-                {% for event in schedules %}
-                {
-                    id: '{{ event.id }}',
-                    title: '{{ forloop.counter }}: {{ event.game.name }}',
-                    start: new Date({{event.start.year}}, {{event.start.month|add:"-1"}}, {{event.start.day}}, {{event.start.hour}}, {{event.start.minute}}),
-                    end: new Date({{event.end.year}}, {{event.end.month|add:"-1"}}, {{event.end.day}}, {{event.end.hour}}, {{event.end.minute}}),
-                    allDay: false{% if event.game != None%},
-                    isGame: true,
-                    url: '{% url game_detail event.game.slug %}'{% else %},
-                    isGame: false{% endif %}
-                }{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            ],
-            eventClick: function(calEvent, jsEvent, view) {
-                if(calEvent.isGame)
-                {
-                    displayGameModal(jsEvent,calEvent.title + " (Scheduled for " + calEvent.start.getHours() + ":" + pad2(calEvent.start.getMinutes()) + " to " + calEvent.end.getHours() + ":" + pad2(calEvent.end.getMinutes()) + ")",calEvent.url);
-                }
-                return false;
-            }
-        });
-    });
-
-
-</script>
 {% endblock %}
 
 {% block content %}
 <h2>{% trans "Schedule" %}</h2>
 <div id='calendar' style='width: 900px;'></div>
 
+{% endblock %}
+{% block before_body_end %}
+    <script type='text/javascript' src='{{ STATIC_URL }}js/fullcalendar.min.js'></script>
+
+    <script type='text/javascript'>
+
+        $(document).ready(function() {
+
+            rightnow = new Date();
+            $('#calendar').fullCalendar({
+                                            header: {
+                                                left: '',
+                                                center: 'title',
+                                                right: 'today prev,next'
+                                            },
+                                            editable: {% if request.user.is_staff %}true{% else %}false{% endif %},
+                                            allDaySlot: false,
+                                            slotMinutes: 15,
+                                            defaultView: 'agendaDay',
+                                            firstHour: rightnow.getHours(),
+                                            year: 2012,
+                                            month: 8,
+                                            date: 21,
+                                            events: [
+                                                {% for event in schedules %}
+                                                    {
+                                                        id: '{{ event.id }}',
+                                                        title: '{% if event.id != 1 %}{{ event.game.name }}{% else %}Indie Games for Good Marathon Duration (Donate to extend!){% endif %}',
+                                                        start: new Date({{event.start.year}}, {{event.start.month|add:"-1"}}, {{event.start.day}}, {{event.start.hour}}, {{event.start.minute}}),
+                                                        end: new Date({{event.end.year}}, {{event.end.month|add:"-1"}}, {{event.end.day}}, {{event.end.hour}}, {{event.end.minute}}),
+                                                        allDay: false{% if event.game != None%},
+                                                        isGame: true,
+                                                        url: '{% url game_detail event.game.slug %}'{% else %},
+                                                        isGame: false{% endif %}
+                                                    }{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            ],
+                                            eventClick: function(calEvent, jsEvent, view) {
+                                                if(calEvent.isGame)
+                                                {
+                                                    displayGameModal(jsEvent,calEvent.title + " (Scheduled for " + calEvent.start.getHours() + ":" + pad2(calEvent.start.getMinutes()) + " to " + calEvent.end.getHours() + ":" + pad2(calEvent.end.getMinutes()) + ")",calEvent.url);
+                                                }
+                                                return false;
+                                            }
+                                        });
+        });
+
+
+    </script>
 {% endblock %}

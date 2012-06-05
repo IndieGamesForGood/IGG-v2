@@ -49,6 +49,7 @@ urlpatterns = patterns('',
 
   url(r'^games/$', GameListView.as_view(), name='game_list'),
   url(r'^games/(?P<slug>[a-zA-Z0-9_.-]+)/$', GameDetailView.as_view(), name='game_detail'),
+  url(r'^games/pk/(?P<pk>[0-9]+)/$', GameDetailView.as_view(), name='game_detail'),
 
   url(r'^challenges/$', ChallengeListView.as_view(), name='challenge_list'),
   url(r'^challenges/(?P<slug>[a-zA-Z0-9_.-]+)/$', ChallengeDetailView.as_view(), name='challenge_detail'),

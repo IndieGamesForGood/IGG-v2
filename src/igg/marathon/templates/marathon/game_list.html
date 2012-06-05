@@ -8,23 +8,23 @@
 {% block content %}
 <h2>{% trans "Games" %}</h2>
 <div class="row">
-  <div class="span6 offset3">
+  <div class="span10 offset1">
     <table class="table table-condensed table-striped">
       <thead>
         <tr>
-          <th>#</th>
           <th>Name</th>
-          <th>Foo</th>
-          <th>Bar</th>
+          <th>Developer</th>
+          {% comment %}<th>Points</th>{% endcomment %}
+          <th>Threshold</th>
         </tr>
       </thead>
       <tbody>
       {% for game in games %}
-        <tr{% if game.visible %}{% else %} bgcolor="lightblue"{% endif %} {{game.visible}}>
-          <td>{{ forloop.counter }}</td>
-          <td><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#modal" title="{{ game.name }}">{{ game.name }}</a></td>
-          <td>foo</td>
-          <td>bar</td>
+        <tr>
+          <td{% if game.visible %}{% else %} style="font-style:italic; background-color: #e9967a;"{% endif %}><a href="{% url game_detail game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></td>
+          <td>{% if game.site %}<a href="{{ game.site }}" title="{{ game.developer }}'s Site">{{ game.developer }}</a>{% else %}{{ game.developer }}{% endif %}</td>
+          {% comment %}<td>{{ game.points }} / {{ marathon.points_threshold }}</td>{% endcomment %}
+          <td><div class="progress progress-{% if game.threshold_percentage < 100 %}info progress-striped {% else %}success{% endif %}" style="margin-bottom: auto"><div class="bar"style="width: {{ game.threshold_percentage }}%; color: #d3d3d3;">{{ game.points }}</div></div></td>
         </tr>
       {% endfor %}
       </tbody>

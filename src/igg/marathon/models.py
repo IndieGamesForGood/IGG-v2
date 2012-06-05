@@ -23,12 +23,16 @@ class Game(models.Model):
   points = models.IntegerField(default=0)
 
   def __unicode__(self):
-    return _(u'Game: %(name)s%(status)s') %\
+    return _(u'%(name)s%(status)s') %\
            {'name': self.name,
             'status': (' (NOT VISIBLE)' if not self.visible else '')}
 
   class Meta:
     ordering = ['visible','name']
+
+  def threshold_percentage(self):
+    percent = int(self.points / MarathonInfo.info().points_threshold * 100)
+    return percent if percent < 100 else 100
 
 class Challenge(models.Model):
   name = models.CharField(max_length=200)
@@ -67,9 +71,12 @@ class Raffle(models.Model):
 
 class Donation(models.Model):
   user = models.ForeignKey(User, related_name='donations')
+  name = models.CharField(max_length=100,null=True,blank=True)
+  url = models.URLField(null=True, blank=True, max_length=200)
+  twitter = models.CharField(max_length=16, null=True, blank=True)
   amount = models.DecimalField(max_digits=14, decimal_places=2, help_text=_(u'Maximum $999,999,999,999.99'))
   comment = models.TextField(null=True, blank=True)
-  timestamp = models.DateTimeField(auto_now_add=True)
+  time = models.DateTimeField(auto_now_add=True)
   game = models.ForeignKey(Game, null=True, blank=True)
   challenge = models.ForeignKey(Challenge, null=True, blank=True, related_name='donations')
   raffle = models.ForeignKey(Raffle, null=True, blank=True)
@@ -119,6 +126,8 @@ class UserProfile(models.Model):
   user = models.OneToOneField(User)
   tickets = models.IntegerField(default=0)
   points = models.IntegerField(default=0)
+  url = models.URLField(null=True, blank=True, max_length=200)
+  twitter = models.CharField(max_length=16, null=True, blank=True)
 
   def __unicode__(self):
     return self.user.__unicode__()
@@ -129,6 +138,7 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 class MarathonInfo(models.Model):
   total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
+  points_threshold = models.IntegerField(default=3000)
 
   def dollarsToPoints(self,dollars):
     return int((self.dollarsToTime(dollars).total_seconds() / 60.0) * settings.IGG_PARAM_PTS_PER_MIN)
@@ -141,7 +151,14 @@ class MarathonInfo(models.Model):
   def pointsToMinutes(points):
     return points * settings.IGG_PARAM_PTS_PER_MIN
 
-  def dollarsToTime(self, dollars, oldTotal=None):
+  def getCurrentHours(self):
+    time = self.dollarsToTime()
+    return (time //3600000000 * 1000000).seconds
+
+  def dollarsToTime(self, dollars=None, oldTotal=None):
+    if dollars is None:
+      dollars = self.total
+      oldTotal = 0.00
     if oldTotal is None:
       oldTotal = self.total
     f_dollars = float(dollars)
@@ -150,6 +167,10 @@ class MarathonInfo(models.Model):
     f_oldTotal = float(oldTotal)
     return timedelta(hours=((log(((f_oldTotal+f_dollars)/ihcost * rate)+1) / log(1.0 + rate)) -
                             (log((f_oldTotal/ihcost * rate)+1)/log(1.0 + rate))))
+
+  @classmethod
+  def info(cls):
+    return cls.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK)
 
   def save(self, *args, **kwargs):
     self.total = sum(foo.amount for foo in Donation.objects.filter(approved=True))

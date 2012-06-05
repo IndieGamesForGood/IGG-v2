@@ -17,10 +17,12 @@
       </a>
       <a class="brand" href="{{ home_url }}">{% trans "IGG" %}</a>
       {% if request.user.is_authenticated %}
-      <p class="navbar-text pull-right">
-        {% trans "Tickets" %}: {{ request.user.profile.tickets }},
-        {% trans "Points" %}: {{ request.user.profile.points }}
-      </p>
+          <div class="pull-right">
+              {% trans "Tickets" %}: {{ request.user.profile.tickets }},
+              {% trans "Points" %}: {{ request.user.profile.points }}<br />
+              {% trans "Raised" %}: $<span id="infobox_total">{{ marathon.total }}</span>,
+              {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours
+          </div>
       <div class="btn-group pull-right">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
           <i class="icon-user"></i> {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="caret"></span>
@@ -42,7 +44,7 @@
       </div>
       {% endif %}
       <div class="btn-group pull-right">
-        <a href="{{ donate_now_url }}" class="btn btn-success"><i class="icon-shopping-cart icon-white"></i> {% trans "Donate Now" %}</a>
+        <a href="{{ donate_now_url }}" class="btn btn-success"><i class="icon-shopping-cart icon-white"></i> {% trans "Donate!" %}</a>
       </div>
       <div class="nav-collapse">
         <ul class="nav">
@@ -51,7 +53,7 @@
           <li{% active request challenge_list_url %}><a href="{{ challenge_list_url }}">{% trans "Challenges" %}</a></li>
           <li{% active request raffle_list_url    %}><a href="{{ raffle_list_url }}">{% trans "Raffles" %}</a></li>
           <li{% active request schedule_list_url  %}><a href="{{ schedule_list_url }}">{% trans "Schedule" %}</a></li>
-          <li{% active request donor_list_url     %}><a href="{{ donor_list_url }}">{% trans "Donors" %}</a></li>
+          <li{% active request donor_list_url     %}><a href="{{ donor_list_url }}">{% trans "Log" %}</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>

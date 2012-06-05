@@ -53,8 +53,13 @@ class ScheduleListView(ListView):
 
 
 class DonorListView(ListView):
-  model = Donation
   context_object_name = 'donations'
+
+  def get_queryset(self):
+    if self.request.user.is_staff:
+      return Donation.objects.all().order_by('-time')
+    else:
+      return Donation.objects.filter(approved=True).order_by('-time')
 
 
 class DonateFormView(FormView):

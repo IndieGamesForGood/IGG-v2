@@ -1,14 +1,40 @@
 {% load i18n %}
-
-<p>Developer: {{ game.developer }}</p>
-<p>Site: <a href="{{ game.site }}" title="{{ game.name }}">{{ game.site }}</a></p>
-<p>Description: {{ game.description }}</p>
-{% if request.user.is_staff %}
-<p>
-{% if game.visible %}
-
-{% else %}
-  {% blocktrans %}This game is not currently approved. <a href="#">Approve Now</a> | <a href="#">Edit Info</a> | <a href="#">Delete</a>{% endblocktrans %}
-{% endif %}
-</p>
-{% endif %}
+<div style="width:531px; height:auto; float:right">
+    <div style="width:370px; float: left">
+        <p>Developer: {{ game.developer }}</p>
+        <p>Site: <a href="{{ game.site }}" title="{{ game.name }}">{{ game.site }}</a></p>
+        <p>Description: {{ game.description }}</p>
+        {% if request.user.is_staff %}
+        {% if game.visible %}
+          <p></p>
+        {% else %}
+          <p>This game is not currently approved.
+            <a href="#">Approve Now</a> | <a href="#">Edit Info</a> | <a href="#">Delete</a>
+          </p>
+        {% endif %}
+        {% endif %}
+    </div>
+    <div style="width:150px; float: right">
+        <div class="progress" style="width:100%">
+            <div class="bar" id="gameBucketBar" style="width:0%;"></div>
+        </div>
+        <h7 id="gameBucketInfo">Please enable JavaScript to view information on the current status of donations towards {{ game.name }}.</h7>
+    </div>
+</div>
+{% block before_body_end %}
+    <script type="text/javascript">
+        var gamePoints = {{ game.points }}
+        var thresholdPoints = {{ marathon.points_threshold }}
+        var gamePointsPercentage = gamePoints / (thresholdPoints / 100)
+        if (gamePointsPercentage > 100) { gamePointsPercentage = 100}
+        $("#gameBucketBar").css('width',gamePointsPercentage + "%")
+        var infoText = "{{ game.name }} currently has a balance of " + gamePoints + " points; "
+        if (gamePoints < thresholdPoints)
+        {
+            infoText += "it needs " + (thresholdPoints - gamePoints) + " more to be scheduled. Help it out!"
+        } else {
+            infoText += "this means it can be scheduled. Donating more can still get it more time, though, so go right ahead!"
+        }
+        $("#gameBucketInfo").html("<i>" + infoText + "</i>")
+    </script>
+{% endblock %}

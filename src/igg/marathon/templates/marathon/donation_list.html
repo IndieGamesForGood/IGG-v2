@@ -3,13 +3,24 @@
 
 {% block meta_description %}{% endblock %}
 {% block meta_keywords %}{% endblock %}
-{% block title %}{% trans "Donors" %} :: {{ block.super }}{% endblock %}
+{% block title %}{% trans "Donation Log" %} :: {{ block.super }}{% endblock %}
 
 {% block content %}
-<h2>{% trans "Donors" %}</h2>
-<ul>
-    {% for donation in donations %}
-        <li>{{ donation.name }}</li>
-    {% endfor %}
-</ul>
+<h2>{% trans "Donation Log" %}</h2>
+<div class="row">
+    <div class="span10 offset1">
+        <table class="table table-condensed table-striped">
+            <tbody>
+            {% for donation in donations %}
+                <tr>
+                    <td{% if not donation.approved %} style="font-style:italic; background-color: #e9967a;"{% endif %}>{% if donation.name %}{% if donation.url %}<a href="{{ donation.url }}" targ="_blank">{{ donation.name }}</a>{% else %}{{ donation.name }}{% endif %}
+                    {% if donation.twitter %}(<a href="http://twitter.com/{{ donation.twitter }}" targ="_blank">@{{ donation.twitter }}</a>){% else %}{% endif %}{% else %}
+                    Anonymous{% endif %} donated ${{ donation.amount }}{% if donation.game %} to see <a href="{% url game_detail donation.game.slug %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ donation.game.name }}">{{ donation.game.name }}</a>{% endif %}.
+                    {% if request.user.is_staff %} (<a href="/admin/marathon/donation/{{ donation.pk }}" style="color: red;">edit</a>){% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
