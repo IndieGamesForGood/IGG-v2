@@ -16,7 +16,7 @@
                     <td{% if not donation.approved %} style="font-style:italic; background-color: #e9967a;"{% endif %}>{% if donation.name %}{% if donation.url %}<a href="{{ donation.url }}" targ="_blank">{{ donation.name }}</a>{% else %}{{ donation.name }}{% endif %}
                     {% if donation.twitter %}(<a href="http://twitter.com/{{ donation.twitter }}" targ="_blank">@{{ donation.twitter }}</a>){% else %}{% endif %}{% else %}
                     Anonymous{% endif %} donated ${{ donation.amount }}{% if donation.game %} to see <a href="{% url game_detail donation.game.pk %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ donation.game.name }}">{{ donation.game.name }}</a>{% endif %}.
-                    {% if request.user.is_staff %} (<a href="/admin/marathon/donation/{{ donation.pk }}" style="color: red;">edit</a>){% endif %}</td>
+                    {% if request.user.is_staff %} (<a href="/admin/marathon/donation/{{ donation.pk }}" style="color: red;">edit</a>){% if donation.comment %}<i> Comment: {{ donation.comment }}</i>{% endif %}{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -50,15 +50,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="control-group{% if form.email.errors %} error{% endif %}">
-                                    <label class="control-label" for="email">{% trans "Comment" %}</label>
-
-                                    <div class="controls">
-                                      <textarea id="comment" name="comment" tabindex="2">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
-                                            {% if form.comment.errors %}<span class="help-inline">
-                                                {% for error in form.comment.errors %}{{ error }} {% endfor %}</span>{% endif %}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,7 +91,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="help-block" id="donationPreview"></p>
+                                <p>Your donation will look like this in the log:</p>
+                                <div class="well" style="width:480px;">
+                                    <span id="donationPreview"></span>
+                                </div>
+
+                                <div class="control-group{% if form.comment.errors %} error{% endif %}">
+                                    <label class="control-label" for="email">{% trans "Comment to the Team" %}</label>
+
+                                    <div class="controls">
+                                        <textarea id="comment" name="comment" tabindex="2">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
+                                            {% if form.comment.errors %}<span class="help-inline">
+                                                {% for error in form.comment.errors %}{{ error }} {% endfor %}</span>{% endif %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div><!-- /.accordian-group -->

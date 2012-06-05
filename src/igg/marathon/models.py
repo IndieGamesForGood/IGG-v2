@@ -50,10 +50,10 @@ class Challenge(models.Model):
   user = models.ForeignKey(User)
 
   def __unicode__(self):
-    return _(u'Challenge: %(name)s (%(status)s%(privacy)s)') %\
+    return _(u'%(name)s %(status)s%(privacy)s') %\
          {'name': self.name,
-          'status': ('NOT ' if not self.accepted else '') + 'Accepted',
-          'privacy':(', PRIVATE: ' + self.user.__unicode__() if self.private else '')}
+          'status': ('NOT Accepted, ' if not self.accepted else ''),
+          'privacy':('PRIVATE: ' + self.user.__unicode__() if self.private else '')}
 
 User.challenges = property(lambda u:
                            Challenge.objects.filter(Q(accepted=True, user=u, private=True) |
