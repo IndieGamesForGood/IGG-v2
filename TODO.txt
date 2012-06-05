@@ -29,3 +29,6 @@ Donation model
             Make new account
             Credit donation to account
             Copy inputted information to UserProfile
+
+Login
+    Change Username to Email

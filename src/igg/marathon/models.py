@@ -275,7 +275,7 @@ def donationSaved(sender, instance, **kwargs):
 
 @receiver(models.signals.pre_save,sender=Challenge)
 def challengeSaving(sender, instance, **kwargs):
-  instance.total = sum(foo.amount for foo in instance.donations.filter(approved=True))
+  instance.total = sum(foo.amount for foo in Donation.objects.filter(approved=True,challenge=instance))
 
 @receiver(models.signals.post_save,sender=RaffleEntry)
 def raffleEntrySaved(sender, instance, **kwargs):
