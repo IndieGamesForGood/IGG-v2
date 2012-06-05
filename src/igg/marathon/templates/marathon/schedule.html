@@ -45,7 +45,7 @@
                                                         end: new Date({{event.end.year}}, {{event.end.month|add:"-1"}}, {{event.end.day}}, {{event.end.hour}}, {{event.end.minute}}),
                                                         allDay: false{% if event.game != None%},
                                                         isGame: true,
-                                                        url: '{% url game_detail event.game.slug %}'{% else %},
+                                                        url: '{% url game_detail event.game.pk %}'{% else %},
                                                         isGame: false{% endif %}
                                                     }{% if not forloop.last %}, {% endif %}
                                                 {% endfor %}
