@@ -19,6 +19,17 @@ class GameDetailView(DetailView):
   model = Game
   context_object_name = 'game'
 
+  def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+    context = super(GameDetailView, self).get_context_data(**kwargs)
+    game = context.get('game')
+    total = MarathonInfo.info().total
+    if total != 0:
+      context['threshold'] = int(game.points / MarathonInfo.info().total)
+    else:
+      context['threshold'] = 0
+    return context
+
 class ChallengeListView(ListView):
   context_object_name = 'challenges'
   model = Challenge
