@@ -24,7 +24,7 @@
           <td{% if game.visible %}{% else %} style="font-style:italic; background-color: #e9967a;"{% endif %}><a href="{% url game_detail game.pk %}" data-toggle="modal" data-target="#gameDetailModal" title="{{ game.name }}">{{ game.name }}</a></td>
           <td>{% if game.site %}<a href="{{ game.site }}" title="{{ game.developer }}'s Site">{{ game.developer }}</a>{% else %}{{ game.developer }}{% endif %}</td>
           {% comment %}<td>{{ game.points }} / {{ marathon.points_threshold }}</td>{% endcomment %}
-          <td><div id="progress_{{ game.pk }}" class="progress progress-{% if game.threshold_percentage < 100 %}info progress-striped {% else %}success{% endif %}" style="margin-bottom: auto"><div id="progress_bar_{{ game.pk }}" class="bar"style="width: {{ game.threshold_percentage }}%; color: #d3d3d3;">{{ game.points }}</div></div></td>
+          <td><div id="progress_{{ game.pk }}" class="progress progress-{% if game.threshold_percentage < 100 %}info progress-striped active{% else %}success{% endif %}" style="margin-bottom: auto"><div id="progress_bar_{{ game.pk }}" class="bar"style="width: {{ game.threshold_percentage }}%; color: #d3d3d3;">{{ game.points }}</div></div></td>
         </tr>
       {% endfor %}
       </tbody>
