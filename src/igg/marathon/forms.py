@@ -45,8 +45,3 @@ class DonateForm(forms.Form):
   challenge = forms.ModelChoiceField(required=False,
                                      queryset=Challenge.objects.filter(accepted=True),
                                      empty_label="Select a challenge...")
-
-  def clean_name(self):
-    return "Anonymous" \
-      if self.cleaned_data.get('name', '') == '' \
-      else self.cleaned_data['name']

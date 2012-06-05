@@ -1,5 +1,11 @@
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import RequestSite
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext as _
 from django.views.generic import ListView, DetailView, FormView, View
 
 from igg.marathon.mixins import JSONResponseMixin
@@ -81,8 +87,9 @@ class DonateFormView(FormView):
   form_class = DonateForm
 
   def form_valid(self, form):
+    amount = form.cleaned_data.get('amount')
     email = form.cleaned_data.get('email').strip()
-    name = form.cleaned_data.get('name', '').strip()
+
     try:
       user = User.objects.get(email=email)
     except User.DoesNotExist:
@@ -93,10 +100,26 @@ class DonateFormView(FormView):
       user.is_staff = False
       user.is_active = True
       user.is_superuser = False
-    if name:
-      names = name.split()
-      user.first_name = names[:-1]
-      user.last_name = names[-1]
+      name = form.cleaned_data.get('name', '').strip()
+      if name:
+        names = name.split()
+        user.first_name = ' '.join(names[:-1])
+        user.last_name = names[-1]
+        name = ' '.join(names[:-1])
+      else:
+        name = email
+
+      # Send e-mail with username/password
+      if Site._meta.installed:
+          site = Site.objects.get_current()
+      else:
+          site = RequestSite(request)
+      context = {'user': user, 'name': name,
+                 'email': email, 'password': password,
+                 'amount': amount, 'site': site}
+      subject = ''.join(render_to_string('marathon/donation_new_account_email_subject.txt', context).splitlines())
+      message = render_to_string('marathon/donation_new_account_email.txt', context)
+      user.email_user(subject, message, settings.SERVER_EMAIL)
     user.profile.url = form.cleaned_data.get('url', None)
     user.profile.twitter = form.cleaned_data.get('twitter', None)
     user.save()

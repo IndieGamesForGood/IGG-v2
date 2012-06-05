@@ -1,0 +1,1 @@
+{% load i18n %}{% blocktrans %}{{ name }}, thank you for your donation! Here is your account information.{% endblocktrans %}
