@@ -241,7 +241,6 @@ def pointTransactionSaved(sender, instance, **kwargs):
 
 
 def paypal_payment_was_successful(sender, **kwargs):
-  foo = 4 / 0
   ipn_obj = sender
   ipn_hash = ipn_obj.custom.strip()
   donation = get_object_or_404(Donation, ipn_hash=ipn_hash)

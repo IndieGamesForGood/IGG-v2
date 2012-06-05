@@ -160,9 +160,7 @@ class DonateFormView(FormView):
           '&tax=0.00' +
           '&shipping=0.00' +
           '&business=' + urlquote_plus(settings.PAYPAL_RECEIVER_EMAIL) +
-          '&item_name=' + urlquote_plus(_('Donation to Child\'s Play Charity '
-                                      'via Indie Games for Good - %(target)s') \
-                                      % {'target': settings.PAYPAL_RECEIVER_EMAIL}) +
+          '&item_name=' + urlquote_plus(_('Donation to Child\'s Play Charity via ') + _('Indie Games for Good')) +
           '&custom=' + ipn_hash
           )
 
