@@ -6,3 +6,6 @@ body {
 .tr { text-align: right }
 .tc { text-align: center }
 .tb { text-align: block }
+.popover-inner {
+  width: 400px;
+}
