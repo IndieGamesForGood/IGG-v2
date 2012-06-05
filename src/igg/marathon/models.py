@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
@@ -72,6 +72,13 @@ class Raffle(models.Model):
     return _(u'Raffle: %(name)s%(status)s') %\
          {'name': self.name,
           'status': (' (HIDDEN)' if not self.visible else '')}
+
+  def count_tickets(self):
+    count = self.entries.aggregate(Sum('tickets'))['tickets__sum']
+    if count:
+      return count
+    else:
+      return 0
 
 class Donation(models.Model):
   user = models.ForeignKey(User, related_name='donations')
