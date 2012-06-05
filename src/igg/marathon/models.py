@@ -14,6 +14,9 @@ from paypal.standard.ipn.signals import payment_was_successful
 import locale
 locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
 
+import logging
+logger = logging.getLogger(__name__)
+
 # https://docs.djangoproject.com/en/dev/ref/models/fields/
 # https://docs.djangoproject.com/en/dev/topics/i18n/translation/
 
@@ -238,6 +241,7 @@ def pointTransactionSaved(sender, instance, **kwargs):
 
 
 def paypal_payment_was_successful(sender, **kwargs):
+  logger.debug(ipn_obj)
   ipn_obj = sender
   ipn_hash = ipn_obj.custom.strip()
   donation = get_object_or_404(Donation, ipn_hash=ipn_hash)
