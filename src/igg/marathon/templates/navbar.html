@@ -18,10 +18,10 @@
       <a class="brand" href="{{ home_url }}">{% trans "IGG" %}</a>
       {% if request.user.is_authenticated %}
           <div class="pull-right">
-              {% trans "Tickets" %}: {{ request.user.profile.tickets }},
-              {% trans "Points" %}: {{ request.user.profile.points }}<br />
               {% trans "Raised" %}: $<span id="infobox_total">{{ marathon.total }}</span>,
-              {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours
+              {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours<br />
+              {% trans "Tickets" %}: {{ request.user.profile.tickets }},
+              {% trans "Points" %}: {{ request.user.profile.points }}
           </div>
       <div class="btn-group pull-right">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -34,6 +34,10 @@
         </ul>
       </div>
       {% else %}
+          <div class="pull-right">
+          {% trans "Raised" %}: $<span id="infobox_total">{{ marathon.total }}</span>,
+          {% trans "Length" %}: <span id="infobox_hours">{{ marathon.getCurrentHours }}</span> hours<br />
+      </div>
       <div class="btn-group pull-right">
         <a class="btn" href="{% url auth_login %}{% if request.get_full_path != '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}"><i class="icon-user"></i> {% trans "Login" %}</a>
       </div>
