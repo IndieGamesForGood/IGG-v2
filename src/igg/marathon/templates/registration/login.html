@@ -4,7 +4,7 @@
 {% block title %}{% trans "Login" %} :: {{ block.super }}{% endblock %}
 
 {% block content %}
-<h2>{% trans "Login" %}</h2>
+<h2>{% trans "Login" %}</h2>{% if request.user.is_authenticated %}<p>You're already logged in!</p>{% else %}
 <div class="row">
   <div class="offset3 span6">
     <form method="post" action="." class="form-horizontal">
@@ -48,5 +48,5 @@
     </p>
     
   </div>
-</div>
+</div>{% endif %}
 {% endblock %}
