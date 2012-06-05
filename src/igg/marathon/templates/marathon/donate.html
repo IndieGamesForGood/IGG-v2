@@ -260,7 +260,7 @@
                     $('#donateGameInfo').text('Select a game to see details and status.')
                 } else {
                     $('#donateGameInfo').text('Loading...')
-                    $('#donateGameInfo').load('/games/pk/' + currentGameID)
+                    $('#donateGameInfo').load('/games/' + currentGameID + '?' + (new Date().getTime()))
                 }
             }
         }
@@ -275,7 +275,7 @@
                     $('#donateChallengeInfo').text("Select a Challenge.")
                 } else {
                     $('#donateChallengeInfo').text('Loading challenge info...')
-                    $('#donateChallengeInfo').load('/challenges/pk/' + currentChallengeID)
+                    $('#donateChallengeInfo').load('/challenges/' + currentChallengeID + '?' + (new Date().getTime()))
                 }
             }
         }
@@ -290,7 +290,7 @@
                     $('#donateRaffleInfo').text("Select a Raffle to see it's details.")
                 } else {
                     $('#donateRaffleInfo').text('Loading raffle info...')
-                    $('#donateRaffleInfo').load('/raffles/pk/' + currentRaffleID)
+                    $('#donateRaffleInfo').load('/raffles/' + currentRaffleID + '?' + (new Date().getTime()))
                 }
             }
         }
