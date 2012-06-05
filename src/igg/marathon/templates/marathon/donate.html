@@ -67,7 +67,7 @@
 
                                     <div class="controls">
                                         <div class="input-prepend">
-                                            <span class="add-on"><i class="icon-pencil"></i></span><input class="span3" id="name" name="name" size="16" type="text" placeholder="{% trans "John Smith" %}" tabindex="3" value="{% if form.name.value %}{{ form.name.value }}{% else %}{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% endif %}{% endif %}">
+                                            <span class="add-on"><i class="icon-pencil"></i></span><input class="span3" id="name" name="name" size="16" type="text" placeholder="{% trans "John Smith" %}" tabindex="11" value="{% if form.name.value %}{{ form.name.value }}{% else %}{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% endif %}{% endif %}">
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                     <label class="control-label" for="url">{% trans "Homepage" %}</label>
                                     <div class="controls">
                                         <div class="input-prepend">
-                                            <span class="add-on"><i class="icon-home"></i></span><input class="span3" id="url" name="url" size="16" type="text" placeholder="{% trans "http://iggmarathon.com/" %}" tabindex="3" value="{% if form.url.value %}{{ form.url.value }}{% else %}{% if request.user.profile.url %}{{ request.user.profile.url }}{% endif %}{% endif %}">
+                                            <span class="add-on"><i class="icon-home"></i></span><input class="span3" id="url" name="url" size="16" type="text" placeholder="{% trans "http://iggmarathon.com/" %}" tabindex="12" value="{% if form.url.value %}{{ form.url.value }}{% else %}{% if request.user.profile.url %}{{ request.user.profile.url }}{% endif %}{% endif %}">
                                             {% if form.url.errors %}<span class="help-inline">
                                                 {% for error in form.url.errors %}{{ error }} {% endfor %}</span>{% endif %}
                                         </div>
@@ -85,7 +85,7 @@
                                     <label class="control-label" for="twitter">{% trans "Twitter handle" %}</label>
                                     <div class="controls">
                                         <div class="input-prepend">
-                                            <span class="add-on">@</span><input class="span3" id="twitter" name="twitter" size="16" type="text" placeholder="{% trans "iggmarathon" %}" tabindex="3" value="{% if form.twitter.value %}{{ form.twitter.value }}{% else %}{% if request.user.profile.twitter %}{{ request.user.profile.twitter }}{% endif %}{% endif %}">
+                                            <span class="add-on">@</span><input class="span3" id="twitter" name="twitter" size="16" type="text" placeholder="{% trans "iggmarathon" %}" tabindex="13" value="{% if form.twitter.value %}{{ form.twitter.value }}{% else %}{% if request.user.profile.twitter %}{{ request.user.profile.twitter }}{% endif %}{% endif %}">
                                             {% if form.twitter.errors %}<span class="help-inline">
                                                 {% for error in form.twitter.errors %}{{ error }} {% endfor %}</span>{% endif %}
                                         </div>
@@ -100,7 +100,7 @@
                                     <label class="control-label" for="email">{% trans "Comment to the Team" %}</label>
 
                                     <div class="controls">
-                                        <textarea id="comment" name="comment" tabindex="2">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
+                                        <textarea id="comment" name="comment" tabindex="14">{% if form.comment.value %}{{ form.comment.value }}{% endif %}</textarea>
                                             {% if form.comment.errors %}<span class="help-inline">
                                                 {% for error in form.comment.errors %}{{ error }} {% endfor %}</span>{% endif %}
                                     </div>
