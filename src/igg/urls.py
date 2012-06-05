@@ -48,14 +48,13 @@ urlpatterns = patterns('',
   url(r'^donate-now/$', DonateFormView.as_view(), name='donate_now'),
 
   url(r'^games/$', GameListView.as_view(), name='game_list'),
-  url(r'^games/(?P<slug>[a-zA-Z0-9_.-]+)/$', GameDetailView.as_view(), name='game_detail'),
-  url(r'^games/pk/(?P<pk>[0-9]+)/$', GameDetailView.as_view(), name='game_detail'),
+  url(r'^games/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game_detail'),
 
   url(r'^challenges/$', ChallengeListView.as_view(), name='challenge_list'),
-  url(r'^challenges/(?P<slug>[a-zA-Z0-9_.-]+)/$', ChallengeDetailView.as_view(), name='challenge_detail'),
+  url(r'^challenges/(?P<pk>\d+)/$', ChallengeDetailView.as_view(), name='challenge_detail'),
 
   url(r'^raffles/$', RaffleListView.as_view(), name='raffle_list'),
-  url(r'^raffles/(?P<slug>[a-zA-Z0-9_.-]+)/$', RaffleDetailView.as_view(), name='raffle_detail'),
+  url(r'^raffles/(?P<pk>\d+)/$', RaffleDetailView.as_view(), name='raffle_detail'),
 
   url(r'^schedule/$', ScheduleListView.as_view(template_name='marathon/schedule.html'), name='schedule_list'),
   url(r'^donors/$', DonorListView.as_view(), name='donor_list'),

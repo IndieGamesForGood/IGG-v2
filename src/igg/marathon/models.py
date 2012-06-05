@@ -19,7 +19,6 @@ class Game(models.Model):
   site = models.CharField(max_length=200)
   description = models.TextField()
   visible = models.BooleanField(default=False)
-  slug = models.SlugField()
   points = models.IntegerField(default=0)
 
   def __unicode__(self):
@@ -42,7 +41,6 @@ class Challenge(models.Model):
   bounty = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
   total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00, null=True, blank=True)
   user = models.ForeignKey(User)
-  slug = models.SlugField()
 
   def __unicode__(self):
     return _(u'Challenge: %(name)s (%(status)s%(privacy)s)') %\
@@ -62,7 +60,6 @@ class Raffle(models.Model):
   visible = models.BooleanField(default=False)
   start = models.DateTimeField(null=True, blank=True)
   end = models.DateTimeField(null=True, blank=True)
-  slug = models.SlugField()
 
   def __unicode__(self):
     return _(u'Raffle: %(name)s%(status)s') %\
