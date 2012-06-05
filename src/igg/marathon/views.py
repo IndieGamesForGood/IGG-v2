@@ -154,7 +154,7 @@ class DonateFormView(FormView):
           '&bn=' + urlquote_plus(_('Indie Games for Good')) +
           '&return=' + urlquote_plus('http://' + site.domain + reverse('donation_complete')) +
           '&cancel_return=' + urlquote_plus('http://' + site.domain + reverse('donation_cancelled')) +
-          # '&rm=1' +
+          '&rm=1' +
           '&cmd=_donations' +
           '&cbt=Return+to+' + urlquote_plus(_('Indie Games for Good')) +
           '&tax=0.00' +
