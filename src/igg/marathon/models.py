@@ -128,9 +128,9 @@ class Donation(models.Model):
   amount = models.DecimalField(max_digits=14, decimal_places=2, help_text=_(u'Maximum $999,999,999,999.99'))
   comment = models.TextField(null=True, blank=True)
   time = models.DateTimeField(auto_now_add=True)
-  game = models.ForeignKey(Game, null=True, blank=True)
+  game = models.ForeignKey(Game, null=True, blank=True, related_name='donations')
   challenge = models.ForeignKey(Challenge, null=True, blank=True, related_name='donations')
-  raffle = models.ForeignKey(Raffle, null=True, blank=True)
+  raffle = models.ForeignKey(Raffle, null=True, blank=True, related_name='donations')
   approved = models.BooleanField(default=False)
   points = models.IntegerField(default=0)
   ipn_hash = models.CharField(max_length=40, null=False, blank=True)
@@ -194,6 +194,7 @@ User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 
 class MarathonInfo(models.Model):
+  _info_object = None
   total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
   points_threshold = models.IntegerField(default=3000)
 
@@ -227,9 +228,12 @@ class MarathonInfo(models.Model):
 
   @classmethod
   def info(cls):
-    return cls.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK)
+    if cls._info_object is None:
+      cls._info_object = cls.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK)
+    return cls._info_object
 
   def save(self, *args, **kwargs):
+    self.__class__._info_object = None # Invalidate cached object
     self.total = sum(foo.amount for foo in Donation.objects.filter(approved=True))
     event = Schedule.objects.get(pk=settings.IGG_PARAM_EVENT_PK)
     event.end = event.start + (self.dollarsToTime(self.total,0.00)) #TODO:Marathon changes in hour increments
@@ -243,7 +247,7 @@ def donationSaving(sender, instance, **kwargs):
   try:
     if instance.approved and not Donation.objects.get(pk=instance.pk).approved:
       # Newly approved donation, make transactions appropriately
-      this_marathon = MarathonInfo.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK)
+      this_marathon = MarathonInfo.info()
       instance.points = this_marathon.dollarsToPoints(instance.amount)
       tickets = this_marathon.dollarsToTickets(instance.amount)
 
@@ -260,6 +264,9 @@ def donationSaving(sender, instance, **kwargs):
         nre = RaffleEntry(user=instance.user, raffle=instance.raffle, tickets=tickets)
         nre.save()
 
+      if instance.challenge is not None:
+        instance.challenge.save()
+
       instance.user.profile.save()
 
   except Donation.DoesNotExist:
@@ -275,7 +282,7 @@ def donationSaved(sender, instance, **kwargs):
 
 @receiver(models.signals.pre_save,sender=Challenge)
 def challengeSaving(sender, instance, **kwargs):
-  instance.total = sum(foo.amount for foo in Donation.objects.filter(approved=True,challenge=instance))
+  instance.total = sum(foo.amount for foo in instance.donations.filter(approved=True))
 
 @receiver(models.signals.post_save,sender=RaffleEntry)
 def raffleEntrySaved(sender, instance, **kwargs):
