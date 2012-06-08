@@ -38,3 +38,5 @@ User Profile
 
 Paypal cancel page
     mark donation as "hidden" don't delete from DB
+
+Use jquery.load() to load part of the page on Modal views.
