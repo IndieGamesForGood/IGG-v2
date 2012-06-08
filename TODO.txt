@@ -1,13 +1,13 @@
 The Master TODO List for IGG Marathon
 
 Base
-    Genericize modal
+    Genericize modal - DONE
     Marathon Status Box (AJAX to update, store in variable for other calculations)
 
 Donate Page
     ?Game selection via autocomplete form - http://jqueryui.com/demos/autocomplete/#maxheight
-    Auto-fill Game/Raffle/Challenge data
-    Auto-fill other fields from User's account
+    Auto-fill Game/Raffle/Challenge data - DONE
+    Auto-fill other fields from User's account - DONE
     Donation should show how much the marathon will be extended by + how many points user will receive, based on AJAX Marathon Status info)
 
 Game ListView & DetailView
@@ -20,15 +20,21 @@ Game DetailView
 Challenges Page
     Submit a challenge (in a modal)
 
-Donation model
-    Store ALL information from form
-    If user not logged in
-        If email has an account
-            Credit donation to account
-        If email has no account
-            Make new account
-            Credit donation to account
-            Copy inputted information to UserProfile
+Donation model - DONE
+    Store ALL information from form - DONE
+    If user not logged in - DONE
+        If email has an account - DONE
+            Credit donation to account - DONE
+        If email has no account - DONE
+            Make new account - DONE
+            Credit donation to account - DONE
+            Copy inputted information to UserProfile - DONE
 
-Login
-    Change Username to Email
+Login - DONE
+    Change Username to Email - DONE
+
+User Profile
+    Edit name, email, password
+
+Paypal cancel page
+    mark donation as "hidden" don't delete from DB
