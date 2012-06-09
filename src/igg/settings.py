@@ -3,6 +3,12 @@ import sys
 
 from django.core.urlresolvers import reverse_lazy
 
+# Import required local settings
+from local_settings import DATABASES, SECRET_KEY, \
+  EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT, \
+  EMAIL_SUBJECT_PREFIX, EMAIL_USE_TLS, SERVER_EMAIL, \
+  PAYPAL_RECEIVER_EMAIL, PAYPAL_WEBSCR_URL
+
 # Insert apps into python path
 APPS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                         '../../apps'))
@@ -12,8 +18,6 @@ for path in os.listdir(APPS_DIR):
     sys.path.insert(0, path)
 
 IGG_ENV = os.environ.get('IGG_ENV', 'prod')
-IGG_ROOT = os.environ.get('IGG_ROOT',
-            os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 if IGG_ENV == 'dev':
   DEBUG = True
@@ -30,7 +34,7 @@ IGG_PARAM_TICKET_SRC_PK   = 1
 IGG_PARAM_EVENT_PK        = 1
 IGG_PARAM_MARATHONINFO_PK = 1
 
-  
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -41,29 +45,6 @@ ADMINS = (
 # A tuple in the same format as ADMINS that specifies who should get
 # broken-link notifications when SEND_BROKEN_LINK_EMAILS=True.
 MANAGERS = ADMINS
-
-if DEBUG:
-  DATABASES = {
-    'default': {
-      'ENGINE': 'django.db.backends.sqlite3',
-      'NAME': os.path.join(IGG_ROOT, 'db.sqlite'),
-      'USER': '',
-      'PASSWORD': '',
-      'HOST': '',
-      'PORT': '',
-    }
-  }
-else:
-  DATABASES = {
-    'default': {
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': 'iggapp',
-      'USER': 'igg_12dev',
-      'PASSWORD': 'DZt*pR4a82nY',
-      'HOST': 'mysql.iggmarathon.com',
-      'PORT': '',
-    }
-  }
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = (
@@ -136,9 +117,6 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '@0n2+imp)rhg!c0878p_)^#am)v^79w9c(g%%r%-=qoy6@t47t'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -197,10 +175,6 @@ INSTALLED_APPS = (
     'paypal.standard.ipn',
 )
 
-# Paypal Sandbox for now.
-PAYPAL_RECEIVER_EMAIL = 'bcarl_1338885461_biz@me.com'
-PAYPAL_WEBSCR_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
-
 # django-registration: https://bitbucket.org/ubernostrum/django-registration
 # One-week activation window; you may, of course, use a different value.
 ACCOUNT_ACTIVATION_DAYS = 7
@@ -213,18 +187,6 @@ LOGIN_REDIRECT_URL = '/'
 # login_required() decorator.
 LOGIN_URL = reverse_lazy('auth_login')
 LOGOUT_URL = reverse_lazy('auth_logout')
-
-# Email settings
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'igg.development@gmail.com'
-EMAIL_HOST_PASSWORD = 'jCFdpqKn3UnB4bzZujsqb4jTUMYHRa'
-EMAIL_PORT = '587'
-EMAIL_SUBJECT_PREFIX = '[IGG] '
-EMAIL_USE_TLS = True
-
-# The email address that error messages come from, such as those sent to
-# ADMINS and MANAGERS.
-SERVER_EMAIL = 'igg.development@gmail.com'
 
 # Whether to send an email to the MANAGERS each time somebody visits a
 # Django-powered page that is 404ed with a non-empty referer (i.e., a broken
