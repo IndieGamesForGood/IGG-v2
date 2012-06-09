@@ -1,5 +1,5 @@
 env
-*.pyc
+*.py[co]
 db.sqlite
 public/static
-.idea
+local_settings.py
