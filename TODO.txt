@@ -17,14 +17,14 @@ Priority List:
 
     √ ChallengeListView
         √ Add link to ChallengeAddView
-    ChallengeDetailView
+    √ ChallengeDetailView
         Link to ChallengeAddView
         Link to AutoFill DonateForm
         ?Quick Actions
     √ ChallengeAddView
         √ Implement
-    ChallengeEditForm
-        Implement
+    √ ChallengeEditForm
+        √ Implement
 
     RaffleListView
         Add link to AddRaffleView
