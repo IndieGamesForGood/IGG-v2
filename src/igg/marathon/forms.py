@@ -64,11 +64,18 @@ class GameAddForm(forms.ModelForm):
   class Meta:
     model = Game
     exclude = ('visible', 'points')
+    
+class RaffleEditForm(forms.ModelForm):
+  start = forms.DateTimeField(initial=datetime.now())
+  end = forms.DateTimeField(initial=datetime.now())
+
+  class Meta:
+    model = Raffle
 
 class ChallengeEditForm(forms.ModelForm):
   class Meta:
     model = Challenge
-
+    
 class ChallengeAddForm(forms.ModelForm):
   name = forms.CharField(max_length=200)
   description = forms.CharField(widget=forms.Textarea(attrs={'rows':'5'}))
@@ -78,7 +85,6 @@ class ChallengeAddForm(forms.ModelForm):
   class Meta:
     model = Challenge
     exclude = ('accepted', 'total', 'user')
-
 
 class ProfileEditForm(forms.Form):
   first_name = forms.CharField(required=False, max_length=30)

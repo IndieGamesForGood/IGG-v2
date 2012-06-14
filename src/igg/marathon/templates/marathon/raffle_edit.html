@@ -1,0 +1,16 @@
+<form method="post" action="{% url raffle_edit raffle.pk %}" id="raffleEditForm">
+    {{ form.as_p }}
+    <p><button class="btn btn-primary" type="submit">Save Changes</button></p>
+</form>
+<script type="text/javascript">
+    $("#raffleEditForm").submit(function(e) {
+        e.preventDefault();
+
+        $.post( $("#raffleEditForm").attr('action'), $("#raffleEditForm").serialize(),
+                function( data ) {
+                    var content = $( data ).find( '#content' );
+                    justDisplayModal('Raffle Edited: {{raffle.name}}','{% url raffle_detail raffle.pk %}');
+                }
+        );
+    });
+</script>

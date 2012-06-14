@@ -68,6 +68,8 @@ urlpatterns = patterns('',
 
   url(r'^raffles/$', RaffleListView.as_view(), name='raffle_list'),
   url(r'^raffles/(?P<pk>\d+)/$', RaffleDetailView.as_view(), name='raffle_detail'),
+  url(r'^raffles/(?P<pk>\d+)/edit/$', login_required(ensure_csrf_cookie(RaffleEditFormView.as_view())), name='raffle_edit'),
+  url(r'^raffles/add/$', login_required(ensure_csrf_cookie(RaffleAddFormView.as_view())), name='raffle_add'),
 
   url(r'^schedule/$', ScheduleListView.as_view(template_name='marathon/schedule.html'), name='schedule_list'),
   url(r'^donors/$', DonorListView.as_view(), name='donor_list'),

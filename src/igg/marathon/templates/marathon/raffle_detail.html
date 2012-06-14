@@ -11,10 +11,12 @@
             {% endif %}
         {% endif %}
 
-        <h7 id="raffleTimeInfo">Please enable javascript to see raffle information.</h7>
+        <h7 id="raffleTimeInfo">Please enable javascript to see raffle information.</h7><br>
+        <h7><a href="#" onclick="justDisplayModal('Edit {{ raffle.name }}','{% url raffle_edit raffle.pk %}')" title="Edit {{ raffle.name }}">Edit this raffle.</a></h7>
     </div>
     <div style="width:150px; float: right">
-        {% if request.user.is_staff %}<b>{{ raffle.count_tickets }} tickets entered so far.</b>{% endif %}
+        {% if request.user.is_staff %}<b>{{ raffle.count_tickets }} tickets entered so far.</b>
+        <p><a href="#" onclick="justDisplayModal('Edit  {{ raffle.name }}','{% url raffle_edit raffle.pk %}')" title="Edit {{ raffle.name }}">Edit Raffle</a></p>{% endif %}
         <div class="progress" style="width:100%">
             <div class="bar" id="raffleProgressBar" style="width:0%;"></div>
         </div>

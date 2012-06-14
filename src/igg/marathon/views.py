@@ -166,10 +166,35 @@ class RaffleListView(ListView):
     else:
       return Raffle.get_open_raffles()
 
-
 class RaffleDetailView(DetailView):
   model = Raffle
   context_object_name = 'raffle'
+
+class RaffleEditFormView(UpdateView):
+  template_name = 'marathon/raffle_edit.html'
+  form_class = RaffleEditForm
+  model = Raffle
+  context_object_name = 'raffle'
+  success_url = '/raffles/'
+
+
+class RaffleAddFormView(CreateView):
+  template_name = 'marathon/raffle_add.html'
+  form_class = RaffleEditForm
+  model = Raffle
+  context_object_name = 'raffle'
+
+  def form_valid(self, form):
+    raffle = Raffle()
+    raffle.name = form.cleaned_data.get('name')
+    raffle.description = form.cleaned_data.get('description')
+    raffle.quantity = form.cleaned_data.get('quantity')
+    raffle.visible = form.cleaned_data.get('visible')
+    raffle.start = form.cleaned_data.get('start')
+    raffle.end = form.cleaned_data.get('end')
+
+    raffle.save()
+    return HttpResponse('Submitted Successfully!')
 
 
 class ScheduleListView(ListView):
