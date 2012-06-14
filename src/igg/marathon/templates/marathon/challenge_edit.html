@@ -1,0 +1,19 @@
+<form method="post" action="{% url challenge_edit challenge.pk %}" id="challengeEditForm">
+    {{ form.as_p }}
+    <p><button class="btn btn-primary" type="submit">Save Changes</button></p>
+</form>
+<script type="text/javascript">
+    $("#challengeEditForm").submit(function(e) {
+        e.preventDefault();
+
+        $.post( $("#challengeEditForm").attr('action'), $("#challengeEditForm").serialize(),
+                function( data ) {
+                    if (data == "SUCCESS") {
+                      justDisplayModal('Challenge Edited','{% url challenge_detail challenge.pk %}');
+                    } else {
+                      justDisplayModalHTML('Challenge Edited', data);
+                    }
+                }
+        );
+    });
+</script>

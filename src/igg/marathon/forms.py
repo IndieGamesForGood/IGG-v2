@@ -65,13 +65,9 @@ class GameAddForm(forms.ModelForm):
     model = Game
     exclude = ('visible', 'points')
 
-# name = models.CharField(max_length=200)
-# description = models.TextField()
-# accepted = models.BooleanField(default=False)
-# private = models.BooleanField(default=False)
-# bounty = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
-# total = models.DecimalField(max_digits=14, decimal_places=2, default=0.00, null=True, blank=True)
-# user = models.ForeignKey(User)
+class ChallengeEditForm(forms.ModelForm):
+  class Meta:
+    model = Challenge
 
 class ChallengeAddForm(forms.ModelForm):
   name = forms.CharField(max_length=200)

@@ -10,6 +10,7 @@
                 <p>This challenge isn't accepted yet! <a href="#">Accept it, we can pull this off!</a></p>
             {% endif %}
             <p>Requested by user: {{ challenge.user }}</p>
+            <p><a href="#" onclick="justDisplayModal('Edit {{ challenge.name }}','{% url challenge_edit challenge.pk %}')" title="Edit {{ challenge.name }}">Edit Info</a></p>
         {% endif %}
     </div>
     <div style="width:150px; float: right">

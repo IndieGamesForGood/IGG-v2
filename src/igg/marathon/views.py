@@ -48,8 +48,12 @@ class GameEditFormView(UpdateView):
   form_class = GameEditForm
   model = Game
   context_object_name = 'game'
-  success_url = '/games/'
+  success_url = 'doesnt_matter'
 
+  def form_valid(self, form):
+    # Call super() to actually save the object
+    http_response = super(GameEditFormView, self).form_valid(form)
+    return HttpResponse('SUCCESS')
 
 class GameCreateFormView(CreateView):
   template_name = 'marathon/game_add.html'
@@ -123,6 +127,17 @@ class ChallengeDetailView(DetailView):
   model = Challenge
   context_object_name = 'challenge'
 
+class ChallengeEditFormView(UpdateView):
+  template_name = 'marathon/challenge_edit.html'
+  form_class = ChallengeEditForm
+  model = Challenge
+  context_object_name = 'challenge'
+  success_url = 'doesnt_matter'
+
+  def form_valid(self, form):
+    # Call super() to actually save the object
+    http_response = super(ChallengeEditFormView, self).form_valid(form)
+    return HttpResponse('SUCCESS')
 
 class ChallengeCreateFormView(CreateView):
   template_name = 'marathon/challenge_add.html'

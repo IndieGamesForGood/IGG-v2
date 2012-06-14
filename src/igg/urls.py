@@ -63,6 +63,7 @@ urlpatterns = patterns('',
 
   url(r'^challenges/$', ChallengeListView.as_view(), name='challenge_list'),
   url(r'^challenges/(?P<pk>\d+)/$', ChallengeDetailView.as_view(), name='challenge_detail'),
+  url(r'^challenges/(?P<pk>\d+)/edit/$', login_required(ensure_csrf_cookie(ChallengeEditFormView.as_view())), name='challenge_edit'),
   url(r'^challenges/propose/$', ensure_csrf_cookie(ChallengeCreateFormView.as_view()), name='challenge_add'),
 
   url(r'^raffles/$', RaffleListView.as_view(), name='raffle_list'),
