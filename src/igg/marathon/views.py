@@ -165,9 +165,45 @@ class DonateFormView(FormView):
   template_name = 'marathon/donate.html'
   form_class = DonateForm
 
-  def post(self, request, *args, **kwargs):
-    self.request = request
-    return super(DonateFormView, self).post(request, *args, **kwargs)
+  def get_form_kwargs(self):
+    kwargs = super(DonateFormView,self).get_form_kwargs()
+    if self.request.user.is_authenticated():
+      c = self.request.user.challenges
+    else:
+      c = Challenge.objects.filter(accepted=True,private=False)
+    kwargs['challenges'] = c
+
+    game = None
+    game_pk = self.request.GET.get('game')
+    if game_pk is not None:
+      try:
+        game = Game.objects.get(visible=True,pk=int(game_pk))
+      except:
+        pass
+
+    raffle = None
+    raffle_pk = self.request.GET.get('raffle')
+    if raffle_pk is not None:
+      try:
+        raffle = Raffle.objects.get(visible=True,pk=int(raffle_pk))
+      except:
+        pass
+
+    challenge = None
+    challenge_pk = self.request.GET.get('challenge')
+    if challenge_pk is not None:
+      try:
+        challenge = Challenge.objects.get(accepted=True,pk=int(challenge_pk))
+      except:
+        pass
+
+    kwargs['initial'] = {
+      'game': game,
+      'raffle': raffle,
+      'challenge': challenge
+    }
+
+    return kwargs
 
   def form_valid(self, form):
     site = Site.objects.get_current()

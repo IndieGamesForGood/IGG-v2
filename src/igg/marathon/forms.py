@@ -29,6 +29,13 @@ class NoUsernameRegistrationForm(RegistrationFormUniqueEmail):
 
 
 class DonateForm(forms.Form):
+
+  def __init__(self, challenges, *args, **kwargs):
+    super(DonateForm, self).__init__(*args, **kwargs)
+    self.fields['challenge'] = forms.ModelChoiceField(required=False,
+                                                      queryset=challenges,
+                                                      empty_label="Select a challenge...")
+
   amount = forms.DecimalField(min_value=1.00, decimal_places=2, max_digits=14)
   email = forms.EmailField(required=True)
   comment = forms.CharField(required=False, widget=forms.Textarea)
@@ -43,9 +50,6 @@ class DonateForm(forms.Form):
   raffle = forms.ModelChoiceField(required=False,
                                   queryset=Raffle.objects.filter(visible=True),
                                   empty_label="Select a raffle...")
-  challenge = forms.ModelChoiceField(required=False,
-                                     queryset=Challenge.objects.filter(accepted=True),
-                                     empty_label="Select a challenge...")
 
 class GameEditForm(forms.ModelForm):
   class Meta:
