@@ -1,7 +1,6 @@
 <form method="post" action="{% url game_edit game.pk %}" id="gameEditForm">
-    {% csrf_token %}
     {{ form.as_p }}
-    <p><input type="submit" value="Save Changes" /></p>
+    <p><button class="btn btn-primary" type="submit">Save Changes</button></p>
 </form>
 <script type="text/javascript">
     $("#gameEditForm").submit(function(e) {
