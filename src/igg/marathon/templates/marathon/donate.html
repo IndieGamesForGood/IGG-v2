@@ -272,6 +272,7 @@
                 }
             }
         }
+        {% if form.game.value %}updateGame(){% endif %}
 
         function updateChallenge()
         {
@@ -287,6 +288,7 @@
                 }
             }
         }
+        {% if form.challenge.value %}updateChallenge(){% endif %}
 
         function updateRaffle()
         {
@@ -302,6 +304,7 @@
                 }
             }
         }
+        {% if form.raffle.value %}updateRaffle(){% endif %}
 
         $('#id_game').on('change',updateGame)
         $('#id_challenge').on('change',updateChallenge)
