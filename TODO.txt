@@ -26,17 +26,17 @@ Priority List:
     √ ChallengeEditForm
         √ Implement
 
-    RaffleListView
-        Add link to AddRaffleView
-    RaffleDetailView
-        Add link to RaffleEditForm
+    √RaffleListView
+        √Add link to AddRaffleView
+    √RaffleDetailView
+        √Add link to RaffleEditForm
         √ Link to AutoFill DonateForm
-        ? Tickets allocation
+        √? Tickets allocation
         ? Quick Actions
-    EditRaffleView
-        Implement
-    AddRaffleView
-        Implement
+    √EditRaffleView
+        √Implement
+    √AddRaffleView
+        √Implement
 
     ScheduleListView
         Add link to ScheduleAddView
