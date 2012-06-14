@@ -50,3 +50,13 @@ class DonateForm(forms.Form):
 class GameEditForm(forms.ModelForm):
   class Meta:
     model = Game
+
+class GameAddForm(forms.ModelForm):
+  name = forms.CharField(max_length=200)
+  developer = forms.CharField(max_length=200, required=False)
+  site = forms.CharField(max_length=200)
+  description = forms.CharField(required=False, widget=forms.Textarea)
+
+  class Meta:
+    model = Game
+    exclude = ('visible', 'points')

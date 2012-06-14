@@ -8,11 +8,12 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils.http import urlquote_plus
 from django.utils.translation import ugettext as _
-from django.views.generic import ListView, DetailView, FormView, View, UpdateView
+from django.views.generic import ListView, DetailView, FormView, View
+from django.views.generic.edit import CreateView, UpdateView
 
 from igg.marathon.mixins import JSONResponseMixin
 from igg.marathon.models import *
-from igg.marathon.forms import DonateForm, GameEditForm
+from igg.marathon.forms import *
 
 import hashlib
 import time
@@ -48,6 +49,24 @@ class GameEditFormView(UpdateView):
   model = Game
   context_object_name = 'game'
   success_url = '/games/'
+
+
+class GameCreateFormView(CreateView):
+  template_name = 'marathon/game_add.html'
+  form_class = GameAddForm
+  model = Game
+  context_object_name = 'game'
+
+  def form_valid(self, form):
+    game = Game()
+    game.name = form.cleaned_data.get('name')
+    game.developer = form.cleaned_data.get('developer')
+    game.site = form.cleaned_data.get('site')
+    game.description = form.cleaned_data.get('description')
+    game.visible = False
+    game.points = 0
+    game.save()
+    return HttpResponse('Submitted Successfully!')
 
 
 class ChallengeListView(ListView):

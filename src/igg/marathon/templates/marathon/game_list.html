@@ -7,7 +7,8 @@
 
 {% block content %}
 <h2>{% trans "Games" %}</h2>
-    {% if request.user.is_staff %}<a href="/admin/marathon/game/">Manage Games</a>{% endif %}
+    {% if request.user.is_staff %}<p><a href="/admin/marathon/game/">Manage Games</a></p>{% endif %}
+    <p class="pull-right"><a href="{% url game_add %}" data-toggle="modal" title="Request a Game" class="btn btn-primary">{{ game.name }}Request a New Game</a></p>
 <div class="row">
   <div class="span10 offset1">
     <table class="table table-condensed table-striped">

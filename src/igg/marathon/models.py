@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 
 class Game(models.Model):
   name = models.CharField(max_length=200)
-  developer = models.CharField(max_length=200)
-  site = models.CharField(max_length=200)
-  description = models.TextField()
+  developer = models.CharField(max_length=200, blank=True)
+  site = models.CharField(max_length=200, blank=True)
+  description = models.TextField(blank=True)
   visible = models.BooleanField(default=False)
   points = models.IntegerField(default=0)
 

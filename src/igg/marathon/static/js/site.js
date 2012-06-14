@@ -13,6 +13,17 @@ function justDisplayModal(title,url)
     $('#modal').modal('show');
     return false;
 }
+function justDisplayModalHTML(title,html)
+{
+    $("#modalHeading").text(title);
+    $("#modalBody").html(html);
+    $('#modal').modal('show');
+    return false;
+}
+function hideModal()
+{
+  $('#modal').modal('hide');
+}
 function pad2(x)
 {
     return (x < 10 ? '0' : '') + x;

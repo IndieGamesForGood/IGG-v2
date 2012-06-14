@@ -57,6 +57,7 @@ urlpatterns = patterns('',
   url(r'^games/$', GameListView.as_view(), name='game_list'),
   url(r'^games/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game_detail'),
   url(r'^games/(?P<pk>\d+)/edit/$', ensure_csrf_cookie(GameEditFormView.as_view()), name='game_edit'),
+  url(r'^games/request/$', ensure_csrf_cookie(GameCreateFormView.as_view()), name='game_add'),
 
   url(r'^challenges/$', ChallengeListView.as_view(), name='challenge_list'),
   url(r'^challenges/(?P<pk>\d+)/$', ChallengeDetailView.as_view(), name='challenge_detail'),

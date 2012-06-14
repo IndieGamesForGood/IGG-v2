@@ -1,0 +1,16 @@
+<form method="post" action="{% url game_add %}" id="gameAddForm">
+    {{ form.as_p }}
+    <p><button class="btn btn-primary" type="submit">Submit</button></p>
+</form>
+<script type="text/javascript">
+    $("#gameAddForm").submit(function(e) {
+        e.preventDefault();
+
+        $.post( $("#gameAddForm").attr('action'), $("#gameAddForm").serialize(),
+                function( data ) {
+/*                    var content = $( data ).find( '#content' );*/
+                    justDisplayModalHTML('Request a Game', data);
+                }
+        );
+    });
+</script>
