@@ -123,6 +123,25 @@ class ChallengeDetailView(DetailView):
   model = Challenge
   context_object_name = 'challenge'
 
+
+class ChallengeCreateFormView(CreateView):
+  template_name = 'marathon/challenge_add.html'
+  form_class = ChallengeAddForm
+  model = Challenge
+  context_object_name = 'challenge'
+
+  def form_valid(self, form):
+    challenge = Challenge()
+    challenge.name = form.cleaned_data.get('name')
+    challenge.description = form.cleaned_data.get('description')
+    challenge.accepted = False
+    challenge.private = form.cleaned_data.get('private', False)
+    challenge.bounty = form.cleaned_data.get('bounty', 0.0)
+    challenge.user = self.request.user
+    challenge.save()
+    return HttpResponse('Submitted Successfully!')
+
+
 class RaffleListView(ListView):
   context_object_name = 'raffles'
 

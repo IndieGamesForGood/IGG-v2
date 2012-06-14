@@ -8,6 +8,7 @@
 {% block content %}
 <h2>{% trans "Challenges" %}</h2>
     {% if request.user.is_staff %}<a href="/admin/marathon/challenge/">Manage Challenges</a>{% endif %}
+    <p class="pull-right"><a href="{% url challenge_add %}" data-toggle="modal" title="{% trans "Propose a Challenge" %}" class="btn btn-primary">{% trans "Propose a Challenge" %}</a></p>
 <ul>
     {% for challenge in challenges %}
         <li{% if not challenge.accepted %} style="background-color:#f08080;"{% elif challenge.user == request.user %} style="background-color:#e0ffff;"{% endif %}>
