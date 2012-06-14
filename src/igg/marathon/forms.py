@@ -64,13 +64,26 @@ class GameAddForm(forms.ModelForm):
   class Meta:
     model = Game
     exclude = ('visible', 'points')
-    
+
 class RaffleEditForm(forms.ModelForm):
   start = forms.DateTimeField(initial=datetime.now())
   end = forms.DateTimeField(initial=datetime.now())
 
   class Meta:
     model = Raffle
+
+class RaffleEntryForm(forms.ModelForm):
+  def __init__(self, tickets, *args, **kwargs):
+    super(RaffleEntryForm, self).__init__(*args, **kwargs)
+    self.fields['tickets'] = forms.IntegerField(min_value=0,max_value=tickets)
+
+  raffle = forms.ModelChoiceField(required=False,
+                                  queryset=Raffle.get_open_raffles(),
+                                  empty_label="Select a raffle...")
+
+  class Meta:
+    model = RaffleEntry
+    exclude = ('user', 'timestamp')
 
 class ChallengeEditForm(forms.ModelForm):
   class Meta:

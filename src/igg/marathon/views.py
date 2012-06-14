@@ -177,6 +177,30 @@ class RaffleEditFormView(UpdateView):
   context_object_name = 'raffle'
   success_url = '/raffles/'
 
+class RaffleEntryFormView(CreateView):
+  template_name = 'marathon/raffle_enter.html'
+  form_class = RaffleEntryForm
+  model = RaffleEntry
+  context_object_name = 'raffle_entry'
+
+  def get_form_kwargs(self):
+    kwargs = super(RaffleEntryFormView,self).get_form_kwargs()
+    try:
+      kwargs['initial'] = { 'raffle' : Raffle.objects.get(pk=int(self.request.GET.get('raffle')))}
+    except:
+      pass
+    kwargs['tickets'] = self.request.user.profile.tickets
+    return kwargs
+
+  def form_valid(self, form):
+    entry = RaffleEntry()
+    entry.user = self.request.user
+    entry.tickets = int(form.cleaned_data.get('tickets'))
+    entry.raffle = form.cleaned_data.get('raffle')
+
+    entry.save()
+    return HttpResponse('Submitted Successfully!')
+
 
 class RaffleAddFormView(CreateView):
   template_name = 'marathon/raffle_add.html'

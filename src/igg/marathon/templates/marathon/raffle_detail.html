@@ -44,14 +44,12 @@
         }
         else
         {
-            infoText += "This raffle is LIVE! <a href='{% url donate_now %}?raffle={{ raffle.pk }}'>Donate now to enter!</a>"
+            infoText += "<p>This raffle is LIVE! <a href='{% url donate_now %}?raffle={{ raffle.pk }}'>Donate now to enter!</a></p>"{% if user.profile.tickets %}
+            infoText += "<p><a href='#' onclick=" + '"' + "justDisplayModal('Raffle Entry','{% url raffle_enter %}?raffle={{raffle.pk}}')" + '"' + "title='Enter {{ raffle.name }}'>Enter Raffle</a></p>"{% endif %}
             timePercentage = 100 * (now - raffleStart) / (raffleEnd - raffleStart)
         }
         $("#raffleProgressBar").css('width',timePercentage + "%")
         $("#raffleProgressInfo").html("<i>" + infoText + "</i>")
         $("#raffleTimeInfo").html("<i>" + timeText + "</i>")
-        {% comment %}
-
-        {% endcomment %}
     </script>
 {% endblock %}
