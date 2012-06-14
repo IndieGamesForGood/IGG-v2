@@ -8,10 +8,9 @@
         {% if game.visible %}
           <p></p>
         {% else %}
-          <p>This game is not currently approved.
-            <a href="#">Approve Now</a> | <a href="#">Edit Info</a> | <a href="#">Delete</a>
-          </p>
+          <p>This game is not currently approved.<a href="#">Approve Now</a> | <a href="#">Delete</a></p>
         {% endif %}
+        <p><a href="#" onclick="justDisplayModal('Edit  {{ game.name }}','{% url game_edit game.pk %}')" title="Edit {{ game.name }}">Edit Info</a></p>
         {% endif %}
     </div>
     <div style="width:150px; float: right">

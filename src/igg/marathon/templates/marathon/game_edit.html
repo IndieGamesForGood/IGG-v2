@@ -1,0 +1,17 @@
+<form method="post" action="{% url game_edit game.pk %}" id="gameEditForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p><input type="submit" value="Save Changes" /></p>
+</form>
+<script type="text/javascript">
+    $("#gameEditForm").submit(function(e) {
+        e.preventDefault();
+
+        $.post( $("#gameEditForm").attr('action'), $("#gameEditForm").serialize(),
+                function( data ) {
+                    var content = $( data ).find( '#content' );
+                    justDisplayModal('Game Edited: {{game.name}}','{% url game_detail game.pk %}');
+                }
+        );
+    });
+</script>

@@ -8,11 +8,11 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils.http import urlquote_plus
 from django.utils.translation import ugettext as _
-from django.views.generic import ListView, DetailView, FormView, View
+from django.views.generic import ListView, DetailView, FormView, View, UpdateView
 
 from igg.marathon.mixins import JSONResponseMixin
 from igg.marathon.models import *
-from igg.marathon.forms import DonateForm
+from igg.marathon.forms import DonateForm, GameEditForm
 
 import hashlib
 import time
@@ -41,6 +41,14 @@ class GameDetailView(DetailView):
     else:
       context['threshold'] = 0
     return context
+
+class GameEditFormView(UpdateView):
+  template_name = 'marathon/game_edit.html'
+  form_class = GameEditForm
+  model = Game
+  context_object_name = 'game'
+  success_url = '/games/'
+
 
 class ChallengeListView(ListView):
   context_object_name = 'challenges'
@@ -97,8 +105,8 @@ class DonateFormView(FormView):
   form_class = DonateForm
 
   def post(self, request, *args, **kwargs):
-      self.request = request
-      return super(DonateFormView, self).post(request, *args, **kwargs)
+    self.request = request
+    return super(DonateFormView, self).post(request, *args, **kwargs)
 
   def form_valid(self, form):
     site = Site.objects.get_current()

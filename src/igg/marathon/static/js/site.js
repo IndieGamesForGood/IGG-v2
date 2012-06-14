@@ -6,6 +6,13 @@ function displayModal(e,title,url)
     e.preventDefault();
     e.stopPropagation();
 }
+function justDisplayModal(title,url)
+{
+    $("#modalHeading").text(title);
+    $("#modalBody").load(url);
+    $('#modal').modal('show');
+    return false;
+}
 function pad2(x)
 {
     return (x < 10 ? '0' : '') + x;
