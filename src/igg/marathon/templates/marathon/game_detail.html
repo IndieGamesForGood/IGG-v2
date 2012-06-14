@@ -30,9 +30,9 @@
         var infoText = "{{ game.name }} currently has a balance of " + gamePoints + " points; "
         if (gamePoints < thresholdPoints)
         {
-            infoText += "it needs " + (thresholdPoints - gamePoints) + " more to be scheduled. Help it out!"
+            infoText += "it needs " + (thresholdPoints - gamePoints) + " more to be scheduled. <a href='{% url donate_now %}?game={{ game.pk }}'>Help it out!</a>"
         } else {
-            infoText += "this means it can be scheduled. Donating more can still get it more time, though, so go right ahead!"
+            infoText += "this means it can be scheduled. Donating more can still get it more time, though, so <a href='{% url donate_now %}?game={{ game.pk }}'>go right ahead!</a>"
         }
         $("#gameBucketInfo").html("<i>" + infoText + "</i>")
     </script>
