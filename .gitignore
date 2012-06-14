@@ -4,3 +4,4 @@ db.sqlite
 public/static
 local_settings.py
 src/igg/marathon/fixtures/
+.idea
