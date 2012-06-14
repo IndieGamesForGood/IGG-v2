@@ -149,7 +149,7 @@ class RaffleListView(ListView):
     if self.request.user.is_staff:
       return Raffle.objects.all()
     else:
-      return Raffle.objects.filter(visible=True)
+      return Raffle.get_open_raffles()
 
 
 class RaffleDetailView(DetailView):
