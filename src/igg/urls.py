@@ -20,6 +20,7 @@ urlpatterns = patterns('',
   url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
   url(r'^admin/', include(admin.site.urls)),
 
+  url(r'^ajax/info/', AjaxMarathonInfoView.as_view(), name='ajax_marathon_info'),
   url(r'^ajax/(?P<model>\w+)/', ensure_csrf_cookie(AjaxLookaheadView.as_view()), name='ajax_lookahead'),
 
   # django-paypal

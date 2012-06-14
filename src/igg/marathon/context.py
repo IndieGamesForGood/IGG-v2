@@ -7,7 +7,7 @@ def marathon_info(request):
   Adds the ``marathon`` object to the template context.
   """
   return {
-    'marathon': MarathonInfo.objects.get(pk=settings.IGG_PARAM_MARATHONINFO_PK),
+    'marathon': MarathonInfo.info(),
     'IGG_PARAM_RATE': settings.IGG_PARAM_RATE,
     'IGG_PARAM_I_HR_COST': settings.IGG_PARAM_I_HR_COST,
     'IGG_PARAM_DOLLARS_PER_TICKET': settings.IGG_PARAM_DOLLARS_PER_TICKET,

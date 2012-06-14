@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
+from django.utils import simplejson
 from django.utils.http import urlquote_plus
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, DetailView, FormView, View
@@ -362,6 +363,12 @@ class AjaxLookaheadView(JSONResponseMixin, ListView):
       raise Http404
     return self.render_to_response([a.name for a in self.get_queryset().filter(name__contains=query.strip())])
 
+class AjaxMarathonInfoView(JSONResponseMixin, View):
+  def get(self, request, *args, **kwargs):
+    info = MarathonInfo.info()
+    total = float(info.total)
+    hours = info.getCurrentHours()
+    return HttpResponse(simplejson.dumps({'total': total, 'hours': hours}))
 
-
-
+  def post(self, request, *args, **kwargs):
+    return self.get(request, *args, **kwargs)
