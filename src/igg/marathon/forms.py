@@ -48,7 +48,7 @@ class DonateForm(forms.Form):
                                 queryset=Game.objects.filter(visible=True),
                                 empty_label="Select a game...")
   raffle = forms.ModelChoiceField(required=False,
-                                  queryset=Raffle.objects.filter(visible=True),
+                                  queryset=Raffle.get_open_raffles(),
                                   empty_label="Select a raffle...")
 
 class GameEditForm(forms.ModelForm):

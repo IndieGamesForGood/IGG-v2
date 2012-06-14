@@ -110,6 +110,11 @@ class Raffle(models.Model):
     else:
       return 0
 
+  @classmethod
+  def get_open_raffles(cls):
+    now = datetime.now()
+    return cls.objects.filter(visible=True,start__lte=now,end__gte=now)
+
   def quick_show(self):
     self.visible = True
     self.save()
