@@ -131,3 +131,12 @@ function lsDelete(key) {
     } catch (e) {}
   }
 }
+function updateMarathonInfo() {
+  $.getJSON('/ajax/info/', function(data){
+    console.log(data)
+    $("#infobox_total").html("$" + data.total.toFixed(2))
+    $("#infobox_hours").html(data.hours + " hrs")
+    setTimeout(function() { updateMarathonInfo() }, 10000); // call thyn self every 10 seconds
+  })
+}
+updateMarathonInfo()

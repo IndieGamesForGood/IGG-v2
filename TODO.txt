@@ -8,34 +8,35 @@ Priority List:
 
     √ GamesList
         √ Add link to GameRequestView
-    √ GameDetailView
+    GameDetailView
         √ Link to Autofill DonateForm
-        ?Allocate Points Form
-        ?Quick Actions
+        ? Allocate Points Form
+        ? Quick Actions
     √ GameRequestView
         √ Implement
 
     √ ChallengeListView
         √ Add link to ChallengeAddView
-    ChallengeDetailView
-        Link to ChallengeAddView
-        Link to AutoFill DonateForm
-        ?Quick Actions
+    √ ChallengeDetailView
+        √ Link to ChallengeAddView
+        √ Link to AutoFill DonateForm
+        ? Quick Actions
     √ ChallengeAddView
         √ Implement
-    ChallengeEditForm
-        Implement
+    √ ChallengeEditForm
+        √ Implement
 
-    √ RaffleListView
-        √ Add link to AddRaffleView
-    √ RaffleDetailView
-        √ Add link to RaffleEditForm
-        ?Tickets allocation
-        ?Quick Actions
-    √ EditRaffleView
-        √ Implement
-    √ AddRaffleView
-        √ Implement
+    RaffleListView
+        Add link to AddRaffleView
+    RaffleDetailView
+        Add link to RaffleEditForm
+        √ Link to AutoFill DonateForm
+        ? Tickets allocation
+        ? Quick Actions
+    EditRaffleView
+        Implement
+    AddRaffleView
+        Implement
 
     ScheduleListView
         Add link to ScheduleAddView
