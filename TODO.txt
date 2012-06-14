@@ -2,17 +2,17 @@ The Master TODO List for IGG Marathon
 
 
 Priority List:
-    ProfileEditForm
-        Implement
-        Link to from navbar
+    √ ProfileEditForm
+        √ Implement
+        √ Link to from navbar
 
-    GamesList
+    √ GamesList
         √ Add link to GameRequestView
     GameDetailView
         Link to Autofill DonateForm
         ?Allocate Points Form
         ?Quick Actions
-    GameRequestView
+    √ GameRequestView
         √ Implement
 
     ChallengeListView
