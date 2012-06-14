@@ -1,13 +1,62 @@
 The Master TODO List for IGG Marathon
 
+
+Priority List:
+    ProfileEditForm
+        Implement
+        Link to from navbar
+
+    GamesList
+        Add link to GameRequestView
+    GameDetailView
+        Link to Autofill DonateForm
+        ?Allocate Points Form
+        ?Quick Actions
+    GameRequestView
+        Implement
+
+    ChallengeListView
+        Add link to ChallengeAddView
+    ChallengeDetailView
+        Link to ChallengeAddView
+        Link to AutoFill DonateForm
+        ?Quick Actions
+    ChallengeAddView
+        Implement
+    ChallengeEditForm
+        Implement
+
+    RaffleListView
+        Add link to AddRaffleView
+    RaffleDetailView
+        Add link to RaffleEditForm
+        ?Tickets allocation
+        ?Quick Actions
+    EditRaffleView
+        Implement
+    AddRaffleView
+        Implement
+
+    ScheduleListView
+        Add link to ScheduleAddView
+    ScheduleDetailView
+        Add link to ScheduleEditView
+    ScheduleEditView
+        Implement
+
+    √ DonorListView
+    √ Login Form
+
+
+
+
+OLD TODO:
+
 Base
-    Genericize modal - DONE
     Marathon Status Box (AJAX to update, store in variable for other calculations)
 
 Donate Page
     ?Game selection via autocomplete form - http://jqueryui.com/demos/autocomplete/#maxheight
-    Auto-fill Game/Raffle/Challenge data - DONE
-    Auto-fill other fields from User's account - DONE
     Donation should show how much the marathon will be extended by + how many points user will receive, based on AJAX Marathon Status info)
 
 Game ListView & DetailView
@@ -20,19 +69,6 @@ Game DetailView
 Challenges Page
     Submit a challenge (in a modal)
 
-Donation model - DONE
-    Store ALL information from form - DONE
-    If user not logged in - DONE
-        If email has an account - DONE
-            Credit donation to account - DONE
-        If email has no account - DONE
-            Make new account - DONE
-            Credit donation to account - DONE
-            Copy inputted information to UserProfile - DONE
-
-Login - DONE
-    Change Username to Email - DONE
-
 User Profile
     Edit name, email, password
 
@@ -40,3 +76,6 @@ Paypal cancel page
     mark donation as "hidden" don't delete from DB
 
 Use jquery.load() to load part of the page on Modal views.
+
+
+
