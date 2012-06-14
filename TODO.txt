@@ -7,13 +7,13 @@ Priority List:
         Link to from navbar
 
     GamesList
-        Add link to GameRequestView
+        √ Add link to GameRequestView
     GameDetailView
         Link to Autofill DonateForm
         ?Allocate Points Form
         ?Quick Actions
     GameRequestView
-        Implement
+        √ Implement
 
     ChallengeListView
         Add link to ChallengeAddView
