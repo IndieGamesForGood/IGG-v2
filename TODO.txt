@@ -9,18 +9,18 @@ Priority List:
     √ GamesList
         √ Add link to GameRequestView
     GameDetailView
-        Link to Autofill DonateForm
-        ?Allocate Points Form
-        ?Quick Actions
+        √ Link to Autofill DonateForm
+        ? Allocate Points Form
+        ? Quick Actions
     √ GameRequestView
         √ Implement
 
     √ ChallengeListView
         √ Add link to ChallengeAddView
     √ ChallengeDetailView
-        Link to ChallengeAddView
-        Link to AutoFill DonateForm
-        ?Quick Actions
+        √ Link to ChallengeAddView
+        √ Link to AutoFill DonateForm
+        ? Quick Actions
     √ ChallengeAddView
         √ Implement
     √ ChallengeEditForm
@@ -30,8 +30,9 @@ Priority List:
         Add link to AddRaffleView
     RaffleDetailView
         Add link to RaffleEditForm
-        ?Tickets allocation
-        ?Quick Actions
+        √ Link to AutoFill DonateForm
+        ? Tickets allocation
+        ? Quick Actions
     EditRaffleView
         Implement
     AddRaffleView
