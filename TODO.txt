@@ -15,14 +15,14 @@ Priority List:
     √ GameRequestView
         √ Implement
 
-    ChallengeListView
-        Add link to ChallengeAddView
+    √ ChallengeListView
+        √ Add link to ChallengeAddView
     ChallengeDetailView
         Link to ChallengeAddView
         Link to AutoFill DonateForm
         ?Quick Actions
-    ChallengeAddView
-        Implement
+    √ ChallengeAddView
+        √ Implement
     ChallengeEditForm
         Implement
 
