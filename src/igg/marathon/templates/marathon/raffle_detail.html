@@ -42,7 +42,7 @@
         }
         else
         {
-            infoText += "This raffle is LIVE! "
+            infoText += "This raffle is LIVE! <a href='{% url donate_now %}?raffle={{ raffle.pk }}'>Donate now to enter!</a>"
             timePercentage = 100 * (now - raffleStart) / (raffleEnd - raffleStart)
         }
         $("#raffleProgressBar").css('width',timePercentage + "%")
