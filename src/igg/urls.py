@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import password_change
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls import patterns, include, url
@@ -70,7 +71,8 @@ urlpatterns = patterns('',
   url(r'^donors/$', DonorListView.as_view(), name='donor_list'),
 
   url(r'^profile/$', login_required(ProfileEditView.as_view()), name='profile'),
-  url(r'^profile/password/$', login_required(ChangePasswordView.as_view()), name='change_password'),
+  url(r'^profile/password/$', password_change, name='change_password'),
+  
 )
 
 # https://docs.djangoproject.com/en/dev/howto/static-files/#serving-static-files-in-development

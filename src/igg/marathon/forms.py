@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, check_password
 from django.utils.translation import ugettext_lazy as _
 from django.core import validators as valids
 
@@ -74,10 +74,4 @@ class ProfileEditForm(forms.Form):
   def __init__(self, user, *args, **kwargs):
     super(ProfileEditForm, self).__init__(*args, **kwargs)
     self.user = user
-
-
-
-
-
-
 

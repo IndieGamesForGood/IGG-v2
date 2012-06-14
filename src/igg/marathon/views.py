@@ -78,6 +78,10 @@ class ProfileEditView(FormView):
     self._updated = False
     return http_response
 
+  def get_context_data(self, *args, **kwargs):
+    kwargs['updated'] = self._updated
+    return super(ProfileEditView, self).get_context_data(*args, **kwargs)
+
   def get_form_kwargs(self):
     kwargs = super(ProfileEditView, self).get_form_kwargs()
     user = self.request.user
@@ -103,13 +107,6 @@ class ProfileEditView(FormView):
     profile.save()
     self._updated = True
     return self.get(self.request)
-
-  def get_context_data(self, *args, **kwargs):
-    kwargs['profiled_updated'] = self._updated
-    return super(ProfileEditView, self).get_context_data(*args, **kwargs)
-
-class ChangePasswordView(View):
-  pass
 
 class ChallengeListView(ListView):
   context_object_name = 'challenges'

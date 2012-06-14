@@ -7,7 +7,7 @@
 
 {% block content %}
 <h2>{% trans "Profile" %}</h2>
-{% if profiled_updated %}<p><b>Updated!</b></p>{% endif %}
+{% if updated %}<p><b>Updated!</b></p>{% endif %}
 <form action="." method="POST">{% csrf_token %}
 {{ form.as_p }}
 <button type="submit" class="btn btn-primary">Update</button>
