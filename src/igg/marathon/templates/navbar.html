@@ -21,9 +21,9 @@
           <i class="icon-user"></i> {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %} <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="#">{% trans "Tickets" %} <span class="pull-right badge {% if request.user.profile.tickets == 0 %}badge-important{% else %}badge-info{% endif %}">{{ request.user.profile.tickets }}</span></a></li>
-          <li><a href="#">{% trans "Points" %} <span class="pull-right badge {% if request.user.profile.points == 0 %}badge-important{% else %}badge-info{% endif %}">{{ request.user.profile.points }}</span></a></li>
-          <li><a href="#">{% trans "Profile" %}</a></li>
+          <li><a>{% trans "Tickets" %} <span class="pull-right badge {% if request.user.profile.tickets == 0 %}badge-important{% else %}badge-info{% endif %}">{{ request.user.profile.tickets }}</span></a></li>
+          <li><a>{% trans "Points" %} <span class="pull-right badge {% if request.user.profile.points == 0 %}badge-important{% else %}badge-info{% endif %}">{{ request.user.profile.points }}</span></a></li>
+          <li><a href="{% url profile %}">{% trans "Profile" %}</a></li>
           <li class="divider"></li>
           <li><a href="{% url auth_logout %}">{% trans "Logout" %}</a></li>
         </ul>

@@ -68,6 +68,48 @@ class GameCreateFormView(CreateView):
     game.save()
     return HttpResponse('Submitted Successfully!')
 
+class ProfileEditView(FormView):
+  _updated = False
+  form_class = ProfileEditForm
+  template_name = 'marathon/userprofile_form.html'
+
+  def get(self, *args, **kwargs):
+    http_response = super(ProfileEditView, self).get(*args, **kwargs)
+    self._updated = False
+    return http_response
+
+  def get_form_kwargs(self):
+    kwargs = super(ProfileEditView, self).get_form_kwargs()
+    user = self.request.user
+    kwargs['user'] = user
+    kwargs['initial'] = {
+      'first_name': user.first_name,
+      'last_name': user.last_name,
+      'email': user.email,
+      'url': user.profile.url,
+      'twitter': user.profile.twitter,
+    }
+    return kwargs
+
+  def form_valid(self, form):
+    user = self.request.user
+    profile = user.profile
+    user.first_name = form.cleaned_data.get('first_name')
+    user.last_name = form.cleaned_data.get('last_name')
+    user.email = form.cleaned_data.get('email')
+    profile.url = form.cleaned_data.get('url')
+    profile.twitter = form.cleaned_data.get('twitter')
+    user.save()
+    profile.save()
+    self._updated = True
+    return self.get(self.request)
+
+  def get_context_data(self, *args, **kwargs):
+    kwargs['profiled_updated'] = self._updated
+    return super(ProfileEditView, self).get_context_data(*args, **kwargs)
+
+class ChangePasswordView(View):
+  pass
 
 class ChallengeListView(ListView):
   context_object_name = 'challenges'

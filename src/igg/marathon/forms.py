@@ -60,3 +60,24 @@ class GameAddForm(forms.ModelForm):
   class Meta:
     model = Game
     exclude = ('visible', 'points')
+
+class ProfileEditForm(forms.Form):
+  first_name = forms.CharField(required=False, max_length=30)
+  last_name = forms.CharField(required=False, max_length=30)
+  email = forms.EmailField(required=False)
+  url = forms.URLField(required=False, max_length=200)
+  twitter = forms.CharField(required=False, max_length=16,
+                            validators=[valids.RegexValidator(regex='^\w{0,15}$')],
+                            error_messages={'invalid': _(u'Enter a valid Twitter handle (no need for the @ sign).')})
+
+
+  def __init__(self, user, *args, **kwargs):
+    super(ProfileEditForm, self).__init__(*args, **kwargs)
+    self.user = user
+
+
+
+
+
+
+

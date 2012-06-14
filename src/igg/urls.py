@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls import patterns, include, url
@@ -56,7 +57,7 @@ urlpatterns = patterns('',
 
   url(r'^games/$', GameListView.as_view(), name='game_list'),
   url(r'^games/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game_detail'),
-  url(r'^games/(?P<pk>\d+)/edit/$', ensure_csrf_cookie(GameEditFormView.as_view()), name='game_edit'),
+  url(r'^games/(?P<pk>\d+)/edit/$', login_required(ensure_csrf_cookie(GameEditFormView.as_view())), name='game_edit'),
   url(r'^games/request/$', ensure_csrf_cookie(GameCreateFormView.as_view()), name='game_add'),
 
   url(r'^challenges/$', ChallengeListView.as_view(), name='challenge_list'),
@@ -67,6 +68,9 @@ urlpatterns = patterns('',
 
   url(r'^schedule/$', ScheduleListView.as_view(template_name='marathon/schedule.html'), name='schedule_list'),
   url(r'^donors/$', DonorListView.as_view(), name='donor_list'),
+
+  url(r'^profile/$', login_required(ProfileEditView.as_view()), name='profile'),
+  url(r'^profile/password/$', login_required(ChangePasswordView.as_view()), name='change_password'),
 )
 
 # https://docs.djangoproject.com/en/dev/howto/static-files/#serving-static-files-in-development

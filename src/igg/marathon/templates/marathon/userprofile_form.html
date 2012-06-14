@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_description %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block title %}{% trans "Games" %} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Profile" %}</h2>
+{% if profiled_updated %}<p><b>Updated!</b></p>{% endif %}
+<form action="." method="POST">{% csrf_token %}
+{{ form.as_p }}
+<button type="submit" class="btn btn-primary">Update</button>
+</form>
+<p>Need to <a href="{% url change_password %}" title="Change Password">Change Your Password?</a></p>
+{% endblock %}
